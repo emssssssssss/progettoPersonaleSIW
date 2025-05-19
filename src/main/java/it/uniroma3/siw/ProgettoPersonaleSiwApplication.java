@@ -7,7 +7,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ProgettoPersonaleSiwApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ProgettoPersonaleSiwApplication.class, args);
+	
+	SpringApplication.run(ProgettoPersonaleSiwApplication.class, args);
+	
+	//ciao
 	}
 
 }
