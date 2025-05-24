@@ -16,17 +16,17 @@ public class ArtistaService {
     private ArtistaRepository artistaRepository;
 
     @Autowired
-    private UtenteService utenteService;
+    public UtenteService utenteService;
 
-    private Artista getArtistaById(Long id) {
+    public Artista getArtistaById(Long id) {
         return artistaRepository.findById(id).orElse(null);
     }
 
-    private Iterable<Artista> getAllArtisti() {
+    public Iterable<Artista> getAllArtisti() {
         return artistaRepository.findAll();
     }
 
-    private List<Artista> getArtistaPerNome(String nome) {
+    public List<Artista> getArtistaPerNome(String nome) {
         return this.artistaRepository.findByNomeContaining(nome);
     }
 

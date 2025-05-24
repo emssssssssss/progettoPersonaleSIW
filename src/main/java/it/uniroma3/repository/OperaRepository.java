@@ -6,5 +6,5 @@ import it.uniroma3.model.Opera;
 
 
 public interface OperaRepository extends CrudRepository<Opera, Long>{
-
+    Opera findByTitolo(String titolo);
 }

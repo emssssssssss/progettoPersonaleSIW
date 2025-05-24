@@ -25,6 +25,8 @@ public class DisponibilitaFascia {
 	private Museo museo;
 	@OneToMany
 	private List<Prenotazione> prenotazioni;
+	@ManyToOne
+	private Evento evento;
 
 	public LocalTime getOrarioInizio() {
 		return orarioInizio;
