@@ -1,10 +1,13 @@
 package it.uniroma3.model;
 
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Artista {
@@ -12,23 +15,23 @@ public class Artista {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String titolo;
-    private String descrizione;
+    private String nome;
+    private String biografia;
     private int anno;
     private String immagineUrl;
 
-    @ManyToOne
-    private Artista artista;
+    @OneToMany
+    private List<Opera> opere;
 
     @ManyToOne
     private Museo museo;
 
-	public String getTitolo() {
-		return titolo;
+	public String getNome() {
+		return this.nome;
 	}
 
-	public void setTitolo(String titolo) {
-		this.titolo = titolo;
+	public void setNome(String nom) {
+		this.nome = nom;
 	}
 
 	public int getAnno() {
@@ -39,12 +42,12 @@ public class Artista {
 		this.anno = anno;
 	}
 
-	public String getDescrizione() {
-		return descrizione;
+	public String getBiografia() {
+		return this.biografia;
 	}
 
-	public void setDescrizione(String descrizione) {
-		this.descrizione = descrizione;
+	public void setBiografia(String bio) {
+		this.biografia = bio;
 	}
 
 	public String getImmagineUrl() {
