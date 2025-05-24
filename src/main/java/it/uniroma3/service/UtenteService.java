@@ -36,11 +36,11 @@ public class UtenteService {
         utenteRepository.deleteById(id);
     }
 
-    public boolean isAmministartore (String codice) {
-        return codice.equals("Panino_con_pomodori");
+    public void addUtente (Utente utente) {
+        this.utenteRepository.save(utente);
     }
 
-    public void addUtente (Utente utente) {
+    public void modificaUtente(Utente utente) {
         this.utenteRepository.save(utente);
     }
 }

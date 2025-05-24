@@ -17,7 +17,7 @@ public class PrenotazioneService {
     @Autowired
     private UtenteService utenteService;
 
-    public Prenotazione getPreontazione(Long id) {
+    public Prenotazione getPrenotazione(Long id) {
         return this.prenotazioneRepository.findById(id).get();
     }
 
