@@ -29,6 +29,14 @@ public class Opera {
 	@ManyToMany
 	private List<Evento> evento;
 
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getId() {
+		return this.id;
+	}
+
 	public String getTitolo() {
 		return titolo;
 	}

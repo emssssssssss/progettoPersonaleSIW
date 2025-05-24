@@ -34,6 +34,14 @@ public class Prenotazione {
 		ANNULLATA
 	}
 
+	public void setId(Long id){
+		this.id = id;
+	}
+
+	public Long getId() {
+		return this.id;
+	}
+
 	public int getNumeroPersone() {
 		return numeroPersone;
 	}
@@ -48,5 +56,13 @@ public class Prenotazione {
 
 	public void setDataPrenotazione(LocalDate dataPrenotazione) {
 		this.dataPrenotazione = dataPrenotazione;
+	}
+
+	public void setUtente(Utente utente) {
+		this.utente = utente;
+	}
+
+	public Utente getUtente() {
+		return this.utente;
 	}
 }

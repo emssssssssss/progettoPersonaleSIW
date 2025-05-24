@@ -34,6 +34,14 @@ public class Utente {
         STAFF
     }
 
+	public Long getId() {
+		return this.id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public String getNome() {
 		return nome;
 	}
@@ -64,10 +72,6 @@ public class Utente {
 
 	public Ruolo getRuolo() {
 		return this.ruolo;
-	}
-
-	public void addPrenotazione(Prenotazione pren) {
-		this.prenotazioni.add(pren);
 	}
 
 	public void addPrenotazioni(List<Prenotazione> prenotazioni) {
