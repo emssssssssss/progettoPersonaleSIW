@@ -20,7 +20,7 @@ public class Prenotazione {
 	private Utente utente;
 
 	@ManyToOne
-	private DisponibilitaBiglietti disponibilita;
+	private DisponibilitaBiglietto disponibilita;
 
 	private int numeroPersone;
 
