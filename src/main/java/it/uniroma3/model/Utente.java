@@ -20,6 +20,8 @@ public class Utente {
 
     private String password;
 
+	private boolean amministratore;
+
     @Enumerated(EnumType.STRING)
     private Ruolo ruolo;
 
@@ -52,6 +54,12 @@ public class Utente {
 		this.password = password;
 	}
 
+	public void setAmministartore(boolean f) {
+        this.amministratore = f;
+    }
 
+    public boolean getAmministartore() {
+        return this.amministratore;
+	}
 }
 
