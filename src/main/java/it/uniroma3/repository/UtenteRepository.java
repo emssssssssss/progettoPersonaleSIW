@@ -6,5 +6,6 @@ import it.uniroma3.model.Utente;
 
 
 public interface UtenteRepository extends CrudRepository<Utente, Long>{
-
+    Utente findByNome(String nome);
+    Utente findByNomeUtenteAndPassword(String nomeUtente, String password);
 }
