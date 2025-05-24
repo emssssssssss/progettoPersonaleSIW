@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import it.uniroma3.model.DisponibilitaFascia;
-import it.uniroma3.model.Evento;
 import it.uniroma3.model.Utente;
 import it.uniroma3.repository.DisponibilitaFasciaRepository;
 
