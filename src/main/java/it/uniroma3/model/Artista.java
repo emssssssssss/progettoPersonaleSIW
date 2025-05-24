@@ -1,10 +1,13 @@
 package it.uniroma3.model;
 
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Artista {
@@ -12,47 +15,48 @@ public class Artista {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String titolo;
-    private String descrizione;
-    private int anno;
-    private String immagineUrl;
+	 private String nome;
+	    private String biografia;
+	    private int anno;
+	    private String immagineUrl;
 
-    @ManyToOne
-    private Artista artista;
+	    @OneToMany
+	    private List<Opera> opere;
 
-    @ManyToOne
-    private Museo museo;
+	    @ManyToOne
+	    private Museo museo;
 
-	public String getTitolo() {
-		return titolo;
-	}
+		public String getNome() {
+			return this.nome;
+		}
 
-	public void setTitolo(String titolo) {
-		this.titolo = titolo;
-	}
+		public void setNome(String nome) {
+			this.nome = nome;
+		}
 
-	public int getAnno() {
-		return anno;
-	}
+		
+		public int getAnno() {
+			return this.anno;
+		}
 
-	public void setAnno(int anno) {
-		this.anno = anno;
-	}
+		public String getBiografia() {
+			return this.biografia;
+		}
 
-	public String getDescrizione() {
-		return descrizione;
-	}
+		public void setBiografia(String bio) {
+			this.biografia = bio;
+		}
 
-	public void setDescrizione(String descrizione) {
-		this.descrizione = descrizione;
-	}
+		public String getImmagineUrl() {
+			return this.immagineUrl;
+		}
 
-	public String getImmagineUrl() {
-		return immagineUrl;
-	}
+		public void setAnno(int anno) {
+			this.anno = anno;
+		}
 
-	public void setImmagineUrl(String immagineUrl) {
-		this.immagineUrl = immagineUrl;
-	}
+		public void setImmagineUrl(String immagineUrl) {
+			this.immagineUrl = immagineUrl;
+		}
 
 }
