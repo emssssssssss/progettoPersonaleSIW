@@ -1,9 +1,13 @@
 package it.uniroma3.model;
 
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.EnumType;
 
@@ -20,7 +24,8 @@ public class Utente {
 
     private String password;
 
-	private boolean amministratore;
+	@OneToMany
+	private List<Prenotazione> prenotazioni;
 
     @Enumerated(EnumType.STRING)
     private Ruolo ruolo;
@@ -54,12 +59,24 @@ public class Utente {
 		this.password = password;
 	}
 
-	public void setAmministartore(boolean f) {
-        this.amministratore = f;
-    }
+	public void setRuolo(Ruolo ruolo) {
+		this.ruolo = ruolo;
+	}
 
-    public boolean getAmministartore() {
-        return this.amministratore;
+	public Ruolo getRuolo() {
+		return this.ruolo;
+	}
+
+	public void addPrenotazione(Prenotazione pren) {
+		this.prenotazioni.add(pren);
+	}
+
+	public void addPrenotazioni(List<Prenotazione> prenotazioni) {
+		this.prenotazioni = prenotazioni;
+	}
+
+	public List<Prenotazione> getPrenotazioni() {
+		return this.prenotazioni;
 	}
 }
 

@@ -1,9 +1,12 @@
 package it.uniroma3.model;
 
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 
 @Entity
@@ -22,6 +25,9 @@ public class Opera {
 
 	@ManyToOne
 	private Museo museo;
+
+	@ManyToMany
+	private List<Evento> evento;
 
 	public String getTitolo() {
 		return titolo;

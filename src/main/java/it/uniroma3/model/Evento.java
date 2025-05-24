@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Evento {
@@ -21,12 +22,13 @@ public class Evento {
     private String descrizione;
     private LocalDate dataInizio;
     private LocalDate dataFine;
-
     @ManyToOne
     private Museo museo;
-
     @ManyToMany
     private List<Opera> opere;
+	@OneToMany
+	private List<DisponibilitaFascia> fasceOrarie;
+
 
 	public String getTitolo() {
 		return titolo;
@@ -58,5 +60,17 @@ public class Evento {
 
 	public void setDataFine(LocalDate dataFine) {
 		this.dataFine = dataFine;
+	}
+
+	public void setFasciaOraria(DisponibilitaFascia fascia) {
+		this.fasceOrarie.add(fascia);
+	}
+
+	public void setFascieOrarie (List<DisponibilitaFascia> fascie) {
+		this.fasceOrarie = fascie;
+	}
+
+	public List<DisponibilitaFascia> getFascieOrarie() {
+		return this.fasceOrarie;
 	}
 }

@@ -2,15 +2,17 @@ package it.uniroma3.model;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
-public class DisponibilitaBiglietto {
+public class DisponibilitaFascia {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -19,9 +21,10 @@ public class DisponibilitaBiglietto {
 	private LocalTime orarioInizio;
 	private int capienzaMassima;
 	private int postiPrenotati;
-
 	@ManyToOne
 	private Museo museo;
+	@OneToMany
+	private List<Prenotazione> prenotazioni;
 
 	public LocalTime getOrarioInizio() {
 		return orarioInizio;
@@ -53,6 +56,18 @@ public class DisponibilitaBiglietto {
 
 	public void setPostiPrenotati(int postiPrenotati) {
 		this.postiPrenotati = postiPrenotati;
+	}
+
+	public void addPrenotazione(Prenotazione pren) {
+		this.prenotazioni.add(pren);
+	}
+
+	public void addPrenotazioni(List<Prenotazione> prenotazioni) {
+		this.prenotazioni = prenotazioni;
+	}
+
+	public List<Prenotazione> getPrenotazioni() {
+		return this.prenotazioni;
 	}
 
 }
