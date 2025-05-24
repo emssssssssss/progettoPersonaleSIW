@@ -25,7 +25,7 @@ public class UtenteService {
     }
 
     public boolean isAdmin(Utente utente) {
-        return utente != null && utente.getAmministartore();
+        return utente != null && utente.getRuolo() == Utente.Ruolo.STAFF;
     }
 
     // Cancella un utente (solo admin)
