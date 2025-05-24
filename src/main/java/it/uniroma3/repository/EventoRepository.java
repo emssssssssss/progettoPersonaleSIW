@@ -7,5 +7,5 @@ import it.uniroma3.model.Evento;
 
 
 public interface EventoRepository extends CrudRepository<Evento, Long>{
-
+    Evento findByTitolo(String titolo);
 }
