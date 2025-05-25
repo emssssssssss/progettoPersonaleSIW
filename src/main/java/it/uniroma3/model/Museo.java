@@ -21,6 +21,8 @@ public class Museo {
     private String orariApertura;
 	@OneToMany
 	private List<Evento> eventi;
+	@OneToMany
+	private List<Opera> opere;
 
 	
 	public String getDescrizione() {
@@ -46,5 +48,21 @@ public class Museo {
 	}
 	public void setOrariApertura(String orariApertura) {
 		this.orariApertura = orariApertura;
+	}
+
+	public void setEvento(Evento evento) {
+		this.eventi.add(evento);
+	}
+
+	public List<Evento> getEventi() {
+		return this.eventi;
+	}
+
+	public void setOpera(Opera opera) {
+		this.opere.add(opera);
+	}
+
+	public List<Opera> getOpere() {
+		return this.opere;
 	}
 }

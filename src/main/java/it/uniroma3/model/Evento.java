@@ -66,11 +66,23 @@ public class Evento {
 		this.fasceOrarie.add(fascia);
 	}
 
-	public void setFascieOrarie (List<DisponibilitaFascia> fascie) {
-		this.fasceOrarie = fascie;
-	}
-
 	public List<DisponibilitaFascia> getFascieOrarie() {
 		return this.fasceOrarie;
+	}
+
+	public void setMuseo(Museo museo) {
+		this.museo = museo;
+	}
+
+	public Museo getMuseo() {
+		return this.museo;
+	}
+
+	public void setOpera(Opera opera) {
+		this.opere.add(opera);
+	}
+
+	public List<Opera> getOpere() {
+		return this.opere;
 	}
 }
