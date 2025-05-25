@@ -27,7 +27,7 @@ public class Evento {
     @ManyToMany
     private List<Opera> opere;
 	@OneToMany
-	private List<DisponibilitaFascia> fasceOrarie;
+	private List<Fascia> fasceOrarie;
 
 
 	public String getTitolo() {
@@ -62,11 +62,11 @@ public class Evento {
 		this.dataFine = dataFine;
 	}
 
-	public void setFasciaOraria(DisponibilitaFascia fascia) {
+	public void setFasciaOraria(Fascia fascia) {
 		this.fasceOrarie.add(fascia);
 	}
 
-	public List<DisponibilitaFascia> getFascieOrarie() {
+	public List<Fascia> getFascieOrarie() {
 		return this.fasceOrarie;
 	}
 
