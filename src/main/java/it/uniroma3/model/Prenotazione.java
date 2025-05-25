@@ -65,4 +65,20 @@ public class Prenotazione {
 	public Utente getUtente() {
 		return this.utente;
 	}
+
+	public void setDisponibilita( DisponibilitaFascia disponibilita) {
+		this.disponibilita = disponibilita;
+	}
+
+	public DisponibilitaFascia getDisponibilita() {
+		return this.disponibilita;
+	}
+
+	public Stato getStato() {
+		return this.stato;
+	}
+
+	public void setStato(Stato stato) {
+		this.stato = stato;
+	}
 }

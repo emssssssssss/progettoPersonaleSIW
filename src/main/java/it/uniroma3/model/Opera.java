@@ -27,7 +27,7 @@ public class Opera {
 	private Museo museo;
 
 	@ManyToMany
-	private List<Evento> evento;
+	private List<Evento> eventi;
 
 	public void setId(Long id) {
 		this.id = id;
@@ -67,6 +67,30 @@ public class Opera {
 
 	public void setImmagineUrl(String immagineUrl) {
 		this.immagineUrl = immagineUrl;
+	}
+
+	public void setArtista(Artista artista) {
+		this.artista = artista;
+	}
+
+	public Artista getArtista() {
+		return this.artista;
+	}
+
+	public void setMuseo(Museo museo) {
+		this.museo = museo;
+	}
+
+	public Museo getMuseo() {
+		return this.museo;
+	}
+
+	public void setEvento(Evento evento) {
+		this.eventi.add(evento);
+	}
+
+	public List<Evento> getEventi() {
+		return this.eventi;
 	}
 
 }

@@ -20,7 +20,7 @@ public class DisponibilitaFascia {
 	private LocalDate data;
 	private LocalTime orarioInizio;
 	private int capienzaMassima;
-	private int postiPrenotati;
+	private int postiPrenotati = 0;
 	@ManyToOne
 	private Museo museo;
 	@OneToMany
@@ -56,20 +56,32 @@ public class DisponibilitaFascia {
 		return postiPrenotati;
 	}
 
-	public void setPostiPrenotati(int postiPrenotati) {
-		this.postiPrenotati = postiPrenotati;
+	public void setPostiPrenotati(int posti) {
+		this.postiPrenotati = posti;
 	}
 
 	public void addPrenotazione(Prenotazione pren) {
 		this.prenotazioni.add(pren);
 	}
 
-	public void addPrenotazioni(List<Prenotazione> prenotazioni) {
-		this.prenotazioni = prenotazioni;
-	}
-
 	public List<Prenotazione> getPrenotazioni() {
 		return this.prenotazioni;
+	}
+
+	public void setMuseo(Museo museo) {
+		this.museo = museo;
+	}
+
+	public Museo getMuseo() {
+		return this.museo;
+	}
+
+	public void setEvento(Evento evento) {
+		this.evento = evento;
+	}
+
+	public Evento getEvento() {
+		return this.evento;
 	}
 
 }
