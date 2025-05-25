@@ -20,7 +20,7 @@ public class Prenotazione {
 	private Utente utente;
 
 	@ManyToOne
-	private DisponibilitaFascia disponibilita;
+	private Fascia disponibilita;
 
 	private int numeroPersone;
 
@@ -66,11 +66,11 @@ public class Prenotazione {
 		return this.utente;
 	}
 
-	public void setDisponibilita( DisponibilitaFascia disponibilita) {
+	public void setDisponibilita( Fascia disponibilita) {
 		this.disponibilita = disponibilita;
 	}
 
-	public DisponibilitaFascia getDisponibilita() {
+	public Fascia getDisponibilita() {
 		return this.disponibilita;
 	}
 
