@@ -24,10 +24,17 @@ public class UtenteService {
         return this.utenteRepository.findByNomeUtenteAndPassword(nomeUtente, password);
     }
 
+     public Utente getUtenteByEmailEPassword(String email, String password) {
+        return this.utenteRepository.findByEmailAndPassword(email, password);
+    }
+
     public boolean isAdmin(Utente utente) {
         return utente != null && utente.getRuolo() == Utente.Ruolo.STAFF;
     }
 
+    public boolean permessoAdmin(String string) {
+        return string.equals("HanShotFirst");
+    }
     // Cancella un utente (solo admin)
     public void cancellaUtente(Long id, Utente utenteCheRichiede) {
         if (!isAdmin(utenteCheRichiede)) {
