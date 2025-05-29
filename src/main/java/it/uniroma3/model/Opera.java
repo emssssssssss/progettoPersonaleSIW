@@ -8,6 +8,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class Opera {
@@ -15,9 +19,18 @@ public class Opera {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@NotBlank(message = "Il titolo non può essere nullo")
 	private String titolo;
+
+	@Size(max = 500, message = "La descrizione non può superare 500 caratteri")
 	private String descrizione;
+
+	@NotNull(message = "L'anno è obbligatorio")
 	private int anno;
+
+	@NotBlank(message = "L'URL dell'immagine non può essere vuoto")
+	@Size(max = 2048, message = "L'URL dell'immagine è troppo lungo")
+	@Pattern(regexp = "^(http|https)://.*\\.(jpg|jpeg|png|gif)$", message = "L'URL deve essere valido e puntare a un'immagine (jpg, jpeg, png, gif)")
 	private String immagineUrl;
 
 	@ManyToOne

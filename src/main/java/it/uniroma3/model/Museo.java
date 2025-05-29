@@ -7,6 +7,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class Museo {
@@ -15,10 +18,19 @@ public class Museo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+	@NotBlank(message = "Il nome non può essere nullo")
     private String nome;
+
+	@Size(max = 500, message = "La descrizione non può superare 500 caratteri")
     private String descrizione;
+
+	@NotBlank(message = "L'indirizzo non può essere nullo")
     private String indirizzo;
+
+	@NotNull(message = "Gli orari sono obbligatori")
     private String orariApertura;
+
+	
 	@OneToMany
 	private List<Evento> eventi;
 	@OneToMany
