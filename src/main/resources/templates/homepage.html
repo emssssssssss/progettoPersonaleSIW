@@ -3,8 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <title>MUSEO FIGO</title>
+    <link rel="stylesheet" th:href="@{/css/Homepage.css}">
 </head>
 <body>
-    <h1>helo benvenuti!!</h1>
+    <h1>hello benvenuti!!</h1>
+    <div class="fascia">
+        <a th:href="@{/homepage/{utente}(utente=${utente.id})}">
+            <img src="https://example.com/fake-image.jpg" alt="Logo"/>
+        </a>
+        <div class="menu">
+            <a th:href="@{/utente/{id}(id=${utente.id})}">Profilo</a>
+            <a th:href="@{/mostreTemporanee/{id}(id=${utente.id})}">Mostre Temporanee</a>
+            <a th:href="@{/collezionePermanente/{id}(id=${utente.id})}">Collezione Permanente</a>
+        </div>
+    </div>
+
+
 </body>
 </html>
