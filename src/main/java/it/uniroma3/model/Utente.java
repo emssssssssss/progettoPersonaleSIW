@@ -7,6 +7,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.EnumType;
 
@@ -17,10 +20,14 @@ public class Utente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+	@NotBlank(message = "Il nome non può essere nullo")
     private String nome;
 
+	@Email(message = "Inserire email valida")
     private String email;
 
+	@NotBlank(message = "Obbligatorio inserire password")
+	@Size(min=6, message = "La password deve contenere almeno 6 caratteri ")
     private String password;
 
 	@OneToMany

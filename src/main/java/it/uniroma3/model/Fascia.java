@@ -10,6 +10,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Fascia {
@@ -17,10 +20,21 @@ public class Fascia {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@NotNull(message = "La data non può essere nulla")
+    @Future(message = "La data deve essere nel futuro")
 	private LocalDate data;
+
+	
+    @NotNull(message = "L'orario di inizio non può essere nullo")
 	private LocalTime orarioInizio;
+
+	@Min(value = 1, message = "La capienza massima deve essere almeno 1")
 	private int capienzaMassima;
+
+	@Min(value = 0, message = "I posti prenotati non possono essere negativi")
 	private int postiPrenotati = 0;
+
+	
 	@ManyToOne
 	private Museo museo;
 	@OneToMany

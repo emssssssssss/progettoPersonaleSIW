@@ -10,6 +10,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class Evento {
@@ -18,10 +22,20 @@ public class Evento {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+	@NotBlank(message = "Il titolo non può essere nullo")
     private String titolo;
+
+	@Size(max = 500, message = "La descrizione non può superare 500 caratteri")
     private String descrizione;
+
+	@NotNull(message = "La data di inizio è obbligatorio")
     private LocalDate dataInizio;
+
+	@NotNull(message = "L'anno è obbligatorio")
+	@Future(message = "la data di fine deve essere nel futuro")
     private LocalDate dataFine;
+
+	
     @ManyToOne
     private Museo museo;
     @ManyToMany
