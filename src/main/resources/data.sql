@@ -1,0 +1,1 @@
+insert into museo (id, nome, descrizione, indirizzo, orari_apertura)values (1,'Museo d Arte Moderna','Un museo dedicato all arte contemporanea e moderna.','Via delle Belle Arti 12, Roma','09:00 - 19:00');
