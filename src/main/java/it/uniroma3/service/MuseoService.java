@@ -1,5 +1,7 @@
 package it.uniroma3.service;
 
+import java.util.NoSuchElementException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,8 +14,9 @@ public class MuseoService {
     @Autowired
     private MuseoRepository museoRepository;
 
-    public Museo getMuseo(Long id) {
-        return this.museoRepository.findById(id).get();
+     public Museo getMuseo(Long id) {
+        return museoRepository.findById(id)
+            .orElseThrow(() -> new NoSuchElementException("Museo non trovato con id: " + id));
     }
 
     public Iterable<Museo> getAllMusei() {

@@ -15,7 +15,8 @@ public class MuseoController {
 
     @GetMapping("/")
     public String getMuseo(Model model) {
-        model.addAttribute("museo", this.museoService.getMuseo((long) 1));
+        Long id = (long) 1;
+        model.addAttribute("museo", this.museoService.getMuseo(id));
         return "Accedi";
     }
     
