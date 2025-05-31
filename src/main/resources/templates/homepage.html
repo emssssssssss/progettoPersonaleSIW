@@ -1,23 +1,105 @@
 <!DOCTYPE html>
-<html xmlns="http://www.thymeleaf.org">
+<html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <title>MUSEO FIGO</title>
-    <link rel="stylesheet" th:href="@{/css/Homepage.css}">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pagina con immagine di sfondo e fascia</title>
+<!-- <style>
+  /* Reset e base */
+  body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: sans-serif;
+  }
+
+  /* Fascia fissa in alto */
+  .fascia {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 60px;
+    background-color: black;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    z-index: 1000;
+  }
+
+  .fascia .logo {
+    color: white;
+    font-weight: bold;
+    font-size: 24px;
+  }
+
+  .fascia .menu {
+    display: flex;
+    gap: 30px;
+  }
+
+  .fascia .menu a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
+  }
+
+  .fascia .menu a:hover {
+    color: #999;
+  }
+
+  /* Container principale che riempie viewport */
+  .container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    margin-top: 60px; /* lascia spazio fascia */
+    overflow: hidden;
+  }
+
+  /* Sfondo immagine */
+  .image-background {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("/images/image.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: 1;
+  }
+
+  /* Contenuto sopra immagine */
+  .content {
+    position: relative;
+    z-index: 2;
+    color: white;
+    font-size: 48px;
+    font-weight: 800;
+    text-align: center;
+    margin-top: 40vh;
+    text-shadow: 0 0 5px rgba(0,0,0,0.7);
+  }
+</style> -->
+
+
 </head>
 <body>
-    <h1>hello benvenuti!!</h1>
-    <div class="fascia">
-        <a th:href="@{/homepage/{utente}(utente=${utente.id})}">
-            <img src="https://example.com/fake-image.jpg" alt="Logo"/>
-        </a>
-        <div class="menu">
-            <a th:href="@{/utente/{id}(id=${utente.id})}">Profilo</a>
-            <a th:href="@{/mostreTemporanee/{id}(id=${utente.id})}">Mostre Temporanee</a>
-            <a th:href="@{/collezionePermanente/{id}(id=${utente.id})}">Collezione Permanente</a>
-        </div>
-    </div>
 
+  <nav class="fascia">
+    <div class="logo">Logo</div>
+    <div class="menu">
+      <a href="#">Home</a>
+      <a href="#">Servizi</a>
+      <a href="#">Contatti</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="image-background"></div>
+    <div class="content">Benvenuto nel sito</div>
+  </div>
 
 </body>
 </html>

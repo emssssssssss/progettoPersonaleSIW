@@ -38,10 +38,19 @@ public class Evento {
 	
     @ManyToOne
     private Museo museo;
-    @ManyToMany
+    @ManyToMany(mappedBy = "eventi")
     private List<Opera> opere;
-	@OneToMany
+	@OneToMany(mappedBy = "evento")
 	private List<Fascia> fasceOrarie;
+	
+	
+	public Long getId() {
+	    return id;
+	}
+
+	public void setId(Long id) {
+	    this.id = id;
+	}
 
 
 	public String getTitolo() {

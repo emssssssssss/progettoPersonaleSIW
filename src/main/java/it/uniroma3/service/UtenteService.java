@@ -20,8 +20,8 @@ public class UtenteService {
         return utenteRepository.findAll();
     }
 
-    public Utente getUtenteByNomeUtenteEPassword(String nomeUtente, String password) {
-        return this.utenteRepository.findByNomeUtenteAndPassword(nomeUtente, password);
+    public Utente getUtenteByNomeUtenteEPassword(String nome, String password) {
+        return this.utenteRepository.findByNomeAndPassword(nome, password);
     }
 
      public Utente getUtenteByEmailEPassword(String email, String password) {

@@ -36,11 +36,19 @@ public class Artista {
 	@Pattern(regexp = "^(http|https)://.*\\.(jpg|jpeg|png|gif)$", message = "L'URL deve essere valido e puntare a un'immagine (jpg, jpeg, png, gif)")
     private String immagineUrl;
 
-    @OneToMany
+    @OneToMany(mappedBy = "artista")
     private List<Opera> opere;
 
     @ManyToOne
     private Museo museo;
+    
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
 	public String getNome() {
 		return this.nome;

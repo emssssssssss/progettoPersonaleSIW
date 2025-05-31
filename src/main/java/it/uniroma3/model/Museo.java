@@ -7,6 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -31,11 +32,19 @@ public class Museo {
     private String orariApertura;
 
 	
-	@OneToMany
+	@OneToMany(mappedBy = "museo")
 	private List<Evento> eventi;
-	@OneToMany
+	
+	@OneToMany(mappedBy = "museo")
 	private List<Opera> opere;
 
+	public Long getId() {
+	    return id;
+	}
+
+	public void setId(Long id) {
+	    this.id = id;
+	}
 	
 	public String getDescrizione() {
 		return descrizione;
@@ -77,4 +86,6 @@ public class Museo {
 	public List<Opera> getOpere() {
 		return this.opere;
 	}
+	
+	
 }

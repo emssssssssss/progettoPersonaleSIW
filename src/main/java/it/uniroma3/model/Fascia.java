@@ -37,10 +37,18 @@ public class Fascia {
 	
 	@ManyToOne
 	private Museo museo;
-	@OneToMany
+	@OneToMany(mappedBy = "disponibilita")
 	private List<Prenotazione> prenotazioni;
 	@ManyToOne
 	private Evento evento;
+	
+	public Long getId() {
+	    return id;
+	}
+
+	public void setId(Long id) {
+	    this.id = id;
+	}
 
 	public LocalTime getOrarioInizio() {
 		return orarioInizio;
