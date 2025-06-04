@@ -30,7 +30,7 @@ public class Utente {
 	@Size(min=6, message = "La password deve contenere almeno 6 caratteri ")
     private String password;
 
-	@OneToMany
+	@OneToMany(mappedBy = "utente")
 	private List<Prenotazione> prenotazioni;
 
     @Enumerated(EnumType.STRING)

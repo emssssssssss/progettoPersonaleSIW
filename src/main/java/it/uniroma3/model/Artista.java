@@ -90,4 +90,33 @@ public class Artista {
 		this.annoMorte = annoMorte;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+    	if (this == o) return true; // stesso oggetto
+    	if (o == null || getClass() != o.getClass()) return false; // null o classi diverse
+
+   		Artista artista = (Artista) o; // cast sicuro
+
+    	// se id è null in uno dei due, considerali diversi
+    	if (id == null || artista.id == null) return false;
+
+    	return id.equals(artista.id);
+	}
+
+	@Override
+	public int hashCode() {
+   		return id != null ? id.hashCode() : 0;
+	}
+	
+	@Override
+	public String toString() {
+		return "Artista{" +
+				"id=" + id +
+				", nome='" + nome + '\'' +
+				", annoNascita=" + annoNascita +
+				", annoMorte=" + annoMorte +
+				", immagineUrl='" + immagineUrl + '\'' +
+				'}';
+	}
+
 }

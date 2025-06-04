@@ -106,4 +106,30 @@ public class Opera {
 		return this.eventi;
 	}
 
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Opera opera = (Opera) o;
+		return id != null && id.equals(opera.id);
+	}
+
+	@Override
+	public int hashCode() {
+		return id != null ? id.hashCode() : 0;
+	}
+
+	@Override
+	public String toString() {
+		return "Opera{" +
+				"id=" + id +
+				", titolo='" + titolo + '\'' +
+				", descrizione='" + descrizione + '\'' +
+				", anno=" + anno +
+				", immagineUrl='" + immagineUrl + '\'' +
+				'}';
+	}
+
+
 }

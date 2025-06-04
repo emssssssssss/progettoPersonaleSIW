@@ -7,6 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.persistence.Enumerated;
@@ -18,7 +19,7 @@ public class Prenotazione {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne
+	@ManyToOne(optional = false)  // impone che una prenotazione debba sempre essere associata a un utente, evitando utente_id null nel database.
 	private Utente utente;
 
 	@ManyToOne
@@ -31,6 +32,7 @@ public class Prenotazione {
 	@Enumerated(EnumType.STRING)
 	private Stato stato;
 
+	@FutureOrPresent(message = "La data deve essere oggi o futura")
 	private LocalDate dataPrenotazione;
 
 	public enum Stato {
@@ -85,4 +87,33 @@ public class Prenotazione {
 	public void setStato(Stato stato) {
 		this.stato = stato;
 	}
+
+
+	//per evitare duplicati nelle collezioni
+	@Override
+	public boolean equals(Object o) {
+    	if (this == o) return true;
+    	if (o == null || getClass() != o.getClass()) return false;
+    	Prenotazione that = (Prenotazione) o;
+    	return id != null && id.equals(that.id);
+	}
+
+	@Override
+	public int hashCode() {
+    	return getClass().hashCode();
+	}
+
+	@Override
+	public String toString() {
+    	return "Prenotazione{" +
+            	"id=" + id +
+           		", utente=" + (utente != null ? utente.getId() : null) +
+            	", disponibilita=" + (disponibilita != null ? disponibilita.getId() : null) +
+           		", numeroPersone=" + numeroPersone +
+            	", stato=" + stato +
+            	", dataPrenotazione=" + dataPrenotazione +
+            	'}';
+	}
+
+
 }
