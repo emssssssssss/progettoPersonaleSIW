@@ -17,7 +17,7 @@ public class MuseoController {
     public String getMuseo(Model model) {
         Long id = (long) 1;
         model.addAttribute("museo", this.museoService.getMuseo(id));
-        return "Accedi";
+        return "homepage";
     }
     
 }

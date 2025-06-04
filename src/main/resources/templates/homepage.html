@@ -90,7 +90,12 @@
   <nav class="fascia">
     <div class="logo">Logo</div>
     <div class="menu">
-      <a href="#">Home</a>
+      <div th:if="${utente == null}">
+        <a th:href="@{/homepage}">Home</a>
+      </div>
+      <div th:if="${utente != null}">
+        <a th:href="@{/homepage/{utente}(utente=${utente.id})}">Home</a>
+      </div>
       <a href="#">Servizi</a>
       <a href="#">Contatti</a>
     </div>
