@@ -106,4 +106,30 @@ public class Fascia {
 		return this.evento;
 	}
 
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Fascia fascia = (Fascia) o;
+		return id != null && id.equals(fascia.id);
+	}
+
+	@Override
+	public int hashCode() {
+		return id != null ? id.hashCode() : 0;
+	}
+
+	@Override
+	public String toString() {
+		return "Fascia{" +
+				"id=" + id +
+				", data=" + data +
+				", orarioInizio=" + orarioInizio +
+				", capienzaMassima=" + capienzaMassima +
+				", postiPrenotati=" + postiPrenotati +
+				'}';
+	}
+
+
 }

@@ -108,4 +108,30 @@ public class Evento {
 	public List<Opera> getOpere() {
 		return this.opere;
 	}
+
+	
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Evento evento = (Evento) o;
+		return id != null && id.equals(evento.id);
+	}
+
+	@Override
+	public int hashCode() {
+		return id != null ? id.hashCode() : 0;
+	}
+
+	@Override
+	public String toString() {
+		return "Evento{" +
+				"id=" + id +
+				", titolo='" + titolo + '\'' +
+				", descrizione='" + descrizione + '\'' +
+				", dataInizio=" + dataInizio +
+				", dataFine=" + dataFine +
+				'}';
+	}
+
 }

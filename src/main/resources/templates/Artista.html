@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="${artista.nome} + ' - Dettaglio'">Artista</title>
+  <link rel="stylesheet" th:href="@{/css/stile.css}">
+</head>
+<body>
+  <div class="contenitore artista-singolo">
+    <div class="immagine-artista"></div>
+    
+    <div class="info-artista">
+      <h1 th:text="${artista.nome}">Nome Artista</h1>
+      <p class="anni">
+        <span th:text="${artista.annoNascita}">1900</span>
+        &nbsp;–&nbsp;
+        <span th:text="${artista.annoMorte}">1980</span>
+      </p>
+      <p class="biografia" th:text="${artista.biografia}">
+        Biografia dell'artista...
+      </p>
+    </div>
+  </div>
+</body>
+</html>

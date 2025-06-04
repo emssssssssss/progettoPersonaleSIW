@@ -1,79 +1,77 @@
-/* Reset base e font */
-body {
+/* Reset e base */
+body, html {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  height: 100%;
+  font-family: 'Inter', sans-serif;
 }
 
-/* Fascia di navigazione fissa */
+/* Fascia fissa */
 .fascia {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: black;
-  padding: 0 40px;
-  height: 60px;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
+  height: 60px;
+  background-color: black;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
   z-index: 1000;
 }
 
-.fascia .logo {
-  color: white;
-  font-size: 24px;
-  font-weight: bold;
+.logo img {
+  height: 40px;
 }
 
-.fascia .menu {
+.menu {
   display: flex;
   gap: 30px;
 }
 
-.fascia .menu a {
+.menu a {
   color: white;
   text-decoration: none;
   font-weight: bold;
   transition: color 0.3s;
 }
 
-.fascia .menu a:hover {
+.menu a:hover {
   color: #999;
 }
 
-/* Container principale */
+/* Container */
 .container {
   position: relative;
-  width: 1440px;
-  height: 1024px;
-  margin: 60px auto 0 auto; /* spazio per fascia */
-  background: #fff;
+  width: 100vw;
+  height: 100vh;
+  margin-top: 60px; /* spazio per la fascia */
   overflow: hidden;
 }
 
-/* Sfondo immagine */
+/* Immagine di sfondo */
 .image-background {
   position: absolute;
   top: 0;
   left: 0;
-  width: 1492px;
-  height: 1024px;
-  background-image: url('/images/image.png');
+  width: 100%;
+  height: 100%;
+  background-image: url("/images/image.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   z-index: 1;
 }
 
-/* Rettangolo nero in alto */
+/* Rettangolo nero */
 .rectangle3 {
   position: absolute;
-  width: 1440px;
-  height: 185px;
   top: 0;
   left: 0;
-  background: #000;
+  width: 100%;
+  height: 185px;
+  background-color: black;
   z-index: 3;
 }
 
@@ -82,54 +80,29 @@ body {
   position: absolute;
   width: 523px;
   height: 210px;
-  left: 484px;
+  left: 50%;
   top: 474px;
+  transform: translateX(-50%);
   background: rgba(196, 196, 196, 0.76);
-  box-sizing: border-box;
   z-index: 4;
 }
 
-/* Testo NoMa con gradient text */
+/* Testo NoMa con gradient */
 .noma {
   position: absolute;
   width: 437px;
   height: 280px;
-  left: 538px;
+  left: 50%;
   top: 512px;
-
-  font-family: 'Inter', sans-serif;
+  transform: translateX(-50%);
   font-weight: 800;
   font-size: 128px;
   line-height: 155px;
   text-align: center;
-
   background: linear-gradient(180deg, #FFFFFF 99.99%, #999999 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   color: transparent;
-
-  border: 1px solid #D0D0D0;
   z-index: 5;
-}
-
-/* Sezione Hero - opzionale */
-.hero {
-  margin-top: 60px;
-  background-image: url('/images/texture.jpg');
-  background-size: cover;
-  background-position: center;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.hero-text {
-  font-size: 64px;
-  font-weight: 800;
-  background-color: rgba(255, 255, 255, 0.6);
-  padding: 40px 60px;
-  border-radius: 10px;
-  color: #222;
 }
