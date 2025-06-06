@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Controller
 public class OperaController {
 
-    @Autowired OperaService operaService;
+    @Autowired 
+    private OperaService operaService;
 
-    @Autowired EventoService eventoService;
+    @Autowired 
+    private EventoService eventoService;
 
     @GetMapping("/opera/{id}")
     public String getOpera(@PathVariable("id") Long id, Model model) {

@@ -19,7 +19,7 @@ import jakarta.validation.Valid;
 public class UtenteController {
 
     @Autowired 
-    UtenteService utenteService;
+    private UtenteService utenteService;
 
     @GetMapping("/utente/{id}")
     public String getUtente(@PathVariable("id") Long id, Model model) {

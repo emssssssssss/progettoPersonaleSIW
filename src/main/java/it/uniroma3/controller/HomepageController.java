@@ -12,8 +12,11 @@ import it.uniroma3.service.UtenteService;
 @Controller
 public class HomepageController {
 
-    @Autowired UtenteService utenteService;
-    @Autowired MuseoService museoService;
+    @Autowired 
+    private UtenteService utenteService;
+
+    @Autowired 
+    private MuseoService museoService;
     
     @GetMapping("/homepage/{utente}")
     public String mostraHomepage(@PathVariable("utente") Long id, Model model){

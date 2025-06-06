@@ -2,24 +2,54 @@
 <html lang="it" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title th:text="${artista.nome} + ' - Dettaglio'">Artista</title>
+  <title>Registrazione Artista</title>
   <link rel="stylesheet" th:href="@{/css/stile.css}">
 </head>
 <body>
-  <div class="contenitore artista-singolo">
-    <div class="immagine-artista"></div>
-    
-    <div class="info-artista">
-      <h1 th:text="${artista.nome}">Nome Artista</h1>
-      <p class="anni">
-        <span th:text="${artista.annoNascita}">1900</span>
-        &nbsp;–&nbsp;
-        <span th:text="${artista.annoMorte}">1980</span>
-      </p>
-      <p class="biografia" th:text="${artista.biografia}">
-        Biografia dell'artista...
-      </p>
-    </div>
-  </div>
+  <h1>Modulo Registrazione/Modifica Artista</h1>
+
+  <!-- FORM modificato per usare il binding Thymeleaf con oggetto artista -->
+  <form th:action="@{/artista/aggiungi}" th:object="${artista}" method="post">
+
+    <!-- CAMPO NOME -->
+    <label for="nome">Nome:</label>
+    <input type="text" id="nome" th:field="*{nome}" />
+    <!-- Mostra errori di validazione per il campo nome -->
+    <div th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" style="color:red"></div>
+    <br>
+
+    <!-- CAMPO ANNO DI NASCITA -->
+    <label for="annoNascita">Anno di nascita:</label>
+    <input type="date" id="annoNascita" th:field="*{annoNascita}" th:attr="max=${T(java.time.LocalDate).now()}"/>
+
+    <!-- Mostra errori per anno di nascita -->
+    <div th:if="${#fields.hasErrors('annoNascita')}" th:errors="*{annoNascita}" style="color:red"></div>
+    <br>
+
+    <!-- CAMPO ANNO DI MORTE -->
+    <label for="annoMorte">Anno di morte:</label>
+    <input type="number" id="annoMorte" th:field="*{annoMorte}" />
+    <!-- Mostra errori per anno di morte -->
+    <div th:if="${#fields.hasErrors('annoMorte')}" th:errors="*{annoMorte}" style="color:red"></div>
+    <br>
+
+    <!-- CAMPO BIOGRAFIA -->
+    <label for="biografia">Biografia:</label>
+    <textarea id="biografia" th:field="*{biografia}"></textarea>
+    <!-- Mostra errori per biografia -->
+    <div th:if="${#fields.hasErrors('biografia')}" th:errors="*{biografia}" style="color:red"></div>
+    <br>
+
+    <!-- CAMPO IMMAGINE URL -->
+    <label for="immagineUrl">URL Immagine:</label>
+    <input type="text" id="immagineUrl" th:field="*{immagineUrl}" />
+    <!-- Mostra errori per immagineUrl -->
+    <div th:if="${#fields.hasErrors('immagineUrl')}" th:errors="*{immagineUrl}" style="color:red"></div>
+    <br>
+
+    <!-- PULSANTE DI INVIO -->
+    <button type="submit">Salva Artista</button>
+  </form>
+
 </body>
 </html>

@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -26,9 +27,10 @@ public class Artista {
     private String biografia;
 
 	@NotNull(message = "L'anno è obbligatorio")
-    private int annoNascita;
+    @Max(value = 2025, message = "L'anno di nascita non può essere nel futuro")
+	private int annoNascita;
 
-	@NotNull(message = "L'anno è obbligatorio")
+	@Max(value = 2025, message = "L'anno di morte non può essere nel futuro")
 	private int annoMorte;
 
 	@NotBlank(message = "L'URL dell'immagine non può essere vuoto")
@@ -92,15 +94,10 @@ public class Artista {
 
 	@Override
 	public boolean equals(Object o) {
-    	if (this == o) return true; // stesso oggetto
-    	if (o == null || getClass() != o.getClass()) return false; // null o classi diverse
-
-   		Artista artista = (Artista) o; // cast sicuro
-
-    	// se id è null in uno dei due, considerali diversi
-    	if (id == null || artista.id == null) return false;
-
-    	return id.equals(artista.id);
+   		if (this == o) return true;
+    	if (!(o instanceof Artista)) return false;
+    	Artista artista = (Artista) o;
+    	return id != null && id.equals(artista.getId());
 	}
 
 	@Override

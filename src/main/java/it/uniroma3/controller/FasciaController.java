@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Controller
 public class FasciaController {
 
-    @Autowired FasciaService fasciaService;
+    @Autowired 
+    private FasciaService fasciaService;
 
     @GetMapping("/fascia/{id}")
     public String getFascia(@PathVariable("id") Long id, Model model) {

@@ -14,7 +14,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Controller
 public class EventoController {
 
-    @Autowired EventoService eventoService;
+    @Autowired 
+    private EventoService eventoService;
 
     @GetMapping("/evento/{id}")
     public String getEvento(@PathVariable("id") Long id, Model model) {
