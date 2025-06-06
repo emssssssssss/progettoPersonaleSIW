@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${evento.id != null} ? 'Modifica Evento' : 'Crea Evento'">Evento</title>
+    <link rel="stylesheet" th:href="@{/css/stile.css}">
+</head>
+<body>
+
+    <h1 th:text="${evento.id != null} ? 'Modifica Evento' : 'Crea Nuovo Evento'"></h1>
+
+    <form th:action="@{/evento/salva}" th:object="${evento}" method="post">
+
+        <label for="titolo">Titolo:</label>
+        <input type="text" id="titolo" th:field="*{titolo}" required>
+        <div th:if="${#fields.hasErrors('titolo')}" th:errors="*{titolo}" style="color:red"></div>
+        <br>
+
+        <label for="descrizione">Descrizione:</label>
+        <textarea id="descrizione" th:field="*{descrizione}"></textarea>
+        <div th:if="${#fields.hasErrors('descrizione')}" th:errors="*{descrizione}" style="color:red"></div>
+        <br>
+
+        <label for="dataInizio">Data Inizio:</label>
+        <input type="date" id="dataInizio" th:field="*{dataInizio}" required>
+        <div th:if="${#fields.hasErrors('dataInizio')}" th:errors="*{dataInizio}" style="color:red"></div>
+        <br>
+
+        <label for="dataFine">Data Fine:</label>
+        <input type="date" id="dataFine" th:field="*{dataFine}" required>
+        <div th:if="${#fields.hasErrors('dataFine')}" th:errors="*{dataFine}" style="color:red"></div>
+        <br>
+
+        <!-- Pulsante salva solo se utente è STAFF -->
+        <div th:if="${#authentication?.principal?.ruolo == 'STAFF'}">
+            <button type="submit">Salva Evento</button>
+        </div>
+    </form>
+
+    <!-- Pulsante elimina se evento esiste e utente è STAFF -->
+    <div th:if="${evento.id != null and #authentication?.principal?.ruolo == 'STAFF'}">
+        <form th:action="@{'/evento/elimina/' + ${evento.id}}" method="post"
+              onsubmit="return confirm('Sei sicuro di voler eliminare questo evento?');">
+            <button type="submit" style="color:red;">Elimina Evento</button>
+        </form>
+    </div>
+
+</body>
+</html>

@@ -1,5 +1,7 @@
 package it.uniroma3.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,12 +48,17 @@ public class PrenotazioneController {
 
     @GetMapping("/prenotazioni/{idUtente}")
     public String getPrenotazioniUtente(@PathVariable("idUtente") Long id, Model model) {
-        Utente utente = this.utenteService.getUtenteById(id);
-        model.addAttribute("prenotazioni", utente.getPrenotazioni());
-        return "Prenotazioni";
+
+        Optional<Utente> optionalUtente = this.utenteService.getUtenteById(id);
+
+        if (optionalUtente.isPresent()) {
+            Utente utente = optionalUtente.get();
+            model.addAttribute("prenotazioni", utente.getPrenotazioni());
+            return "Prenotazioni";
+        } else {
+            // gestisci il caso in cui l'utente non esiste
+            model.addAttribute("errore", "Utente non trovato");
+            return "Errore"; 
+        } 
     }
-    
-    
-    
-    
 }
