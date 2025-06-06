@@ -28,6 +28,14 @@ public class UtenteService {
         return this.utenteRepository.findByEmailAndPassword(email, password);
     }
 
+    public Utente getUtenteByEmail(String email) {
+        return utenteRepository.findByEmail(email);
+    }
+
+    public Utente getUtenteByNome(String nome) {
+        return utenteRepository.findByNome(nome);
+    }
+
     public boolean isAdmin(Utente utente) {
         return utente != null && utente.getRuolo() == Utente.Ruolo.STAFF;
     }

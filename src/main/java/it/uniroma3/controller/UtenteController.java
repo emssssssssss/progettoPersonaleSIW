@@ -3,19 +3,23 @@ package it.uniroma3.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import it.uniroma3.model.Utente;
 import it.uniroma3.service.UtenteService;
+import jakarta.validation.Valid;
 
 
 @Controller
 public class UtenteController {
 
-    @Autowired UtenteService utenteService;
+    @Autowired 
+    UtenteService utenteService;
 
     @GetMapping("/utente/{id}")
     public String getUtente(@PathVariable("id") Long id, Model model) {
@@ -52,33 +56,54 @@ public class UtenteController {
         }
     }
 
-     @GetMapping("/registrazione")
-    public String mostraRegistrazione() {
+    // mostra la pagina di registrazione e aggiunge un oggetto Utente vuoto per il binding del form
+    @GetMapping("/registrazione")
+    public String mostraRegistrazione(Model model) {
+        model.addAttribute("utente", new Utente());
         return "Registrazione";
     }
 
+    // gestisce l'invio del form di registrazione con validazione automatica e controllo passwordBis
     @PostMapping("/registrazione")
-    public String registrazione(@RequestParam String nomeUtente,
-                                @RequestParam String email,
-                                @RequestParam String password,
-                                @RequestParam String codiceAmministratore,
-                                @RequestParam String passwordBis,
+    public String registrazione(//@RequestParam String nomeUtente,
+                                //@RequestParam String email,
+                                //@RequestParam String password,
+                                //@RequestParam String codiceAmministratore,
+                                //@RequestParam String passwordBis,
+                                //Model model
+                                
+                                @ModelAttribute("utente") @Valid Utente utente,        // Lega il form all'oggetto e attiva la validazione
+                                BindingResult bindingResult,                           // Contiene eventuali errori di validazione
+                                @RequestParam String passwordBis,                      // Campo di conferma password 
+                                @RequestParam(required = false) String codiceAmministratore,
                                 Model model) {
-        if(!password.equals(passwordBis)) {
-             model.addAttribute("errore", "La conferma Password non combacia con la Password inserita");
-            return "Registrazione";
+      
+
+        // Controllo manuale della conferma password
+        if (!utente.getPassword().equals(passwordBis)) {
+            model.addAttribute("errorePassword", "La conferma password non combacia con la password inserita");
         }
 
-        Utente utente = new Utente();
-        utente.setNome(nomeUtente);
-        utente.setEmail(email);
-        utente.setPassword(password);
-        if(this.utenteService.permessoAdmin(codiceAmministratore)==false) {
-            utente.setRuolo(Utente.Ruolo.VISITATORE);}
-        else {
+        // Controllo unicità email 
+        if (this.utenteService.getUtenteByEmail(utente.getEmail()) != null) {
+            bindingResult.rejectValue("email", "duplicate", "Email già in uso");
+        }
+
+        // Se ci sono errori di validazione o errore passwordBis, ritorna al form con errori mostrati
+        if (bindingResult.hasErrors() || model.containsAttribute("errorePassword")) {
+            return "registrazione"; 
+        }
+
+        // Imposta ruolo in base al codice amministratore
+        if (this.utenteService.permessoAdmin(codiceAmministratore) == false) {
+            utente.setRuolo(Utente.Ruolo.VISITATORE);
+        } else {
             utente.setRuolo(Utente.Ruolo.STAFF);
         }
+
         this.utenteService.addUtente(utente);
+
+        // Reindirizza alla pagina profilo dell'utente appena registrato
         return "redirect:/utente/" + utente.getId();
     }
     
