@@ -1,6 +1,9 @@
 package it.uniroma3.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import it.uniroma3.model.Utente;
@@ -12,27 +15,37 @@ public class UtenteService {
     @Autowired
     private UtenteRepository utenteRepository;
 
-    public Utente getUtenteById(Long id) {
-        return utenteRepository.findById(id).get();
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+
+    public Optional<Utente> getUtenteById(Long id) {
+        return utenteRepository.findById(id);
     }
 
     public Iterable<Utente> getAllUtenti() {
         return utenteRepository.findAll();
     }
 
-    public Utente getUtenteByNomeUtenteEPassword(String nome, String password) {
-        return this.utenteRepository.findByNomeAndPassword(nome, password);
+    
+    public Optional<Utente> autenticaUtente(String identificatore, String rawPassword){
+        Optional<Utente> optionalUtente = utenteRepository.findByEmail(identificatore);
+
+        if(optionalUtente.isEmpty()){
+            optionalUtente = utenteRepository.findByNome(identificatore);
+        }
+        
+        return optionalUtente.filter(utente->
+            passwordEncoder.matches(rawPassword, utente.getPassword())
+            );
     }
 
-     public Utente getUtenteByEmailEPassword(String email, String password) {
-        return this.utenteRepository.findByEmailAndPassword(email, password);
-    }
 
-    public Utente getUtenteByEmail(String email) {
+    public Optional<Utente> getUtenteByEmail(String email) {
         return utenteRepository.findByEmail(email);
     }
 
-    public Utente getUtenteByNome(String nome) {
+    public Optional<Utente> getUtenteByNome(String nome) {
         return utenteRepository.findByNome(nome);
     }
 
@@ -40,8 +53,8 @@ public class UtenteService {
         return utente != null && utente.getRuolo() == Utente.Ruolo.STAFF;
     }
 
-    public boolean permessoAdmin(String string) {
-        return string.equals("HanShotFirst");
+    public boolean permessoAdmin(String codice) {
+        return "HanShotFirst".equals(codice);
     }
     // Cancella un utente (solo admin)
     public void cancellaUtente(Long id, Utente utenteCheRichiede) {
@@ -52,10 +65,16 @@ public class UtenteService {
     }
 
     public void addUtente (Utente utente) {
+        // cifra la password prima di salvarla
+        String hashedPassword = passwordEncoder.encode(utente.getPassword());
+        utente.setPassword(hashedPassword);
         this.utenteRepository.save(utente);
+
     }
 
     public void modificaUtente(Utente utente) {
         this.utenteRepository.save(utente);
     }
+
+    
 }

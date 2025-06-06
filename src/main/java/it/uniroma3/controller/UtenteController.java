@@ -1,5 +1,7 @@
 package it.uniroma3.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,20 +42,17 @@ public class UtenteController {
 
      @PostMapping("/accedi")
     public String login(@RequestParam String nomeUtente, @RequestParam String password, Model model) {
-        Utente utente = this.utenteService.getUtenteByNomeUtenteEPassword(nomeUtente, password);
-        if(utente == null){
-            utente= this.utenteService.getUtenteByEmailEPassword(nomeUtente, password);
-            if(utente == null){
-                model.addAttribute("errore", "Nessun account trovato con queste credenziali");
-                return "Accedi";
-            }
-            else{
-                return "redirect:/utente/" + utente.getId();
-            }
+        
+        Optional<Utente> optionalUtente = utenteService.autenticaUtente(nomeUtente, password);
+        if(optionalUtente.isEmpty()){
+            model.addAttribute("errore", "credenziali non valide");
+            return "Accedi";
         }
-        else{
-            return "redirect:/utente/" + utente.getId();
-        }
+
+        Utente utente = optionalUtente.get();
+        
+        
+        return "redirect:/utente/" + utente.getId();
     }
 
     // mostra la pagina di registrazione e aggiunge un oggetto Utente vuoto per il binding del form
@@ -91,7 +90,7 @@ public class UtenteController {
 
         // Se ci sono errori di validazione o errore passwordBis, ritorna al form con errori mostrati
         if (bindingResult.hasErrors() || model.containsAttribute("errorePassword")) {
-            return "registrazione"; 
+            return "Registrazione"; 
         }
 
         // Imposta ruolo in base al codice amministratore
