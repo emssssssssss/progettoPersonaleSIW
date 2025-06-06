@@ -2,6 +2,7 @@ package it.uniroma3.model;
 
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,10 +21,12 @@ public class Utente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-	@NotBlank(message = "Il nome non può essere nullo")
+	@NotBlank(message = "Il nome è obbligatorio")
     private String nome;
 
 	@Email(message = "Inserire email valida")
+	@NotBlank(message = "L'email è obbligatoria")
+    @Column(unique = true)
     private String email;
 
 	@NotBlank(message = "Obbligatorio inserire password")
