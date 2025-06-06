@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class MuseoController {
 
-    @Autowired MuseoService museoService;
+    @Autowired 
+    private MuseoService museoService;
 
     @GetMapping("/")
     public String getMuseo(Model model) {

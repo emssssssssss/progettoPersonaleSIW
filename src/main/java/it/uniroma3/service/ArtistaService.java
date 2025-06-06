@@ -16,7 +16,7 @@ public class ArtistaService {
     private ArtistaRepository artistaRepository;
 
     @Autowired
-    public UtenteService utenteService;
+    public UtenteService utenteService;  //per controllare i ruoli
 
     public Artista getArtistaById(Long id) {
         return artistaRepository.findById(id).orElse(null);
@@ -30,20 +30,25 @@ public class ArtistaService {
         return this.artistaRepository.findByNomeContaining(nome);
     }
 
-     public void cancellaArtista(Long id, Utente utenteCheRichiede) {
+
+
+    //cancellazione con controllo admin
+    public void cancellaArtista(Long id, Utente utenteCheRichiede) {
         if (!utenteService.isAdmin(utenteCheRichiede)) {
             throw new RuntimeException("Accesso negato: non sei amministratore");
         }
         artistaRepository.deleteById(id);
     }
 
-     public Artista aggiungiArtista(Artista artista, Utente utenteCheRichiede) {
+    //aggiunta con controllo admin
+    public Artista aggiungiArtista(Artista artista, Utente utenteCheRichiede) {
         if (!utenteService.isAdmin(utenteCheRichiede)) {
             throw new RuntimeException("Accesso negato: non sei amministratore");
         }
         return artistaRepository.save(artista);
     }
 
+    //modifica con controllo admin
     public Artista modificaArtista(Artista artista, Utente utenteCheRichiede) {
         if (!utenteService.isAdmin(utenteCheRichiede)) {
             throw new RuntimeException("Accesso negato: non sei amministratore");

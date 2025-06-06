@@ -16,11 +16,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Controller
 public class PrenotazioneController {
 
-    @Autowired PrenotazioneService prenotazioneService;
+    @Autowired 
+    private PrenotazioneService prenotazioneService;
 
-    @Autowired UtenteService utenteService;
+    @Autowired 
+    private UtenteService utenteService;
 
-    @Autowired FasciaService fasciaService;
+    @Autowired 
+    private FasciaService fasciaService;
 
     @GetMapping("/prenotazione/{id}")
     public String getPrenotazione(@PathVariable("id") Long id, Model model) {
