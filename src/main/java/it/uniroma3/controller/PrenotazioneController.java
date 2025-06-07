@@ -3,8 +3,12 @@ package it.uniroma3.controller;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.security.core.Authentication;
+
+
 
 import it.uniroma3.model.Fascia;
 import it.uniroma3.model.Utente;
@@ -49,16 +53,22 @@ public class PrenotazioneController {
     @GetMapping("/prenotazioni/{idUtente}")
     public String getPrenotazioniUtente(@PathVariable("idUtente") Long id, Model model) {
 
-        Optional<Utente> optionalUtente = this.utenteService.getUtenteById(id);
+        //prendo l'utente autenticato
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String emailLoggato = auth.getName();
 
-        if (optionalUtente.isPresent()) {
-            Utente utente = optionalUtente.get();
-            model.addAttribute("prenotazioni", utente.getPrenotazioni());
-            return "Prenotazioni";
-        } else {
-            // gestisci il caso in cui l'utente non esiste
-            model.addAttribute("errore", "Utente non trovato");
-            return "Errore"; 
-        } 
+        //recupero utente loggato
+        Optional<Utente> utenteLoggatoOpt = utenteService.getUtenteByEmail(emailLoggato);
+
+        // Controlla se l’utente loggato sta cercando di accedere alle sue prenotazioni
+        if (!utenteLoggato.getId().equals(idUtente)) {
+            // Accesso negato: magari reindirizza o mostra errore
+            return "accessoNegato";  // o "redirect:/error" o simile
+        }
+
+        // Se ok, mostra prenotazioni
+        model.addAttribute("prenotazioni", utenteLoggato.getPrenotazioni());
+        return "Prenotazioni";        
+
     }
 }

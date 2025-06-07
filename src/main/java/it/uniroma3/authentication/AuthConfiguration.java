@@ -32,6 +32,7 @@ public class AuthConfiguration {
                 .requestMatchers(HttpMethod.GET, "/", "/index", "/login", "/register", "/css/**", "/images/**", "/error").permitAll()
                 .requestMatchers(HttpMethod.POST, "/login", "/register").permitAll()
                 .requestMatchers("/admin/**").hasAuthority(ROLE_STAFF)
+                .requestMatchers("/staff/fasce/**").hasAuthority("STAFF")
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form

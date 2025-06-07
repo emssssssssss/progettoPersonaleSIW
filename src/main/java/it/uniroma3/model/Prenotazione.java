@@ -25,6 +25,7 @@ public class Prenotazione {
 	@ManyToOne
 	private Fascia disponibilita;
 
+
 	@Min(value = 1, message = "Devi prenotare minimo 1 biglietto")
 	@Max(value = 8, message = "Puoi prenotare al massimo 8 biglietti")
 	private int numeroPersone;
