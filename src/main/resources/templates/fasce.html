@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Fasce Disponibili</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+
+<h2>Fasce Orarie Disponibili</h2>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>Orario</th>
+            <th>Capienza</th>
+            <th>Posti Prenotati</th>
+            <th>Posti Disponibili</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="fascia : ${fasce}">
+            <td th:text="${fascia.orario}">10:00</td>
+            <td th:text="${fascia.capienzaMassima}">20</td>
+            <td th:text="${fascia.postiPrenotati}">5</td>
+            <td th:text="${fascia.capienzaMassima - fascia.postiPrenotati}">15</td>
+        </tr>
+    </tbody>
+</table>
+
+<a th:href="@{/prenotazioni/nuova}">Prenota una visita</a>
+
+</body>
+</html>

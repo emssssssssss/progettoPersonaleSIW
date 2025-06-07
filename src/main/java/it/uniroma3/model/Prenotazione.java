@@ -22,9 +22,10 @@ public class Prenotazione {
 	@ManyToOne(optional = false)  // impone che una prenotazione debba sempre essere associata a un utente, evitando utente_id null nel database.
 	private Utente utente;
 
-	@ManyToOne
-	private Fascia disponibilita;
+	@ManyToOne(optional = false)
+	private Fascia fascia;
 
+	private int numeroBiglietti;
 
 	@Min(value = 1, message = "Devi prenotare minimo 1 biglietto")
 	@Max(value = 8, message = "Puoi prenotare al massimo 8 biglietti")
@@ -73,12 +74,12 @@ public class Prenotazione {
 		return this.utente;
 	}
 
-	public void setDisponibilita( Fascia disponibilita) {
-		this.disponibilita = disponibilita;
+	public void setFascia( Fascia fascia) {
+		this.fascia = fascia;
 	}
 
-	public Fascia getDisponibilita() {
-		return this.disponibilita;
+	public Fascia getFascia() {
+		return this.fascia;
 	}
 
 	public Stato getStato() {
@@ -88,6 +89,15 @@ public class Prenotazione {
 	public void setStato(Stato stato) {
 		this.stato = stato;
 	}
+
+	public int getNumeroBiglietti() {
+		return numeroBiglietti;
+	}
+
+	public void setNumeroBiglietti(int numeroBiglietti) {
+		this.numeroBiglietti = numeroBiglietti;
+	}
+
 
 
 	//per evitare duplicati nelle collezioni
@@ -109,7 +119,7 @@ public class Prenotazione {
     	return "Prenotazione{" +
             	"id=" + id +
            		", utente=" + (utente != null ? utente.getId() : null) +
-            	", disponibilita=" + (disponibilita != null ? disponibilita.getId() : null) +
+            	", fascia=" + (fascia != null ? fascia.getId() : null) +
            		", numeroPersone=" + numeroPersone +
             	", stato=" + stato +
             	", dataPrenotazione=" + dataPrenotazione +

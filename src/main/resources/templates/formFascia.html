@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Gestione Fascia Oraria</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+<body>
+
+<h2 th:text="${fascia.id} == null ? 'Nuova Fascia' : 'Modifica Fascia'"></h2>
+
+<form th:action="${fascia.id} == null ? @{/staff/fasce/crea} : @{/staff/fasce/modifica}" th:object="${fascia}" method="post">
+
+    <input type="hidden" th:field="*{id}" />
+
+    <label for="orario">Orario (es. 10:00-12:00):</label>
+    <input type="text" id="orario" th:field="*{orario}" placeholder="Es. 10:00-12:00" required />
+    <br/><br/>
+
+    <label for="capienzaMassima">Capienza massima:</label>
+    <input type="number" id="capienzaMassima" min="1" th:field="*{capienzaMassima}" required />
+    <br/><br/>
+
+    <label for="postiPrenotati">Posti prenotati:</label>
+    <input type="number" id="postiPrenotati" min="0" th:field="*{postiPrenotati}" readonly />
+    <br/><br/>
+
+    <button type="submit" th:text="${fascia.id} == null ? 'Crea Fascia' : 'Salva Modifiche'"></button>
+
+</form>
+
+<a th:href="@{/staff/fasce}">Torna alla lista fasce</a>
+
+</body>
+</html>

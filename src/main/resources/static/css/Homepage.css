@@ -1,77 +1,79 @@
-/* Reset e base */
-body, html {
+/* Reset base e font */
+body {
   margin: 0;
   padding: 0;
-  height: 100%;
-  font-family: 'Inter', sans-serif;
+  font-family: sans-serif;
 }
 
-/* Fascia fissa */
+/* Fascia di navigazione fissa */
 .fascia {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: black;
+  padding: 0 40px;
+  height: 60px;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  height: 60px;
-  background-color: black;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 40px;
   z-index: 1000;
 }
 
-.logo img {
-  height: 40px;
+.fascia .logo {
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
 }
 
-.menu {
+.fascia .menu {
   display: flex;
   gap: 30px;
 }
 
-.menu a {
+.fascia .menu a {
   color: white;
   text-decoration: none;
   font-weight: bold;
   transition: color 0.3s;
 }
 
-.menu a:hover {
+.fascia .menu a:hover {
   color: #999;
 }
 
-/* Container */
+/* Container principale */
 .container {
   position: relative;
-  width: 100vw;
-  height: 100vh;
-  margin-top: 60px; /* spazio per la fascia */
+  width: 1440px;
+  height: 1024px;
+  margin: 60px auto 0 auto; /* spazio per fascia */
+  background: #fff;
   overflow: hidden;
 }
 
-/* Immagine di sfondo */
+/* Sfondo immagine */
 .image-background {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url("/images/image.png");
+  width: 1492px;
+  height: 1024px;
+  background-image: url('https://www.analisidellopera.it/wp-content/uploads/2018/08/Picasso_Guernica-1.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   z-index: 1;
 }
 
-/* Rettangolo nero */
+/* Rettangolo nero in alto */
 .rectangle3 {
   position: absolute;
+  width: 1440px;
+  height: 185px;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 185px;
-  background-color: black;
+  background: #000;
   z-index: 3;
 }
 
@@ -80,29 +82,54 @@ body, html {
   position: absolute;
   width: 523px;
   height: 210px;
-  left: 50%;
+  left: 484px;
   top: 474px;
-  transform: translateX(-50%);
   background: rgba(196, 196, 196, 0.76);
+  box-sizing: border-box;
   z-index: 4;
 }
 
-/* Testo NoMa con gradient */
+/* Testo NoMa con gradient text */
 .noma {
   position: absolute;
   width: 437px;
   height: 280px;
-  left: 50%;
+  left: 538px;
   top: 512px;
-  transform: translateX(-50%);
+
+  font-family: 'Inter', sans-serif;
   font-weight: 800;
   font-size: 128px;
   line-height: 155px;
   text-align: center;
+
   background: linear-gradient(180deg, #FFFFFF 99.99%, #999999 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   color: transparent;
+
+  border: 1px solid #D0D0D0;
   z-index: 5;
+}
+
+/* Sezione Hero - opzionale */
+.hero {
+  margin-top: 60px;
+  background-image: url('/images/texture.jpg');
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-text {
+  font-size: 64px;
+  font-weight: 800;
+  background-color: rgba(255, 255, 255, 0.6);
+  padding: 40px 60px;
+  border-radius: 10px;
+  color: #222;
 }

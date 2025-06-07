@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 //import org.springframework.web.bind.annotation.RequestBody;
 import jakarta.validation.Valid;
-
+//import org.springframework.web.bind.annotation.RequestParam;
 
 
 
@@ -38,7 +38,7 @@ public class FasciaController {
     }
     
     //mostra form per creare nuova fascia
-    @GetMapping("/staff/fasce/new")
+    @GetMapping("/staff/fasce/nuova")
     public String showCreateForm(Model model) {
         model.addAttribute("fascia", new Fascia());
         return "formFascia";
@@ -46,7 +46,7 @@ public class FasciaController {
 
     //salva nuova fascia
     @PostMapping("/staff/fasce")
-    public String createFascia(@Valid @ModelAttribute Fascia fascia, BindingResult result) {
+    public String creaFascia(@Valid @ModelAttribute Fascia fascia, BindingResult result) {
         if(result.hasErrors()) {
             return "formFascia";
         }
@@ -60,7 +60,7 @@ public class FasciaController {
 
     //mostra form per modificare una fascia eszistente
     @GetMapping("/staff/fasce/edit/{id}")
-    public String showEditForm(@PathVariable Long id, Model model) {
+    public String mostraEditForm(@PathVariable Long id, Model model) {
         model.addAttribute("fascia", fasciaService.getFasciaById(id));
         return "formFascia";
     }
@@ -94,6 +94,14 @@ public class FasciaController {
         model.addAttribute("fascia", this.fasciaService.getFasciaById(id));
         return "Fascia";
     }
+
+
+    @GetMapping("/fasce")
+    public String mostraFasceDisponibili(Model model) {
+        model.addAttribute("fasce", fasciaService.getAllFascia());
+        return "fasceDisponibili";
+    }
+    
 
 
     

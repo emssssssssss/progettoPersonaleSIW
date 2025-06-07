@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 
 import it.uniroma3.model.Prenotazione;
 import it.uniroma3.model.Utente;
+//import it.uniroma3.service.FasciaService;
+import it.uniroma3.repository.FasciaRepository;
 import it.uniroma3.repository.PrenotazioneRepository;
 
 @Service
@@ -13,6 +15,9 @@ public class PrenotazioneService {
 
     @Autowired
     private PrenotazioneRepository prenotazioneRepository;
+
+    @Autowired
+    private FasciaRepository fasciaRepository;
 
     @Autowired
     private UtenteService utenteService;
@@ -52,6 +57,17 @@ public class PrenotazioneService {
 
 
      public Prenotazione aggiungiPrenotazione(Prenotazione prenotazione) {
+        Long fasciaId = prenotazione.getFascia().getId();
+
+        var fascia = fasciaRepository.findById(fasciaId)
+            .orElseThrow(() -> new RuntimeException("Fascia non trovata"));
+
+                if (fascia.getPostiPrenotati() >= fascia.getCapienzaMassima()){
+                    throw new RuntimeException("Disponibilità esaurita: non ci sono posti prenotabili");
+                }
+            
+
+
         return prenotazioneRepository.save(prenotazione);
     }
 
