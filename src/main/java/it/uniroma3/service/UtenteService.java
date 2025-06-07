@@ -5,6 +5,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+
 
 import it.uniroma3.model.Utente;
 import it.uniroma3.repository.UtenteRepository;
@@ -75,6 +78,21 @@ public class UtenteService {
     public void modificaUtente(Utente utente) {
         this.utenteRepository.save(utente);
     }
+
+
+public Utente getUtenteAutenticato() {
+    Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    
+    String email;
+    if (principal instanceof UserDetails) {
+        email = ((UserDetails) principal).getUsername();
+    } else {
+        email = principal.toString();
+    }
+
+    return utenteRepository.findByEmail(email)
+        .orElseThrow(() -> new RuntimeException("Utente autenticato non trovato: " + email));
+}
 
     
 }

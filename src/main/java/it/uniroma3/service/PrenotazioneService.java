@@ -25,28 +25,36 @@ public class PrenotazioneService {
         return this.prenotazioneRepository.findAll();
     }
     
-     public void cancellaPrenotazione(Long id, Utente utenteCheRichiede) {
-        if (!utenteService.isAdmin(utenteCheRichiede)) {
-            throw new RuntimeException("Accesso negato: non sei amministratore");
-        }
-        if(utenteCheRichiede.getId() != prenotazioneRepository.findById(id).get().getUtente().getId()) {
-             throw new RuntimeException("Accesso negato: non è la tua prenotazione");
-        }
-        prenotazioneRepository.deleteById(id);
+    public void cancellaPrenotazione(Long id, Utente utenteCheRichiede) {
+    Prenotazione prenotazione = prenotazioneRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Prenotazione non trovata"));
+
+    // Se non admin e non proprietario -> Accesso negato
+    if (!utenteService.isAdmin(utenteCheRichiede) && 
+        !utenteCheRichiede.getId().equals(prenotazione.getUtente().getId())) {
+        throw new RuntimeException("Accesso negato: non puoi cancellare questa prenotazione");
     }
+    prenotazioneRepository.deleteById(id);
+}
+
+    public Prenotazione modificaPrenotazione(Prenotazione prenotazione, Utente utenteCheRichiede) {
+        Prenotazione existing = prenotazioneRepository.findById(prenotazione.getId())
+            .orElseThrow(() -> new RuntimeException("Prenotazione non trovata"));
+
+        if (!utenteService.isAdmin(utenteCheRichiede) &&
+            !utenteCheRichiede.getId().equals(existing.getUtente().getId())) {
+            throw new RuntimeException("Accesso negato: non puoi modificare questa prenotazione");
+        }
+        // puoi aggiungere eventuali controlli di validità sui dati della prenotazione
+
+        return prenotazioneRepository.save(prenotazione);
+    }
+
 
      public Prenotazione aggiungiPrenotazione(Prenotazione prenotazione) {
         return prenotazioneRepository.save(prenotazione);
     }
 
-    public Prenotazione modificaPrenotazione(Prenotazione prenotazione, Utente utenteCheRichiede) {
-        if (!utenteService.isAdmin(utenteCheRichiede)) {
-            throw new RuntimeException("Accesso negato: non sei amministratore");
-        }
-         if(utenteCheRichiede.getId() != prenotazione.getUtente().getId()) {
-             throw new RuntimeException("Accesso negato: non è la tua prenotazione");
-        }
-        return prenotazioneRepository.save(prenotazione);
-    }
+   
 
 }
