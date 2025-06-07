@@ -6,17 +6,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 
 
 
 import it.uniroma3.model.Fascia;
 import it.uniroma3.model.Utente;
+import it.uniroma3.model.Prenotazione;
 import it.uniroma3.service.FasciaService;
 import it.uniroma3.service.PrenotazioneService;
 import it.uniroma3.service.UtenteService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+//import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PostMapping;
+
 
 
 @Controller
@@ -51,7 +57,7 @@ public class PrenotazioneController {
     }
 
     @GetMapping("/prenotazioni/{idUtente}")
-    public String getPrenotazioniUtente(@PathVariable("idUtente") Long id, Model model) {
+    public String getPrenotazioniUtente(@PathVariable("idUtente") Long idUtente, Model model) {
 
         //prendo l'utente autenticato
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -60,10 +66,15 @@ public class PrenotazioneController {
         //recupero utente loggato
         Optional<Utente> utenteLoggatoOpt = utenteService.getUtenteByEmail(emailLoggato);
 
-        // Controlla se l’utente loggato sta cercando di accedere alle sue prenotazioni
-        if (!utenteLoggato.getId().equals(idUtente)) {
-            // Accesso negato: magari reindirizza o mostra errore
-            return "accessoNegato";  // o "redirect:/error" o simile
+        if (utenteLoggatoOpt.isEmpty()) {
+            return "redirect:/login";
+        }
+
+        Utente utenteLoggato = utenteLoggatoOpt.get();
+
+        //controlla che l'utente stia accedendo solo alle sue prenotazioni
+        if(!utenteLoggato.getId().equals(idUtente)){
+            return "accessoNegato";
         }
 
         // Se ok, mostra prenotazioni
@@ -71,4 +82,31 @@ public class PrenotazioneController {
         return "Prenotazioni";        
 
     }
+
+
+    @GetMapping("/prenotazioni/nuova")
+    public String mostraFormPrenotazione(Model model) {
+        model.addAttribute("prenotazione", new Prenotazione());
+        model.addAttribute("fasce", fasciaService.getAllFascia());
+        return "formPrenotazione";
+    }
+
+    @PreAuthorize("hasAuthority('VISITATORE')")
+    @PostMapping("/prenotazioni")
+    public String salvaPrenotazione(@ModelAttribute Prenotazione prenotazione) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = auth.getName(); // l'email è lo username
+        Utente utente = utenteService.getUtenteByEmail(email)
+            .orElseThrow(() -> new RuntimeException("Utente non trovato"));
+
+        prenotazione.setUtente(utente);
+        prenotazione.setStato(Prenotazione.Stato.CONFERMATA);
+
+        prenotazioneService.aggiungiPrenotazione(prenotazione);
+
+        return "redirect:/prenotazioni";
+    }
+
+
+    
 }

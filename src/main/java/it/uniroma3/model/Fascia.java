@@ -37,7 +37,7 @@ public class Fascia {
 	
 	@ManyToOne
 	private Museo museo;
-	@OneToMany(mappedBy = "disponibilita")
+	@OneToMany(mappedBy = "fascia")
 	private List<Prenotazione> prenotazioni;
 	@ManyToOne
 	private Evento evento;
