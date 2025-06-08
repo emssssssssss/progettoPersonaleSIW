@@ -1,11 +1,13 @@
 package it.uniroma3.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+//import org.springframework.web.bind.annotation.PathVariable;
 
+//import it.uniroma3.model.Utente;
 import it.uniroma3.service.MuseoService;
 import it.uniroma3.service.UtenteService;
 
@@ -17,24 +19,15 @@ public class HomepageController {
 
     @Autowired 
     private MuseoService museoService;
-    
-    @GetMapping("/homepage/{utente}")
-    public String mostraHomepage(@PathVariable("utente") Long id, Model model){
-        Long idMuseo = (long) 1;
-        model.addAttribute("museo", this.museoService.getMuseo(idMuseo));
-        var utente = utenteService.getUtenteById(id);
-        if (utente == null) {
-            // Utente non trovato: magari fai redirect alla home pubblica
-            return "redirect:/homepage";
-        }
-        model.addAttribute("utente", utente);
-        return "homepage";  // pagina home per utente loggato
-    }
 
     @GetMapping("/homepage")
-    public String mostraHomepagePubblica(Model model) {
-        Long idMuseo = (long) 1;
-        model.addAttribute("museo", this.museoService.getMuseo(idMuseo));
+    public String mostraHomepage(Model model, Authentication auth) {
+        model.addAttribute("museo", museoService.getMuseoUnico());
+
+        if(auth != null && auth.isAuthenticated()){
+            String email = auth.getName();
+            utenteService.getUtenteByEmail(email).ifPresent(utente -> model.addAttribute("utente", utente));
+        }
         return "homepage";  // pagina home pubblica
     }
 

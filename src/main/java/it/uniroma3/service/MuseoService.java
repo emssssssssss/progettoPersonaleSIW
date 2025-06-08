@@ -14,12 +14,17 @@ public class MuseoService {
     @Autowired
     private MuseoRepository museoRepository;
 
-     public Museo getMuseo(Long id) {
-        return museoRepository.findById(id)
-            .orElseThrow(() -> new NoSuchElementException("Museo non trovato con id: " + id));
+    private final static Long ID_MUSEO_UNICO = 1L;
+
+    public Museo getMuseoUnico() {
+        return museoRepository.findById(ID_MUSEO_UNICO)
+            .orElseThrow(() -> new NoSuchElementException("Museo non trovato con id: 1"));
     }
 
-    public Iterable<Museo> getAllMusei() {
-        return this.museoRepository.findAll();
+    
+    //modifica i dati del museo
+    public Museo aggiornaMuseo(Museo museoModificato){
+        museoModificato.setId(ID_MUSEO_UNICO);
+        return museoRepository.save(museoModificato);
     }
 }
