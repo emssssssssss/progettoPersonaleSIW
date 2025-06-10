@@ -37,49 +37,49 @@ public class EventoController {
     private EventoRepository eventoRepository;
 
     //visualizza un singolo evento
-    @GetMapping("/Evento/{id}")
+    @GetMapping("/evento/{id}")
     public String getEvento(@PathVariable("id") Long id, Model model) {
         model.addAttribute("evento", this.eventoService.getEventoById(id));
-        return "Evento";
+        return "evento";
     }
 
     //visualizza la lista di eventi
-    @GetMapping("/Eventi")
+    @GetMapping("/eventi")
     public String getEventi(Model model) {
         List<Evento> eventi = eventoRepository.findAll();
-        model.addAttribute("Eventi", eventi);
-        return "Eventi";
+        model.addAttribute("eventi", eventi);
+        return "eventi";
     }
 
 
     //mostra il form per aggiungere un nuovo evento
-    @GetMapping("/Evento/aggiungi")
+    @GetMapping("/evento/aggiungi")
     public String mostraFormEvento(Model model) {
         Utente utente = utenteService.getUtenteAutenticato();
         if (!utenteService.isAdmin(utente)) {
             throw new RuntimeException("Accesso negato: solo lo staff può aggiungere eventi.");
         }
-        model.addAttribute("Evento", new Evento());
+        model.addAttribute("evento", new Evento());
         return "formEvento";
     }
 
     
   
     //mostra form di modifica di un evento esistente
-    @GetMapping("/Evento/modifica/{id}")
+    @GetMapping("/evento/modifica/{id}")
     public String mostraFormModificaEvento(@PathVariable Long id, Model model) {
         Utente utente = utenteService.getUtenteAutenticato();
         if (!utenteService.isAdmin(utente)) {
             throw new RuntimeException("Accesso negato: solo lo staff può modificare eventi.");
         }
         Evento evento = eventoService.getEventoById(id);
-        model.addAttribute("Evento", evento);
+        model.addAttribute("evento", evento);
         return "formEvento";
     }
 
         
     //gestione della modifica
-    @PostMapping("/Evento/salva")
+    @PostMapping("/evento/salva")
     public String salvaEvento(@Valid @ModelAttribute Evento evento,
                             BindingResult bindingResult, Model model) {
         Utente utente = utenteService.getUtenteAutenticato();
@@ -94,11 +94,11 @@ public class EventoController {
         } else {
             eventoService.modificaEvento(evento, utente);
         }
-        return "redirect:/Evento/" + evento.getId();
+        return "redirect:/evento/" + evento.getId();
     }
 
     //eliminazione
-    @PostMapping("/Evento/elimina/{id}")
+    @PostMapping("/evento/elimina/{id}")
     public String cancellaEvento(@PathVariable Long id) {
         Utente utente = utenteService.getUtenteAutenticato();
         if(!utenteService.isAdmin(utente)){
@@ -106,7 +106,7 @@ public class EventoController {
         }
 
         eventoService.cancellaEvento(id, utente);
-        return "redirect:/Eventi";
+        return "redirect:/eventi";
     }
 
 }

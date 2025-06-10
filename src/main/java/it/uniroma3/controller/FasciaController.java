@@ -92,7 +92,7 @@ public class FasciaController {
     @GetMapping("/fascia/{id}")
     public String getFascia(@PathVariable("id") Long id, Model model) {
         model.addAttribute("fascia", this.fasciaService.getFasciaById(id));
-        return "Fascia";
+        return "fascia";
     }
 
 

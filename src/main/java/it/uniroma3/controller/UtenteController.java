@@ -26,18 +26,18 @@ public class UtenteController {
     @GetMapping("/utente/{id}")
     public String getUtente(@PathVariable("id") Long id, Model model) {
         model.addAttribute("utente", this.utenteService.getUtenteById(id));
-        return "Utente";
+        return "utente";
     }
 
     @GetMapping("/utenti")
     public String getUtenti(Model model) {
         model.addAttribute("utenti", this.utenteService.getAllUtenti());
-        return "Utenti";
+        return "utenti";
     }
 
      @GetMapping("/accedi")
     public String inizia() {
-        return "Accedi";
+        return "accedi";
     }
 
      @PostMapping("/accedi")
@@ -46,7 +46,7 @@ public class UtenteController {
         Optional<Utente> optionalUtente = utenteService.autenticaUtente(nomeUtente, password);
         if(optionalUtente.isEmpty()){
             model.addAttribute("errore", "credenziali non valide");
-            return "Accedi";
+            return "accedi";
         }
 
         Utente utente = optionalUtente.get();
@@ -59,7 +59,7 @@ public class UtenteController {
     @GetMapping("/registrazione")
     public String mostraRegistrazione(Model model) {
         model.addAttribute("utente", new Utente());
-        return "Registrazione";
+        return "registrazione";
     }
 
     // gestisce l'invio del form di registrazione con validazione automatica e controllo passwordBis
@@ -90,7 +90,7 @@ public class UtenteController {
 
         // Se ci sono errori di validazione o errore passwordBis, ritorna al form con errori mostrati
         if (bindingResult.hasErrors() || model.containsAttribute("errorePassword")) {
-            return "Registrazione"; 
+            return "registrazione"; 
         }
 
         // Imposta ruolo in base al codice amministratore

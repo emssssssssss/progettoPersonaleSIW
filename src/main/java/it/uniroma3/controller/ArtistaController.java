@@ -28,13 +28,13 @@ public class ArtistaController {
     @GetMapping("/artista/{id}")
     public String getArtista(@PathVariable("id") Long id, Model model) {
         model.addAttribute("artista", this.artistaService.getArtistaById(id));
-        return "Artista";
+        return "artista";
     }
 
     @GetMapping("/artisti")
     public String getArtisti(Model model) {
         model.addAttribute("artisti", this.artistaService.getAllArtisti());
-        return "Artisti";
+        return "artisti";
     }
 
 

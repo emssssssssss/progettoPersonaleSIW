@@ -31,7 +31,7 @@ public class OperaController {
     @GetMapping("/opere")
     public String getOpere(Model model) {
         model.addAttribute("opere", this.operaService.getAllOpere());
-        return "Opere";
+        return "opere";
     }
 
     @GetMapping("/opere/{idEvento}")
@@ -39,7 +39,7 @@ public class OperaController {
         Evento evento = this.eventoService.getEventoById(id);
         model.addAttribute("evento", evento);
         model.addAttribute("opere", evento.getOpere());
-        return "Opere";
+        return "opere";
     }
     
     

@@ -40,20 +40,20 @@ public class PrenotazioneController {
     @GetMapping("/prenotazione/{id}")
     public String getPrenotazione(@PathVariable("id") Long id, Model model) {
         model.addAttribute("prenotazione", this.prenotazioneService.getPrenotazione(id));
-        return "Prenotazione";
+        return "prenotazione";
     }
 
     @GetMapping("/prenotazioni")
     public String getPrenotazioni(Model model) {
         model.addAttribute("prenotazioni", this.prenotazioneService.getAllPrenotazioni());
-        return "Prenotazioni";
+        return "prenotazioni";
     }
 
     @GetMapping("/prenotazioni/{idFascia}")
     public String getPrenotazioniEvento(@PathVariable("idFascia") Long id, Model model) {
         Fascia fascia = this.fasciaService.getFasciaById(id);
         model.addAttribute("prenotazioni", fascia.getPrenotazioni());
-        return "Prenotazioni";
+        return "prenotazioni";
     }
 
     @GetMapping("/prenotazioni/{idUtente}")
@@ -79,7 +79,7 @@ public class PrenotazioneController {
 
         // Se ok, mostra prenotazioni
         model.addAttribute("prenotazioni", utenteLoggato.getPrenotazioni());
-        return "Prenotazioni";        
+        return "prenotazioni";        
 
     }
 
