@@ -4,14 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-    <link rel="stylesheet" th:href="@{/css/Accedi.css}">
+    <link rel="stylesheet" th:href="@{/css/login.css}">
 </head>
 
 <body>
 
     <h2>Accedi al tuo profilo</h2>
 
-    <form th:action="@{/accedi}" method="post" class="form-accedi">
+    <form th:action="@{/login}" method="post" class="form-login">
         <label for="nomeUtente">Nome utente o Email:</label>
         <input type="text" id="nomeUtente" name="nomeUtente" required class="input-stile"><br><br>
 

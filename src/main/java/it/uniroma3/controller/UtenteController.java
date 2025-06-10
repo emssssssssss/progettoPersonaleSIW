@@ -35,18 +35,18 @@ public class UtenteController {
         return "utenti";
     }
 
-     @GetMapping("/accedi")
+     @GetMapping("/login")
     public String inizia() {
-        return "accedi";
+        return "login";
     }
 
-     @PostMapping("/accedi")
+     @PostMapping("/login")
     public String login(@RequestParam String nomeUtente, @RequestParam String password, Model model) {
         
         Optional<Utente> optionalUtente = utenteService.autenticaUtente(nomeUtente, password);
         if(optionalUtente.isEmpty()){
             model.addAttribute("errore", "credenziali non valide");
-            return "accedi";
+            return "login";
         }
 
         Utente utente = optionalUtente.get();

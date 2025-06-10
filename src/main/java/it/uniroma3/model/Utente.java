@@ -2,12 +2,15 @@ package it.uniroma3.model;
 
 import java.util.List;
 
+import it.uniroma3.authentication.PasswordMatch;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -16,6 +19,8 @@ import jakarta.persistence.EnumType;
 
 
 @Entity
+@Table(name = "utente")
+@PasswordMatch
 public class Utente {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,6 +37,9 @@ public class Utente {
 	@NotBlank(message = "Obbligatorio inserire password")
 	@Size(min=6, message = "La password deve contenere almeno 6 caratteri ")
     private String password;
+
+	@Transient //non è una colonna nel database
+	private String passwordBis;
 
 	@OneToMany(mappedBy = "utente")
 	private List<Prenotazione> prenotazioni;
@@ -90,6 +98,14 @@ public class Utente {
 
 	public List<Prenotazione> getPrenotazioni() {
 		return this.prenotazioni;
+	}
+
+		public String getPasswordBis() {
+		return passwordBis;
+	}
+
+	public void setPasswordBis(String passwordBis) {
+		this.passwordBis = passwordBis;
 	}
 }
 

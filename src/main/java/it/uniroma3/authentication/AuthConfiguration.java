@@ -29,7 +29,11 @@ public class AuthConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(authz -> authz
-                .requestMatchers(HttpMethod.GET, "/", "/index", "/login", "/register", "/css/**", "/images/**", "/error").permitAll()
+                .requestMatchers(HttpMethod.GET,
+                    "/", "/index", "/login", "/register",
+                    "/eventi", "/evento/**",
+                    "/css/**", "/images/**", "/error"
+                ).permitAll()
                 .requestMatchers(HttpMethod.POST, "/login", "/register").permitAll()
                 .requestMatchers("/admin/**").hasAuthority(ROLE_STAFF)
                 .requestMatchers("/staff/fasce/**").hasAuthority("STAFF")
@@ -42,11 +46,11 @@ public class AuthConfiguration {
                 .permitAll()
             )
             .logout(logout -> logout
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/index")
-                .invalidateHttpSession(true)
-                .clearAuthentication(true)
-                .permitAll()
+            .logoutUrl("/logout")              
+            .logoutSuccessUrl("/login?logout")      // redirect dopo il logout
+            .invalidateHttpSession(true)       // invalida la sessione HTTP
+            .deleteCookies("JSESSIONID")       // cancella il cookie di sessione
+            .permitAll()
             );
 
         return http.build();
