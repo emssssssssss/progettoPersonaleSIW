@@ -1,0 +1,19 @@
+<!-- navbar.html -->
+<nav th:fragment="navbar">
+    <ul style="list-style: none; display: flex; gap: 1rem; background-color: #f4f4f4; padding: 1rem;">
+        <li><a th:href="@{/homepage}">Home</a></li>
+        <li><a th:href="@{/eventi}">Eventi</a></li>
+        <li><a th:href="@{/prenotazioni}">Prenotazioni</a></li>
+        <li><a th:href="@{/opere}">Opere</a></li>
+        <li><a th:href="@{/artisti}">Artisti</a></li>
+        <li><a th:href="@{/fasce}">Fasce Orarie</a></li>
+
+        <!-- Solo se utente è staff -->
+        <li sec:authorize="hasAuthority('STAFF')">
+            <a th:href="@{/staff/dashboard}">Gestione</a>
+        </li>
+
+        <!-- Logout o Login -->
+        <li><a th:href="@{/logout}">Logout</a></li>
+    </ul>
+</nav>

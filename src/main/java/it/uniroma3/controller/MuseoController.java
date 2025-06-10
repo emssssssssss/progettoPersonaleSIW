@@ -22,13 +22,12 @@ public class MuseoController {
 
     @GetMapping("/")
     public String mostraHomepage(Model model) {
-        Long id = 1L;
         model.addAttribute("museo", museoService.getMuseoUnico());
         return "homepage";
     }
 
     //pagina per lo staff per modificare il museo
-    @PostMapping("/staff/museo/modifica")
+    @GetMapping("/staff/museo/modifica")
     public String mostraFormModificaMuseo(Model model) {
         model.addAttribute("museo", museoService.getMuseoUnico());
         return "staff/modificaMuseo";
