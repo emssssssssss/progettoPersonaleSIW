@@ -31,7 +31,7 @@ public class Artista {
 	private int annoNascita;
 
 	@Max(value = 2025, message = "L'anno di morte non può essere nel futuro")
-	private int annoMorte;
+	private Integer annoMorte;
 
 	@NotBlank(message = "L'URL dell'immagine non può essere vuoto")
 	@Size(max = 2048, message = "L'URL dell'immagine è troppo lungo")

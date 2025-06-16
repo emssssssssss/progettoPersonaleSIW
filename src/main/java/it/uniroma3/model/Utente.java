@@ -17,40 +17,39 @@ import jakarta.validation.constraints.Size;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.EnumType;
 
-
 @Entity
 @Table(name = "utente")
 @PasswordMatch
 public class Utente {
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
 	@NotBlank(message = "Il nome è obbligatorio")
-    private String nome;
+	private String nome;
 
 	@Email(message = "Inserire email valida")
 	@NotBlank(message = "L'email è obbligatoria")
-    @Column(unique = true)
-    private String email;
+	@Column(unique = true)
+	private String email;
 
 	@NotBlank(message = "Obbligatorio inserire password")
-	@Size(min=6, message = "La password deve contenere almeno 6 caratteri ")
-    private String password;
+	@Size(min = 6, message = "La password deve contenere almeno 6 caratteri ")
+	private String password;
 
-	@Transient //non è una colonna nel database
+	@Transient // non è una colonna nel database
 	private String passwordBis;
 
 	@OneToMany(mappedBy = "utente")
 	private List<Prenotazione> prenotazioni;
 
-    @Enumerated(EnumType.STRING)
-    private Ruolo ruolo;
+	@Enumerated(EnumType.STRING)
+	private Ruolo ruolo;
 
-    public enum Ruolo {
-        VISITATORE,
-        STAFF
-    }
+	public enum Ruolo {
+		VISITATORE,
+		STAFF
+	}
 
 	public Long getId() {
 		return this.id;
@@ -92,6 +91,11 @@ public class Utente {
 		return this.ruolo;
 	}
 
+	public void addPrenotazione(Prenotazione p) {
+		this.prenotazioni.add(p);
+		p.setUtente(this);
+	}
+
 	public void addPrenotazioni(List<Prenotazione> prenotazioni) {
 		this.prenotazioni = prenotazioni;
 	}
@@ -100,7 +104,7 @@ public class Utente {
 		return this.prenotazioni;
 	}
 
-		public String getPasswordBis() {
+	public String getPasswordBis() {
 		return passwordBis;
 	}
 
@@ -108,4 +112,3 @@ public class Utente {
 		this.passwordBis = passwordBis;
 	}
 }
-
