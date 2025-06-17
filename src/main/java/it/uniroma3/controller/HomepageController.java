@@ -6,10 +6,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 //import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PathVariable;
 
 //import it.uniroma3.model.Utente;
 import it.uniroma3.service.MuseoService;
 import it.uniroma3.service.UtenteService;
+
 
 @Controller
 public class HomepageController {
@@ -31,6 +33,11 @@ public class HomepageController {
         return "homepage";  // pagina home pubblica
     }
 
-
+     @GetMapping("/homepage/{utente}")
+     public String getHome(@PathVariable("utente") Long idUtente, Model model) {
+        model.addAttribute("utente", this.utenteService.getUtenteById(idUtente));
+        return "homepage";
+     }
+     
     
 }

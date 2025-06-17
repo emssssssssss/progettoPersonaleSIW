@@ -8,9 +8,17 @@ insert into evento (id, titolo, descrizione, data_inizio, data_fine, museo_id) v
 insert into evento (id, titolo, descrizione, data_inizio, data_fine, museo_id) values (2, 'Notte al Museo', 'Un''esperienza notturna unica con guide speciali e performance dal vivo.', '2025-12-01', '2025-12-02', 1);
 insert into evento (id, titolo, descrizione, data_inizio, data_fine, museo_id) values (3, 'Arte Contemporanea e Urban', 'Focus sull''arte urbana con installazioni interattive.', '2025-07-10', '2025-08-10', 1);
 
-insert into utente (id, nome, email, password, ruolo) values (1, 'Anna Rossi', 'anna.rossi@example.com', 'password123', 'VISITATORE');
-insert into utente (id, nome, email, password, ruolo) values (2, 'Luca Bianchi', 'luca.bianchi@example.com', 'securepass', 'VISITATORE');
-insert into utente (id, nome, email, password, ruolo) values (3, 'Mario Verdi', 'mario.verdi@example.com', 'staffpass1', 'STAFF');
+insert into utente (id, nome, email, password, ruolo) 
+values (1, 'Anna Rossi', 'anna.rossi@example.com', '$2a$10$XKtkhBOYbJJHOcOkgjew8e7MsHKxpY6c3AGnTuCAZ/pmQQ.8G2Jbe', 'VISITATORE');
+-- password: password123
+
+insert into utente (id, nome, email, password, ruolo) 
+values (2, 'Luca Bianchi', 'luca.bianchi@example.com', '$2a$10$WqPUKpgXgCkFHeCdrgvVO.6Bd4PHq11Xr5aln1GsTP9Vldn1piW/S', 'VISITATORE');
+-- password: securepass
+
+insert into utente (id, nome, email, password, ruolo) 
+values (3, 'Mario Verdi', 'mario.verdi@example.com', '$2a$10$dAyw2.3jE5OYjD4HD9k8q.SatCdL/6tpKAjrjwwA6H78gSk0QoC/C', 'STAFF');
+-- password: staffpass1
 
 insert into fascia (id, data, orario_inizio, capienza_massima, posti_prenotati, museo_id, evento_id) values (1, '2025-09-16', '10:00:00', 30, 5, 1, 1);
 insert into fascia (id, data, orario_inizio, capienza_massima, posti_prenotati, museo_id, evento_id) values (2, '2025-09-16', '15:00:00', 25, 10, 1, 1);
