@@ -23,7 +23,7 @@ public class OperaController {
     private EventoService eventoService;
 
     @GetMapping("/opera/{id}")
-    public String getOpera(@PathVariable("id") Long id, Model model) {
+    public String getOpera(@PathVariable Long id, Model model) {
         model.addAttribute("opera", this.operaService.getOperaById(id));
         return new String();
     }

@@ -38,7 +38,7 @@ public class EventoController {
 
     //visualizza un singolo evento
     @GetMapping("/evento/{id}")
-    public String getEvento(@PathVariable("id") Long id, Model model) {
+    public String getEvento(@PathVariable Long id, Model model) {
         model.addAttribute("evento", this.eventoService.getEventoById(id));
         return "evento";
     }

@@ -26,7 +26,7 @@ public class ArtistaController {
 
 
     @GetMapping("/artista/{id}")
-    public String getArtista(@PathVariable("id") Long id, Model model) {
+    public String getArtista(@PathVariable Long id, Model model) {
         model.addAttribute("artista", this.artistaService.getArtistaById(id));
         return "artista";
     }
@@ -49,7 +49,7 @@ public class ArtistaController {
         // Gestisce submit form nuovo artista
     @PostMapping("/artista/aggiungi")
     public String aggiungiArtista(
-        @Valid @ModelAttribute("artista") Artista artista,
+        @Valid @ModelAttribute Artista artista,
         BindingResult bindingResult,
         Model model) {
 
