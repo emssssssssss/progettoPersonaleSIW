@@ -12,13 +12,11 @@
     <h2>Accedi al tuo profilo</h2>
 
     <form th:action="@{/login}" method="post" class="form-login">
-        <label for="nomeUtente">Nome utente o Email:</label>
-        <input type="text" id="nomeUtente" name="nomeUtente" required class="input-stile"><br><br>
-
+        <label for="email">Email:</label>
+        <input type="text" id="email" name="email" required class="input-stile"><br><br>
 
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" required class="input-stile"><br><br>
-
 
         <button type="submit" class="btn-invio">Accedi</button>
         <hr>
@@ -32,6 +30,6 @@
         <p th:text="${errore}"></p>
     </div>
 
-   
 </body>
+
 </html>
