@@ -24,7 +24,7 @@ public class UtenteController {
     private UtenteService utenteService;
 
     @GetMapping("/utente/{id}")
-    public String getUtente(@PathVariable("id") Long id, Model model) {
+    public String getUtente(@PathVariable Long id, Model model) {
         model.addAttribute("utente", this.utenteService.getUtenteById(id));
         return "utente";
     }

@@ -35,7 +35,7 @@ public class MuseoController {
 
     //salva modifiche
     @PostMapping("/staff/museo/modifica")
-    public String aggiornaMuseo(@ModelAttribute("museo") Museo museo, Model model) {
+    public String aggiornaMuseo(@ModelAttribute Museo museo, Model model) {
         museoService.aggiornaMuseo(museo);
         return "redirect:/staff/museo/modifica?successo";
     }

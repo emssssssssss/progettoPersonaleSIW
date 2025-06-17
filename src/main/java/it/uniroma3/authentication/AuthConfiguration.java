@@ -3,6 +3,7 @@ package it.uniroma3.authentication;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.sql.init.dependency.DependsOnDatabaseInitialization;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -21,8 +22,8 @@ public class AuthConfiguration {
         private static final String ROLE_STAFF = "ROLE_STAFF";
         private static final String ROLE_VISITATORE = "ROLE_VISITATORE";
 
-        @Bean
-        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    @Bean
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
                 http
                                 .authorizeHttpRequests(authz -> authz
                                                 .requestMatchers(HttpMethod.GET,
@@ -52,8 +53,9 @@ public class AuthConfiguration {
                 return http.build();
         }
 
-        @Bean
-        public JdbcUserDetailsManager users(DataSource dataSource) {
+    @Bean
+    @DependsOnDatabaseInitialization
+    JdbcUserDetailsManager users(DataSource dataSource) {
                 JdbcUserDetailsManager manager = new JdbcUserDetailsManager(dataSource);
 
                 // Login solo tramite email
@@ -66,8 +68,8 @@ public class AuthConfiguration {
                 return manager;
         }
 
-        @Bean
-        public PasswordEncoder passwordEncoder() {
+    @Bean
+    PasswordEncoder passwordEncoder() {
                 return new BCryptPasswordEncoder();
         }
 }

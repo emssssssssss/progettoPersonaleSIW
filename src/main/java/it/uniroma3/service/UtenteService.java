@@ -96,8 +96,8 @@ public class UtenteService {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         String email;
-        if (principal instanceof UserDetails) {
-            email = ((UserDetails) principal).getUsername();
+        if (principal instanceof UserDetails details) {
+            email = details.getUsername();
         } else {
             email = principal.toString();
         }

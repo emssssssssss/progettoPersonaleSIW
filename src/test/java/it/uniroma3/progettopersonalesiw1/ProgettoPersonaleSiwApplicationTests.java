@@ -3,10 +3,13 @@ package it.uniroma3.progettopersonalesiw1;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class ProgettoPersonaleSiwApplicationTests {
+import it.uniroma3.siw.ProgettoPersonaleSiwApplication;
 
-   @Test
-   void contextLoads() {
-   }
+@SpringBootTest(classes = ProgettoPersonaleSiwApplication.class)
+public class ProgettoPersonaleSiwApplicationTests {
+
+    @Test
+    void contextLoads() {
+        // test vuoto che controlla se il contesto spring si carica
+    }
 }

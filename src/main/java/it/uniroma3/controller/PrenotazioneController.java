@@ -38,7 +38,7 @@ public class PrenotazioneController {
     private FasciaService fasciaService;
 
     @GetMapping("/prenotazione/{id}")
-    public String getPrenotazione(@PathVariable("id") Long id, Model model) {
+    public String getPrenotazione(@PathVariable Long id, Model model) {
         model.addAttribute("prenotazione", this.prenotazioneService.getPrenotazione(id));
         return "prenotazione";
     }
@@ -57,7 +57,7 @@ public class PrenotazioneController {
     }
 
     @GetMapping("/prenotazioni/{idUtente}")
-    public String getPrenotazioniUtente(@PathVariable("idUtente") Long idUtente, Model model) {
+    public String getPrenotazioniUtente(@PathVariable Long idUtente, Model model) {
 
         //prendo l'utente autenticato
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
