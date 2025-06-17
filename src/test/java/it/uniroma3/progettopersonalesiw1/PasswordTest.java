@@ -6,12 +6,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class PasswordTest {  // meglio PasswordTest
+public class PasswordTest {
 
     @Test
     public void testPasswordMatch() {
-        System.out.println("Inizio testPasswordMatch");
         PasswordEncoder encoder = new BCryptPasswordEncoder();
+
         String passwordInChiaro = "password123";
         String hashSalvato = "$2a$10$XKtkhBOYbJJHOcOkgjew8e7MsHKxpY6c3AGnTuCAZ/pmQQ.8G2Jbe";
 

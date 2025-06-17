@@ -9,7 +9,7 @@ insert into evento (id, titolo, descrizione, data_inizio, data_fine, museo_id) v
 insert into evento (id, titolo, descrizione, data_inizio, data_fine, museo_id) values (3, 'Arte Contemporanea e Urban', 'Focus sull''arte urbana con installazioni interattive.', '2025-07-10', '2025-08-10', 1);
 
 insert into utente (id, nome, email, password, ruolo) 
-values (1, 'Anna Rossi', 'anna.rossi@example.com', '$2a$10$XKtkhBOYbJJHOcOkgjew8e7MsHKxpY6c3AGnTuCAZ/pmQQ.8G2Jbe', 'VISITATORE');
+values (1, 'Anna Rossi', 'anna.rossi@example.com', '$2a$10$7Y7pHVk6jHSHKCowPrSh8Opypb2coYl7/ShaATGtGOdtlchK9tgAK', 'VISITATORE');
 -- password: password123
 
 insert into utente (id, nome, email, password, ruolo) 
