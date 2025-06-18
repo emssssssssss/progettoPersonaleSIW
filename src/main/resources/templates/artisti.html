@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Lista Eventi</title>
+</head>
+
+<body>
+
+    <h1>Lista Eventi</h1>
+
+    <ul>
+        <li th:each="artista : ${artisti}">
+                 <a th:href="@{/artista/{id}(id=${artista.id})}" th:text="${artista.nome}">Titolo Evento</a>
+        </li>
+    </ul>
+
+</body>
+
+</html>
