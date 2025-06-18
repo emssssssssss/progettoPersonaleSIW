@@ -1,55 +1,58 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" 
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      lang="it">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="it">
+
 <head>
     <meta charset="UTF-8">
-    <title>Lista Eventi</title>
+    <title>Singolo evento</title>
     <link rel="stylesheet" th:href="@{/css/stile.css}">
 </head>
+
 <body>
 
-<!-- NAVBAR -->
-<div th:replace="fragments/navbar :: navbar"></div>
+    <!-- NAVBAR -->
+    <div th:replace="fragments/navbar :: navbar"></div>
 
-<h1>Eventi</h1>
+    <h1>Evento</h1>
 
-<table>
-    <thead>
-        <tr>
-            <th>Titolo</th>
-            <th>Descrizione</th>
-            <th>Data Inizio</th>
-            <th>Data Fine</th>
-            <th>Azioni</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr th:each="evento : ${eventi}">
-            <td th:text="${evento.titolo}"></td>
-            <td th:text="${evento.descrizione}"></td>
-            <td th:text="${evento.dataInizio}"></td>
-            <td th:text="${evento.dataFine}"></td>
-            <td>
-                <a th:href="@{/evento/{id}(id=${evento.id})}">Visualizza</a>
-                <span sec:authorize="hasAuthority('STAFF')">
-                    | <a th:href="@{/evento/modifica/{id}(id=${evento.id})}">Modifica</a>
-                    | <form th:action="@{'/evento/elimina/' + ${evento.id}}" method="post"
-                            style="display:inline;" onsubmit="return confirm('Confermi l\'eliminazione?');">
-                          <button type="submit" style="color:red; background:none; border:none;">Elimina</button>
-                      </form>
-                </span>
-            </td>
-        </tr>
-    </tbody>
-</table>
+    <table>
+        <thead>
+            <tr>
+                <th>Titolo</th>
+                <th>Descrizione</th>
+                <th>Data Inizio</th>
+                <th>Data Fine</th>
+                <th>Azioni</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td th:text="${evento.titolo}">Titolo</td>
+                <td th:text="${evento.descrizione}">Descrizione</td>
+                <td th:text="${evento.dataInizio}">Data inizio</td>
+                <td th:text="${evento.dataFine}">Data fine</td>
+                <td>
+                    <a th:href="@{/evento/{id}(id=${evento.id})}">Visualizza</a>
 
-<!-- Pulsante Aggiungi Evento (solo staff) -->
-<div sec:authorize="hasAuthority('STAFF')">
-    <a th:href="@{/evento/aggiungi}">
-        <button>Crea Nuovo Evento</button>
-    </a>
-</div>
+                    <!-- Solo per utenti con ruolo STAFF -->
+                    <span sec:authorize="hasRole('STAFF')">
+                        | <a th:href="@{/evento/modifica/{id}(id=${evento.id})}">Modifica</a>
+                        | <form th:action="@{'/evento/elimina/' + ${evento.id}}" method="post" style="display:inline;"
+                            onsubmit="return confirm('Confermi l\'eliminazione?');">
+                            <button type="submit" style="color:red; background:none; border:none;">Elimina</button>
+                        </form>
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Pulsante Aggiungi Evento (solo per STAFF) -->
+    <div sec:authorize="hasRole('STAFF')">
+        <a th:href="@{/evento/aggiungi}">
+            <button>Crea Nuovo Evento</button>
+        </a>
+    </div>
 
 </body>
+
 </html>
