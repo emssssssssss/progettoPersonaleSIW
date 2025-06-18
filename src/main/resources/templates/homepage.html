@@ -28,6 +28,12 @@
       </div>
       <a href="#">Servizi</a>
       <a href="#">Contatti</a>
+      <div th:if="${utente == null}">
+        <a th:href="@{/eventi}">Eventi</a>
+      </div>
+      <div th:if="${utente != null}">
+        <a th:href="@{/eventi/{utente}(utente=${utente.id})}">Eventi</a>
+      </div>
     </div>
   </nav>
 
