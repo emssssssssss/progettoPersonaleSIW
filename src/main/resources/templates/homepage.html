@@ -20,21 +20,14 @@
       <img src="images/logo.png" alt="Logo" />
     </div>
     <div class="menu">
-      <div th:if="${utente == null}">
-        <a th:href="@{/homepage}">Home</a>
-      </div>
-      <div th:if="${utente != null}">
-        <a th:href="@{/homepage/{utente}(utente=${utente.id})}">Home</a>
-      </div>
-      <a href="#">Servizi</a>
-      <a href="#">Contatti</a>
-      <div th:if="${utente == null}">
-        <a th:href="@{/eventi}">Eventi</a>
-      </div>
-      <div th:if="${utente != null}">
-        <a th:href="@{/eventi/{utente}(utente=${utente.id})}">Eventi</a>
-      </div>
+      <a th:href="@{/homepage}">Home</a>
     </div>
+    <a href="#">Servizi</a>
+    <a href="#">Contatti</a>
+    <a th:href="@{/eventi}">Eventi</a>
+    <span sec:authorize="isAnonymous()">
+      <a th:href="@{/login}">Login</a>
+    </span>
   </nav>
 
   <div class="container">

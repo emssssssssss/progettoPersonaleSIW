@@ -12,12 +12,7 @@
 
     <ul>
         <li th:each="evento : ${eventi}">
-            <div th:if="${utente == null}">
-                <a th:href="@{/evento/{id}(id=${evento.id})}" th:text="${evento.titolo}">Titolo Evento</a>
-            </div>
-            <div th:if="${utente != null}">
-                <a th:href="@{/evento/{id}/{utente}(id=${evento.id}, utente=${utente.id})}" th:text="${evento.titolo}">Titolo Evento</a>
-            </div>
+                 <a th:href="@{/evento/{id}(id=${evento.id})}" th:text="${evento.titolo}">Titolo Evento</a>
         </li>
     </ul>
 
