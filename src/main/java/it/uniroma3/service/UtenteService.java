@@ -64,6 +64,10 @@ public class UtenteService {
         return null;
     }
 
+    public Optional<Utente> getUtenteByName(String name) {
+        return utenteRepository.findByNome(name);
+    }
+
     public boolean isAdmin(Utente utente) {
         return utente != null && utente.getRuolo() == Utente.Ruolo.STAFF;
     }
