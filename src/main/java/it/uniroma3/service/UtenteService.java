@@ -68,7 +68,6 @@ public class UtenteService {
         return utenteRepository.findByNome(name);
     }
 
-
     public boolean isAdmin(Utente utente) {
         return utente != null && utente.getRuolo() == Utente.Ruolo.STAFF;
     }
