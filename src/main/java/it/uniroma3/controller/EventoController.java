@@ -40,7 +40,14 @@ public class EventoController {
     @GetMapping("/evento/{id}")
     public String getEvento(@PathVariable Long id, Model model) {
         model.addAttribute("evento", this.eventoService.getEventoById(id));
-        return "evento";
+        return "Evento";
+    }
+
+    @GetMapping("/evento/{id}/{utente}")
+    public String getEventoUtente(@PathVariable Long id, Model model, @PathVariable("utente") Long idUtente) {
+        model.addAttribute("evento", this.eventoService.getEventoById(id));
+        model.addAttribute("utente", this.utenteService.getUtenteById(idUtente).get());
+        return "Evento";
     }
 
     //visualizza la lista di eventi
@@ -48,7 +55,15 @@ public class EventoController {
     public String getEventi(Model model) {
         List<Evento> eventi = eventoRepository.findAll();
         model.addAttribute("eventi", eventi);
-        return "eventi";
+        return "Eventi";
+    }
+
+    @GetMapping("/eventi/{utente}")
+    public String getEventiUtente(Model model, @PathVariable("utente") Long idUtente) {
+        List<Evento> eventi = eventoRepository.findAll();
+        model.addAttribute("eventi", eventi);
+        model.addAttribute("utente", this.utenteService.getUtenteById(idUtente).get());
+        return "Eventi";
     }
 
 

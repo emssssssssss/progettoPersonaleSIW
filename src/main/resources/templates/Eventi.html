@@ -1,19 +1,26 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="it">
+
 <head>
     <meta charset="UTF-8" />
     <title>Lista Eventi</title>
 </head>
+
 <body>
 
-<h1>Lista Eventi</h1>
+    <h1>Lista Eventi</h1>
 
-<ul>
-    <li th:each="evento : ${eventi}">
-        <a th:href="@{/evento/{id}(id=${evento.id})}" 
-           th:text="${evento.titolo}">Titolo Evento</a>
-    </li>
-</ul>
+    <ul>
+        <li th:each="evento : ${eventi}">
+            <div th:if="${utente == null}">
+                <a th:href="@{/evento/{id}(id=${evento.id})}" th:text="${evento.titolo}">Titolo Evento</a>
+            </div>
+            <div th:if="${utente != null}">
+                <a th:href="@{/evento/{id}/{utente}(id=${evento.id}, utente=${utente.id})}" th:text="${evento.titolo}">Titolo Evento</a>
+            </div>
+        </li>
+    </ul>
 
 </body>
+
 </html>

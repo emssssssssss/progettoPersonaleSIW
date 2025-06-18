@@ -35,7 +35,7 @@ public class HomepageController {
 
      @GetMapping("/homepage/{utente}")
      public String getHome(@PathVariable("utente") Long idUtente, Model model) {
-        model.addAttribute("utente", this.utenteService.getUtenteById(idUtente));
+        model.addAttribute("utente", this.utenteService.getUtenteById(idUtente).get());
         return "homepage";
      }
      
