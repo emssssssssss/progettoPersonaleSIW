@@ -55,7 +55,8 @@ public class UtenteController {
         
         return "redirect:/utente/" + utente.getId();
     } */
-/* 
+
+    /* 
     // mostra la pagina di registrazione e aggiunge un oggetto Utente vuoto per il binding del form
     @GetMapping("/registrazione")
     public String mostraRegistrazione(Model model) {
@@ -105,7 +106,7 @@ public class UtenteController {
 
         // Reindirizza alla pagina profilo dell'utente appena registrato
         return "redirect:/utente/" + utente.getId();
-    }
+    }*/
     
-    */
+    
 }

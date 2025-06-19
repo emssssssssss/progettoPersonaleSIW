@@ -9,7 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class RegistrazioneController {
@@ -17,28 +19,55 @@ public class RegistrazioneController {
     @Autowired
     private UtenteService utenteService;
 
-    @GetMapping("/registrazione")
+    // Mostra il modulo di registrazione
+    @GetMapping("/Registrazione")
     public String mostraRegistrazione(Model model) {
         model.addAttribute("utente", new Utente());
-        return "registrazione";
+        return "Registrazione";
     }
 
-   @PostMapping("/registrazione")
-    public String registraUtente(@Valid Utente utente, BindingResult errors, Model model) {
+    // Gestisce l'invio del form
+    @PostMapping("/Registrazione")
+    public String registraUtente(
+            @Valid @ModelAttribute("utente") Utente utente,
+            BindingResult errors,
+            @RequestParam String passwordBis,
+            @RequestParam(required = false) String codiceAmministratore,
+            Model model) {
+
+        // Controlla errori di validazione nei campi base
         if (errors.hasErrors()) {
-            return "registrazione";
-        }
-        if (!utente.getPassword().equals(utente.getPasswordBis())) {
-            model.addAttribute("errore", "Le password non coincidono");
-            return "registrazione";
+            return "Registrazione";
         }
 
+        // Controllo manuale della conferma password
+        if (!utente.getPassword().equals(passwordBis)) {
+            model.addAttribute("errore", "Le password non coincidono");
+            return "Registrazione";
+        }
+
+        // Verifica se l'email è già in uso
+        if (utenteService.getUtenteByEmail(utente.getEmail()) != null) {
+            model.addAttribute("errore", "Email già registrata");
+            return "Registrazione";
+        }
+
+        // Assegna ruolo in base al codice amministratore
+        if (utenteService.permessoAdmin(codiceAmministratore)) {
+            utente.setRuolo(Utente.Ruolo.STAFF);
+        } else {
+            utente.setRuolo(Utente.Ruolo.VISITATORE);
+        }
+
+        // Salva utente nel database
         try {
             utenteService.addUtente(utente);
         } catch (RuntimeException e) {
-            model.addAttribute("errore", e.getMessage());
-            return "registrazione";
+            model.addAttribute("errore", "Errore durante la registrazione: " + e.getMessage());
+            return "Registrazione";
         }
-        return "redirect:/login?registrazione=successo";
+
+        // Reindirizza al login con messaggio di successo
+        return "redirect:/login?Registrazione=successo";
     }
 }
