@@ -27,11 +27,11 @@ public class AuthConfiguration {
                 http
                                 .authorizeHttpRequests(authz -> authz
                                                 .requestMatchers(HttpMethod.GET,
-                                                                "/", "/index", "/login", "/register",
+                                                                "/", "/index", "/login", "/register", "/Registrazione",
                                                                 "/eventi", "/evento/**",
                                                                 "/css/**", "/images/**", "/error")
                                                 .permitAll()
-                                                .requestMatchers(HttpMethod.POST, "/login", "/register").permitAll()
+                                                .requestMatchers(HttpMethod.POST, "/login", "/register", "Registrazione").permitAll()
                                                 .requestMatchers("/admin/**").hasAuthority(ROLE_STAFF)
                                                 .requestMatchers("/staff/fasce/**").hasAuthority(ROLE_STAFF)
                                                 .anyRequest().authenticated())
