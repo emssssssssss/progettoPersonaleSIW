@@ -1,8 +1,8 @@
 insert into museo (id, nome, descrizione, indirizzo, orari_apertura)values (1,'Museo d Arte Moderna','Un museo dedicato all arte contemporanea e moderna.','Via delle Belle Arti 12, Roma','09:00 - 19:00');
 
-insert into artista (id, nome, biografia, anno_nascita, anno_morte, immagine_url, museo_id) values (1, 'Leonardo da Vinci', 'Pittore, inventore e scienziato italiano del Rinascimento.', 1452, 1519, 'https://example.com/leonardo.jpg', 1);
-insert into artista (id, nome, biografia, anno_nascita, anno_morte, immagine_url, museo_id) values (2, 'Frida Kahlo', 'Celebre pittrice messicana conosciuta per i suoi autoritratti intensi.', 1907, 1954, 'https://example.com/frida.jpg', 1);
-insert into artista (id, nome, biografia, anno_nascita, anno_morte, immagine_url, museo_id) values (3, 'Banksy', 'Artista di street art britannico, la cui identità rimane sconosciuta.', 1974, NULL, 'https://example.com/banksy.jpg', 1);
+insert into artista (id, nome, biografia, anno_nascita, anno_morte, immagine_url, museo_id) values (1, 'Leonardo da Vinci', 'Pittore, inventore e scienziato italiano del Rinascimento.', 1452, 1519, 'images/profiloLeonardoDaVinci.jpg', 1);
+insert into artista (id, nome, biografia, anno_nascita, anno_morte, immagine_url, museo_id) values (2, 'Frida Kahlo', 'Celebre pittrice messicana conosciuta per i suoi autoritratti intensi.', 1907, 1954, 'images/profiloFridaKahlo.webp', 1);
+insert into artista (id, nome, biografia, anno_nascita, anno_morte, immagine_url, museo_id) values (3, 'Banksy', 'Artista di street art britannico, la cui identità rimane sconosciuta.', 1974, NULL, 'images/profiloBansky.jpg', 1);
 
 insert into evento (id, titolo, descrizione, data_inizio, data_fine, museo_id) values (1, 'Rinascimento in Mostra', 'Un evento speciale dedicato ai grandi maestri del Rinascimento.', '2025-09-15', '2025-10-15', 1);
 insert into evento (id, titolo, descrizione, data_inizio, data_fine, museo_id) values (2, 'Notte al Museo', 'Un''esperienza notturna unica con guide speciali e performance dal vivo.', '2025-12-01', '2025-12-02', 1);
