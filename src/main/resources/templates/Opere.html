@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" th:href="@{/css/Opere.css}" />
+    <title>Lista opere</title>
+</head>
+
+<body>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+
+
+    <h1>opere</h1>
+    <div class="container1">
+        <ul>
+            <li th:each="opera : ${opere}">
+                <div>
+                    <a th:href="@{/opera/{id}(id=${opera.id})}">
+                        <img th:src="${opera.urlImage}" alt="Foto opera" />
+                    </a>
+                </div>
+                <a th:href="@{/opera/{id}(id=${opera.id})}" th:text="${opera.titolo}">Nome</a>
+            </li>
+        </ul>
+        <div th:if="${opere == null}">Non ci sono opere nel sistema</div>
+    </div>
+
+</body>
+
+</html>

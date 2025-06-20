@@ -25,9 +25,9 @@ insert into fascia (id, data, orario_inizio, capienza_massima, posti_prenotati, 
 insert into fascia (id, data, orario_inizio, capienza_massima, posti_prenotati, museo_id, evento_id) values (3, '2025-12-01', '20:00:00', 50, 20, 1, 2);
 insert into fascia (id, data, orario_inizio, capienza_massima, posti_prenotati, museo_id, evento_id) values (4, '2025-07-12', '11:00:00', 40, 15, 1, 3);
 
-insert into opera (id, titolo, descrizione, anno, immagine_url, artista_id, museo_id) values (1, 'La Gioconda', 'Uno dei dipinti più famosi al mondo, realizzato da Leonardo da Vinci.', 1503, 'https://example.com/gioconda.jpg', 1, 1);
-insert into opera (id, titolo, descrizione, anno, immagine_url, artista_id, museo_id) values (2, 'Le Due Frida', 'Dipinto iconico che rappresenta due versioni di Frida Kahlo.', 1939, 'https://example.com/frida2.jpg', 2, 1);
-insert into opera (id, titolo, descrizione, anno, immagine_url, artista_id, museo_id) values (3, 'Girl with Balloon', 'Famosa opera di street art di Banksy.', 2002, 'https://example.com/balloon.jpg', 3, 1);
+insert into opera (id, titolo, descrizione, anno, immagine_url, artista_id, museo_id) values (1, 'La Gioconda', 'Uno dei dipinti più famosi al mondo, realizzato da Leonardo da Vinci.', 1503, 'images/OperaLaGioconda.jpg', 1, 1);
+insert into opera (id, titolo, descrizione, anno, immagine_url, artista_id, museo_id) values (2, 'Le Due Frida', 'Dipinto iconico che rappresenta due versioni di Frida Kahlo.', 1939, 'images/OperaLeDueFrida.jpg', 2, 1);
+insert into opera (id, titolo, descrizione, anno, immagine_url, artista_id, museo_id) values (3, 'Girl with Balloon', 'Famosa opera di street art di Banksy.', 2002, 'images/OperaGirlWithBaloon.jpg', 3, 1);
 
 insert into opera_eventi (opere_id, eventi_id) values (1, 1);  -- La Gioconda → Rinascimento in Mostra
 insert into opera_eventi (opere_id, eventi_id) values (2, 2);  -- Le Due Frida → Notte al Museo
