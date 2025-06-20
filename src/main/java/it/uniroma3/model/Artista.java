@@ -2,6 +2,7 @@ package it.uniroma3.model;
 
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -33,10 +34,11 @@ public class Artista {
 	@Max(value = 2025, message = "L'anno di morte non può essere nel futuro")
 	private Integer annoMorte;
 
+	@Column(name = "immagine_url")
 	@NotBlank(message = "L'URL dell'immagine non può essere vuoto")
 	@Size(max = 2048, message = "L'URL dell'immagine è troppo lungo")
 	@Pattern(regexp = "^(http|https)://.*\\.(jpg|jpeg|png|gif)$", message = "L'URL deve essere valido e puntare a un'immagine (jpg, jpeg, png, gif)")
-    private String immagineUrl;
+    private String urlImage;
 
     @OneToMany(mappedBy = "artista")
     private List<Opera> opere;
@@ -76,13 +78,14 @@ public class Artista {
 		this.biografia = bio;
 	}
 
-	public String getImmagineUrl() {
-		return immagineUrl;
-	}
+	public String getUrlImage() {
+        return urlImage;
+    }
 
-	public void setImmagineUrl(String immagineUrl) {
-		this.immagineUrl = immagineUrl;
-	}
+    // setter
+    public void setUrlImage(String urlImage) {
+        this.urlImage = urlImage;
+    }
 
 	public int getAnnoMorte() {
 		return annoMorte;
@@ -112,7 +115,7 @@ public class Artista {
 				", nome='" + nome + '\'' +
 				", annoNascita=" + annoNascita +
 				", annoMorte=" + annoMorte +
-				", immagineUrl='" + immagineUrl + '\'' +
+				", immagineUrl='" + urlImage + '\'' +
 				'}';
 	}
 
