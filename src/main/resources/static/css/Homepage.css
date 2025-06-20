@@ -1,135 +1,68 @@
-/* Reset base e font */
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
-}
-
-/* Fascia di navigazione fissa */
-.fascia {
+  height: 100vh;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: black;
-  padding: 0 40px;
-  height: 60px;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-}
+  flex-direction: column;
+  font-family: Arial, sans-serif;
 
-.fascia .logo {
-  color: white;
-  font-size: 24px;
-  font-weight: bold;
-}
-
-.fascia .menu {
-  display: flex;
-  gap: 30px;
-}
-
-.fascia .menu a {
-  color: white;
-  text-decoration: none;
-  font-weight: bold;
-  transition: color 0.3s;
-}
-
-.fascia .menu a:hover {
-  color: #999;
-}
-
-/* Container principale */
-.container {
-  position: relative;
-  width: 1440px;
-  height: 1024px;
-  margin: 60px auto 0 auto; /* spazio per fascia */
-  background: #fff;
-  overflow: hidden;
-}
-
-/* Sfondo immagine */
-.image-background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 1492px;
-  height: 1024px;
-  background-image: url('https://www.analisidellopera.it/wp-content/uploads/2018/08/Picasso_Guernica-1.jpg');
+  background-image: url("/images/guernica.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  z-index: 1;
 }
 
-/* Rettangolo nero in alto */
-.rectangle3 {
-  position: absolute;
-  width: 1440px;
-  height: 185px;
-  top: 0;
-  left: 0;
-  background: #000;
-  z-index: 3;
+/* Navbar */
+nav {
+  background-color: rgba(0, 0, 0, 0.85);
+  padding: 0.5rem 1rem;
+  z-index: 100;
 }
 
-/* Rettangolo grigio trasparente */
-.rectangle2 {
-  position: absolute;
-  width: 523px;
-  height: 210px;
-  left: 484px;
-  top: 474px;
-  background: rgba(196, 196, 196, 0.76);
-  box-sizing: border-box;
-  z-index: 4;
+.navbar-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-/* Testo NoMa con gradient text */
-.noma {
-  position: absolute;
-  width: 437px;
-  height: 280px;
-  left: 538px;
-  top: 512px;
-
-  font-family: 'Inter', sans-serif;
-  font-weight: 800;
-  font-size: 128px;
-  line-height: 155px;
-  text-align: center;
-
-  background: linear-gradient(180deg, #FFFFFF 99.99%, #999999 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  color: transparent;
-
-  border: 1px solid #D0D0D0;
-  z-index: 5;
+.logo img {
+  height: 50px;
 }
 
-/* Sezione Hero - opzionale */
-.hero {
-  margin-top: 60px;
-  background-image: url('/images/texture.jpg');
-  background-size: cover;
-  background-position: center;
-  height: 100vh;
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+}
+
+nav ul li {
+  display: inline;
+}
+
+nav a,
+nav button {
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+/* Testo al centro */
+.center-text {
+  flex-grow: 1;
   display: flex;
   justify-content: center;
   align-items: center;
+  text-align: center;
 }
 
-.hero-text {
-  font-size: 64px;
-  font-weight: 800;
-  background-color: rgba(255, 255, 255, 0.6);
-  padding: 40px 60px;
-  border-radius: 10px;
-  color: #222;
+.center-text h1 {
+  font-size: 4rem;
+  color: white;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
 }

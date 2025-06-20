@@ -1,48 +1,24 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Pagina con immagine e fascia</title>
-  <link rel="stylesheet" href="style.css" />
-  <style>
-    body {
-      background-image: url("/images/image.png");
-    }
-  </style>
+  <title>Home</title>
+  <link rel="stylesheet" href="/css/Homepage.css" />
 </head>
 
 <body>
 
-  <nav class="fascia">
-    <div class="logo">
-      <img src="images/logo.png" alt="Logo" />
-    </div>
-    <div class="menu">
-      <a th:href="@{/homepage}">Home</a>
-    </div>
-    <a href="#">Servizi</a>
-    <a href="#">Contatti</a>
-    <a th:href="@{/eventi}">Eventi</a>
-    <span sec:authorize="isAnonymous()">
-      <a th:href="@{/login}">Login</a>
-    </span>
-  </nav>
+  <!-- Include la navbar con logo -->
+  <div th:replace="fragments/navbar :: navbar"></div>
 
-  <div class="container">
-    <div class="image-background"></div>
-
-    <!-- Rettangolo nero -->
-    <div class="rectangle3"></div>
-
-    <!-- Rettangolo grigio trasparente -->
-    <div class="rectangle2"></div>
-
-    <!-- Testo NoMa -->
-    <div class="noma">NoMa</div>
+  <!-- Scritta centrale -->
+  <div class="center-text">
+    <h1>NoMa</h1>
   </div>
 
 </body>
-
 </html>
