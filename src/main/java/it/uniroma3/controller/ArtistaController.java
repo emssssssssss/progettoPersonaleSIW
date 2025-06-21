@@ -28,7 +28,7 @@ public class ArtistaController {
     @GetMapping("/artista/{id}")
     public String getArtista(@PathVariable Long id, Model model) {
         model.addAttribute("artista", this.artistaService.getArtistaById(id));
-        return "artista";
+        return "Artista";
     }
 
     @GetMapping("/artisti")
