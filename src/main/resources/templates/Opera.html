@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" th:href="@{/css/Opera.css}" />
+    <title>Opera</title>
+</head>
+
+<body>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="opera-container">
+        <h1 th:text="${opera.titolo}">Titolo Opera</h1>
+
+        <div>
+            <a th:href="@{/opera/{id}(id=${opera.id})}">
+                <img th:src="${opera.urlImage}" alt="Foto opera" />
+            </a>
+        </div>
+
+        <p><strong>Descrizione:</strong> <span th:text="${opera.descrizione}">Descrizione</span></p>
+        <p><strong>Anno:</strong> <span th:text="${opera.anno}">Anno</span></p>
+
+        <div class="artista-info">
+            <h3>Autore</h3>
+            <a th:href="@{/artisti/{id}(id=${opera.artista.id})}">
+                <img th:src="${opera.artista.urlImage}" alt="Immagine artista" class="artista-img" />
+                <p th:text="${opera.artista.nome}">Nome artista</p>
+            </a>
+        </div>
+
+        <p th:if="${opera.museo != null}">
+            <strong>Esposta presso il museo:</strong>
+            <span th:text="${opera.museo.nome}">Nome museo</span>
+        </p>
+
+        <div th:if="${opera.eventi != null and !opera.eventi.empty}">
+
+            <h3>Eventi correlati:</h3>
+            <ul>
+                <li th:each="evento : ${opera.eventi}">
+                    <span th:text="${evento.titolo}">Nome evento</span>
+                    (<span th:text="${evento.dataInizio}">Data</span>)
+                    (<span th:text="${evento.dataFine}">Data</span>)
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+
+</html>

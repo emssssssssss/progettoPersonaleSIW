@@ -25,7 +25,7 @@ public class OperaController {
     @GetMapping("/opera/{id}")
     public String getOpera(@PathVariable Long id, Model model) {
         model.addAttribute("opera", this.operaService.getOperaById(id));
-        return new String();
+        return "Opera";
     }
 
     @GetMapping("/opere")
