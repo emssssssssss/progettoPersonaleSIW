@@ -4,9 +4,9 @@ insert into artista (id, nome, biografia, anno_nascita, anno_morte, immagine_url
 insert into artista (id, nome, biografia, anno_nascita, anno_morte, immagine_url, museo_id) values (2, 'Frida Kahlo', 'Celebre pittrice messicana conosciuta per i suoi autoritratti intensi.', 1907, 1954, '/images/profiloFridaKahlo.webp', 1);
 insert into artista (id, nome, biografia, anno_nascita, anno_morte, immagine_url, museo_id) values (3, 'Banksy', 'Artista di street art britannico, la cui identità rimane sconosciuta.', 1974, NULL, '/images/profiloBansky.jpg', 1);
 
-insert into evento (id, titolo, descrizione, data_inizio, data_fine, museo_id) values (1, 'Rinascimento in Mostra', 'Un evento speciale dedicato ai grandi maestri del Rinascimento.', '2025-09-15', '2025-10-15', 1);
-insert into evento (id, titolo, descrizione, data_inizio, data_fine, museo_id) values (2, 'Notte al Museo', 'Un''esperienza notturna unica con guide speciali e performance dal vivo.', '2025-12-01', '2025-12-02', 1);
-insert into evento (id, titolo, descrizione, data_inizio, data_fine, museo_id) values (3, 'Arte Contemporanea e Urban', 'Focus sull''arte urbana con installazioni interattive.', '2025-07-10', '2025-08-10', 1);
+insert into evento (id, titolo, descrizione, data_inizio, data_fine, museo_id, immagine_url) values (1, 'Rinascimento in Mostra', 'Un evento speciale dedicato ai grandi maestri del Rinascimento.', '2025-09-15', '2025-10-15', 1, '/images/sfondoRinascimento.jpg');
+insert into evento (id, titolo, descrizione, data_inizio, data_fine, museo_id, immagine_url) values (2, 'Notte al Museo', 'Un''esperienza notturna unica con guide speciali e performance dal vivo.', '2025-12-01', '2025-12-02', 1, '/images/sfondoNotteAlMuseo.webp');
+insert into evento (id, titolo, descrizione, data_inizio, data_fine, museo_id, immagine_url) values (3, 'Arte Contemporanea e Urban', 'Focus sull''arte urbana con installazioni interattive.', '2025-07-10', '2025-08-10', 1, '/images/sfondoArteContemporanea.jpg');
 
 insert into utente (id, nome, email, password, ruolo) 
 values (1, 'Anna Rossi', 'anna.rossi@example.com', '$2a$10$7Y7pHVk6jHSHKCowPrSh8Opypb2coYl7/ShaATGtGOdtlchK9tgAK', 'VISITATORE');

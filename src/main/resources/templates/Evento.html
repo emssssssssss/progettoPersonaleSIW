@@ -10,7 +10,7 @@
 <body>
 
     <!-- NAVBAR -->
-    <div th:replace="fragments/navbar :: navbar"></div>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
 
     <h1>Evento</h1>
 
@@ -33,12 +33,14 @@
                 <td>
                     <a th:href="@{/evento/{id}(id=${evento.id})}">Visualizza</a>
 
-                    <!-- Solo per utenti con ruolo STAFF -->
-                    <span sec:authorize="hasRole('STAFF')">
-                        | <a th:href="@{/evento/modifica/{id}(id=${evento.id})}">Modifica</a>
-                        | <form th:action="@{'/evento/elimina/' + ${evento.id}}" method="post" style="display:inline;"
+                    <!-- Azioni extra per utenti STAFF -->
+                    <span class="azioni-staff" sec:authorize="hasRole('STAFF')">
+                        |
+                        <a th:href="@{/evento/modifica/{id}(id=${evento.id})}">Modifica</a>
+                        |
+                        <form th:action="@{'/evento/elimina/' + ${evento.id}}" method="post" style="display:inline;"
                             onsubmit="return confirm('Confermi l\'eliminazione?');">
-                            <button type="submit" style="color:red; background:none; border:none;">Elimina</button>
+                            <button type="submit" class="btn-elimina">Elimina</button>
                         </form>
                     </span>
                 </td>
@@ -46,10 +48,10 @@
         </tbody>
     </table>
 
-    <!-- Pulsante Aggiungi Evento (solo per STAFF) -->
-    <div sec:authorize="hasRole('STAFF')">
+    <!-- Pulsante Crea Evento, visibile solo agli STAFF -->
+    <div class="crea-evento-container" sec:authorize="hasRole('STAFF')">
         <a th:href="@{/evento/aggiungi}">
-            <button>Crea Nuovo Evento</button>
+            <button class="btn-crea">Crea Nuovo Evento</button>
         </a>
     </div>
 

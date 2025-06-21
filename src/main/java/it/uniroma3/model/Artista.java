@@ -18,17 +18,17 @@ import jakarta.validation.constraints.Size;
 @Entity
 public class Artista {
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
 	@NotBlank(message = "Il nome non può essere nullo")
-    private String nome;
+	private String nome;
 
 	@Size(max = 700, message = "La biografia non può superare 700 caratteri")
-    private String biografia;
+	private String biografia;
 
 	@NotNull(message = "L'anno è obbligatorio")
-    @Max(value = 2025, message = "L'anno di nascita non può essere nel futuro")
+	@Max(value = 2025, message = "L'anno di nascita non può essere nel futuro")
 	private int annoNascita;
 
 	@Max(value = 2025, message = "L'anno di morte non può essere nel futuro")
@@ -38,21 +38,21 @@ public class Artista {
 	@NotBlank(message = "L'URL dell'immagine non può essere vuoto")
 	@Size(max = 2048, message = "L'URL dell'immagine è troppo lungo")
 	@Pattern(regexp = "^(http|https)://.*\\.(jpg|jpeg|png|gif)$", message = "L'URL deve essere valido e puntare a un'immagine (jpg, jpeg, png, gif)")
-    private String urlImage;
+	private String urlImage;
 
-    @OneToMany(mappedBy = "artista")
-    private List<Opera> opere;
+	@OneToMany(mappedBy = "artista")
+	private List<Opera> opere;
 
-    @ManyToOne
-    private Museo museo;
-    
-    public Long getId() {
-        return id;
-    }
+	@ManyToOne
+	private Museo museo;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public String getNome() {
 		return this.nome;
@@ -79,51 +79,52 @@ public class Artista {
 	}
 
 	public String getUrlImage() {
-        return urlImage;
-    }
+		return urlImage;
+	}
 
-    // setter
-    public void setUrlImage(String urlImage) {
-        this.urlImage = urlImage;
-    }
+	public void setUrlImage(String urlImage) {
+		this.urlImage = urlImage;
+	}
 
-	public int getAnnoMorte() {
+	public Integer getAnnoMorte() {
 		return annoMorte;
 	}
 
-	public void setAnnoMorte(int annoMorte) {
+	public void setAnnoMorte(Integer annoMorte) {
 		this.annoMorte = annoMorte;
 	}
 
 	public Museo getMuseo() {
-        return museo;
-    }
+		return museo;
+	}
 
-    public void setMuseo(Museo museo) {
-        this.museo = museo;
-    }
+	public void setMuseo(Museo museo) {
+		this.museo = museo;
+	}
 
-	 public List<Opera> getOpere() {
-        return opere;
-    }
+	public List<Opera> getOpere() {
+		return opere;
+	}
 
-    public void setOpere(List<Opera> opere) {
-        this.opere = opere;
-    }
+	public void setOpere(List<Opera> opere) {
+		this.opere = opere;
+	}
 
 	@Override
 	public boolean equals(Object o) {
-   		if (this == o) return true;
-    	if (!(o instanceof Artista)) return false;
-    	Artista artista = (Artista) o;
-    	return id != null && id.equals(artista.getId());
+		if (this == o)
+			return true;
+		if (!(o instanceof Artista))
+			return false;
+		Artista artista = (Artista) o;
+		return id != null && id.equals(artista.getId());
 	}
 
 	@Override
 	public int hashCode() {
-   		return id != null ? id.hashCode() : 0;
+		return id != null ? id.hashCode() : 0;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Artista{" +
@@ -134,5 +135,4 @@ public class Artista {
 				", immagineUrl='" + urlImage + '\'' +
 				'}';
 	}
-
 }

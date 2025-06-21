@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="it">
+<html xmlns:th="http://www.thymeleaf.org" lang="it"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8" />
@@ -12,9 +12,16 @@
     
     <h1>Lista Eventi</h1>
 
-    <ul>
-        <li th:each="evento : ${eventi}">
-            <a th:href="@{/evento/{id}(id=${evento.id})}" th:text="${evento.titolo}">Titolo Evento</a>
+    <ul class="eventi-lista">
+        <li th:each="evento : ${eventi}" class="evento-item">
+            <a th:href="@{/evento/{id}(id=${evento.id})}" class="evento-link">
+                <div class="evento-immagine">
+                    <img th:src="${evento.urlImage}" alt="Immagine evento" />
+                </div>
+                <div class="evento-titolo">
+                    <span th:text="${evento.titolo}">Titolo Evento</span>
+                </div>
+            </a>
         </li>
     </ul>
 
