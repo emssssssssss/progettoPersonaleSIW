@@ -95,6 +95,22 @@ public class Artista {
 		this.annoMorte = annoMorte;
 	}
 
+	public Museo getMuseo() {
+        return museo;
+    }
+
+    public void setMuseo(Museo museo) {
+        this.museo = museo;
+    }
+
+	 public List<Opera> getOpere() {
+        return opere;
+    }
+
+    public void setOpere(List<Opera> opere) {
+        this.opere = opere;
+    }
+
 	@Override
 	public boolean equals(Object o) {
    		if (this == o) return true;
