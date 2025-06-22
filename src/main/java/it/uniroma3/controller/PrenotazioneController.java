@@ -83,7 +83,7 @@ public class PrenotazioneController {
 
     }
 
-
+    @PreAuthorize("hasAuthority('VISITATORE')")
     @GetMapping("/prenotazioni/nuova")
     public String mostraFormPrenotazione(Model model) {
         model.addAttribute("prenotazione", new Prenotazione());

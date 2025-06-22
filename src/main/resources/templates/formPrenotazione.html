@@ -12,10 +12,10 @@
 <form th:action="@{/prenotazioni}" th:object="${prenotazione}" method="post">
     
     <label for="disponibilita">Fascia oraria:</label>
-    <select th:field="*{disponibilita.id}" required>
+    <select th:field="*{fascia.id}" required>
         <option th:each="fascia : ${fasce}" 
                 th:value="${fascia.id}" 
-                th:text="${fascia.orario} + ' - posti: ' + (fascia.capienzaMassima - fascia.postiPrenotati)">
+                th:text="${fascia.data} + ' - posti: ' + (fascia.capienzaMassima - fascia.postiPrenotati)">
         </option>
     </select>
     <br/><br/>

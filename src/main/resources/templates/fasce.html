@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Fasce Disponibili</title>
@@ -12,6 +13,7 @@
 <table border="1">
     <thead>
         <tr>
+            <th>Data</th>
             <th>Orario</th>
             <th>Capienza</th>
             <th>Posti Prenotati</th>
@@ -20,7 +22,8 @@
     </thead>
     <tbody>
         <tr th:each="fascia : ${fasce}">
-            <td th:text="${fascia.orario}">10:00</td>
+            <td th:text="${fascia.data}">2025-06-30</td>
+            <td th:text="${fascia.orarioInizio}">10:00</td>
             <td th:text="${fascia.capienzaMassima}">20</td>
             <td th:text="${fascia.postiPrenotati}">5</td>
             <td th:text="${fascia.capienzaMassima - fascia.postiPrenotati}">15</td>
@@ -28,7 +31,15 @@
     </tbody>
 </table>
 
-<a th:href="@{/prenotazioni/nuova}">Prenota una visita</a>
+<!-- Solo se l'utente è autenticato mostriamo il link alla prenotazione -->
+<div sec:authorize="isAuthenticated()">
+    <a th:href="@{/prenotazioni/nuova}">Prenota una visita</a>
+</div>
+
+<div sec:authorize="!isAuthenticated()">
+    <a th:href="@{/login}">Accedi per prenotare</a>
+</div>
+
 
 </body>
 </html>

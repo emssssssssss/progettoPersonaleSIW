@@ -99,7 +99,7 @@ public class FasciaController {
     @GetMapping("/fasce")
     public String mostraFasceDisponibili(Model model) {
         model.addAttribute("fasce", fasciaService.getAllFascia());
-        return "fasceDisponibili";
+        return "fasce";
     }
     
 
