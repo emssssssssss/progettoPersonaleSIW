@@ -1,0 +1,177 @@
+/* style.css con unità vw */
+
+/* Navbar */
+nav {
+    background-color: rgba(0, 0, 0, 0.85);
+    padding: 0.5rem 1rem;
+    z-index: 100;
+}
+
+.navbar-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo img {
+    height: 50px;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 1.5rem;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+}
+
+nav a,
+nav button {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+/* Stili generici della pagina (esclusi dalla navbar usando .page-content) */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    /*padding: 2vw;*/
+    color: #333;
+}
+
+.page-content h2 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 3vw;
+    font-size: 2.5vw;
+}
+
+.page-content table {
+    width: 90vw;
+    margin: 0 auto 4vw auto;
+    border-collapse: collapse;
+    background-color: white;
+    box-shadow: 0 0 1vw rgba(0, 0, 0, 0.1);
+    border-radius: 0.5vw;
+    overflow: hidden;
+    font-size: 1.2vw;
+}
+
+.page-content thead {
+    background-color: #3498db;
+    color: white;
+}
+
+.page-content th,
+.page-content td {
+    padding: 1.2vw;
+    text-align: center;
+    border-bottom: 0.1vw solid #ddd;
+}
+
+.page-content tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Colori riga in base alla disponibilità */
+.page-content .disponibile {
+    background-color: #72ee72a3;
+    /* verde chiaro */
+}
+
+.page-content .medio-pieno {
+    background-color: #ecd075a3;
+    /* giallo chiaro */
+}
+
+.page-content .quasi-pieno {
+    background-color: #ef8e83a3;
+    /* rosso chiaro */
+}
+
+.page-content a {
+    display: block;
+    width: fit-content;
+    margin: 0 auto;
+    text-decoration: none;
+    padding: 1vw 2vw;
+    background-color: #3498db;
+    color: white;
+    border-radius: 0.6vw;
+    font-weight: bold;
+    font-size: 1.2vw;
+    transition: background-color 0.3s ease;
+}
+
+.page-content a:hover {
+    background-color: #2980b9;
+}
+
+.page-content button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 0.8vw 1.5vw;
+    border-radius: 0.5vw;
+    font-size: 1.1vw;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.page-content button:hover {
+    background-color: #2980b9;
+}
+
+@media (max-width: 768px) {
+
+    .page-content table,
+    .page-content thead,
+    .page-content tbody,
+    .page-content th,
+    .page-content td,
+    .page-content tr {
+        display: block;
+    }
+
+    .page-content thead tr {
+        display: none;
+    }
+
+    .page-content td {
+        position: relative;
+        padding-left: 12vw;
+        text-align: left;
+    }
+
+    .page-content td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 2vw;
+        font-weight: bold;
+        text-transform: uppercase;
+        color: #555;
+        font-size: 1.5vw;
+    }
+
+    .page-content td:last-child {
+        border-bottom: 0.2vw solid #ccc;
+    }
+
+    .page-content h2 {
+        font-size: 4vw;
+    }
+
+    .page-content a {
+        font-size: 2.5vw;
+    }
+}

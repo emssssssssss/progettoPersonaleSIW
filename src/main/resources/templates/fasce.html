@@ -1,45 +1,59 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <meta charset="UTF-8">
     <title>Fasce Disponibili</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <link rel="stylesheet" th:href="@{/css/Fasce.css}" />
 </head>
+
 <body>
 
-<h2>Fasce Orarie Disponibili</h2>
+    <!-- Isola la navbar in un contenitore con classe specifica -->
+    <div class="navbar-wrapper" th:replace="~{fragments/navbar :: navbar}"></div>
 
-<table border="1">
-    <thead>
-        <tr>
-            <th>Data</th>
-            <th>Orario</th>
-            <th>Capienza</th>
-            <th>Posti Prenotati</th>
-            <th>Posti Disponibili</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr th:each="fascia : ${fasce}">
-            <td th:text="${fascia.data}">2025-06-30</td>
-            <td th:text="${fascia.orarioInizio}">10:00</td>
-            <td th:text="${fascia.capienzaMassima}">20</td>
-            <td th:text="${fascia.postiPrenotati}">5</td>
-            <td th:text="${fascia.capienzaMassima - fascia.postiPrenotati}">15</td>
-        </tr>
-    </tbody>
-</table>
+    <main class="page-content">
+        <h2>Fasce Orarie Disponibili</h2>
 
-<!-- Solo se l'utente è autenticato mostriamo il link alla prenotazione -->
-<div sec:authorize="isAuthenticated()">
-    <a th:href="@{/prenotazioni/nuova}">Prenota una visita</a>
-</div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Orario</th>
+                    <th>Capienza</th>
+                    <th>Posti Prenotati</th>
+                    <th>Posti Disponibili</th>
+                    <th sec:authorize="isAuthenticated()">Azione</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="fascia : ${evento.fasceOrarie}" th:with="postiDisponibili=${fascia.capienzaMassima - fascia.postiPrenotati},
+                             percentuale=${(postiDisponibili * 100) / fascia.capienzaMassima}" th:classappend="${percentuale < 25} ? 'quasi-pieno' :
+                                    (${percentuale < 50} ? 'medio-pieno' : 'disponibile')">
 
-<div sec:authorize="!isAuthenticated()">
-    <a th:href="@{/login}">Accedi per prenotare</a>
-</div>
+                    <td data-label="Data" th:text="${fascia.data}">2025-06-30</td>
+                    <td data-label="Orario" th:text="${fascia.orarioInizio}">10:00</td>
+                    <td data-label="Capienza" th:text="${fascia.capienzaMassima}">20</td>
+                    <td data-label="Posti Prenotati" th:text="${fascia.postiPrenotati}">5</td>
+                    <td data-label="Posti Disponibili" th:text="${postiDisponibili}">15</td>
 
+                    <td data-label="Azione" sec:authorize="isAuthenticated()">
+                        <form th:action="@{/prenotazioni/nuova}" method="get">
+                            <input type="hidden" name="fasciaId" th:value="${fascia.id}" />
+                            <button type="submit">Prenota</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Messaggio per utenti non autenticati -->
+        <div sec:authorize="!isAuthenticated()">
+            <p><a th:href="@{/login(redirect=${currentUri})}">Accedi per prenotare</a><p>
+
+        </div>
+    </main>
 
 </body>
+
 </html>
