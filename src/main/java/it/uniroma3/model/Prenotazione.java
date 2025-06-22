@@ -8,8 +8,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.FutureOrPresent;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.EnumType;
 
@@ -27,8 +25,6 @@ public class Prenotazione {
 
 	private int numeroBiglietti;
 
-	@Min(value = 1, message = "Devi prenotare minimo 1 biglietto")
-	@Max(value = 8, message = "Puoi prenotare al massimo 8 biglietti")
 	private int numeroPersone;
 
 	@Enumerated(EnumType.STRING)

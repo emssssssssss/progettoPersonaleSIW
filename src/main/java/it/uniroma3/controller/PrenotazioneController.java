@@ -1,15 +1,16 @@
 package it.uniroma3.controller;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-
-
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import it.uniroma3.model.Fascia;
 import it.uniroma3.model.Utente;
@@ -22,19 +23,19 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 //import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
-
-
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class PrenotazioneController {
 
-    @Autowired 
+    @Autowired
     private PrenotazioneService prenotazioneService;
 
-    @Autowired 
+    @Autowired
     private UtenteService utenteService;
 
-    @Autowired 
+    @Autowired
     private FasciaService fasciaService;
 
     @GetMapping("/prenotazione/{id}")
@@ -59,11 +60,11 @@ public class PrenotazioneController {
     @GetMapping("/prenotazioni/{idUtente}")
     public String getPrenotazioniUtente(@PathVariable Long idUtente, Model model) {
 
-        //prendo l'utente autenticato
+        // prendo l'utente autenticato
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String emailLoggato = auth.getName();
 
-        //recupero utente loggato
+        // recupero utente loggato
         Optional<Utente> utenteLoggatoOpt = utenteService.getUtenteByEmail(emailLoggato);
 
         if (utenteLoggatoOpt.isEmpty()) {
@@ -72,23 +73,15 @@ public class PrenotazioneController {
 
         Utente utenteLoggato = utenteLoggatoOpt.get();
 
-        //controlla che l'utente stia accedendo solo alle sue prenotazioni
-        if(!utenteLoggato.getId().equals(idUtente)){
+        // controlla che l'utente stia accedendo solo alle sue prenotazioni
+        if (!utenteLoggato.getId().equals(idUtente)) {
             return "accessoNegato";
         }
 
         // Se ok, mostra prenotazioni
         model.addAttribute("prenotazioni", utenteLoggato.getPrenotazioni());
-        return "prenotazioni";        
+        return "prenotazioni";
 
-    }
-
-    @PreAuthorize("hasAuthority('VISITATORE')")
-    @GetMapping("/prenotazioni/nuova")
-    public String mostraFormPrenotazione(Model model) {
-        model.addAttribute("prenotazione", new Prenotazione());
-        model.addAttribute("fasce", fasciaService.getAllFascia());
-        return "formPrenotazione";
     }
 
     @PreAuthorize("hasAuthority('VISITATORE')")
@@ -97,7 +90,7 @@ public class PrenotazioneController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName(); // l'email è lo username
         Utente utente = utenteService.getUtenteByEmail(email)
-            .orElseThrow(() -> new RuntimeException("Utente non trovato"));
+                .orElseThrow(() -> new RuntimeException("Utente non trovato"));
 
         prenotazione.setUtente(utente);
         prenotazione.setStato(Prenotazione.Stato.CONFERMATA);
@@ -107,6 +100,40 @@ public class PrenotazioneController {
         return "redirect:/prenotazioni";
     }
 
+    @PostMapping("/prenotazioni/nuova")
+    public String creaPrenotazione(@RequestParam Long fasciaId,
+            @RequestParam int posti,
+            @AuthenticationPrincipal UserDetails userDetails,
+            RedirectAttributes redirectAttributes) {
+        // Recupera utente autenticato
+        Utente utente = utenteService.getUtenteByEmail(userDetails.getUsername()).get();
 
-    
+        // Recupera fascia
+        Fascia fascia = fasciaService.getFasciaById(fasciaId);
+
+        int disponibili = fascia.getCapienzaMassima() - fascia.getPostiPrenotati();
+        if (posti > disponibili) {
+            redirectAttributes.addFlashAttribute("errore", "Non ci sono abbastanza posti disponibili.");
+            return "redirect:/evento/" + fascia.getEvento().getId(); // o altra pagina con le fasce
+        }
+
+        // Crea nuova prenotazione
+        Prenotazione prenotazione = new Prenotazione();
+        prenotazione.setUtente(utente);
+        prenotazione.setFascia(fascia);
+        prenotazione.setNumeroPersone(posti);
+        prenotazione.setNumeroBiglietti(posti); // se usi entrambi
+        prenotazione.setDataPrenotazione(LocalDate.now());
+        prenotazione.setStato(Prenotazione.Stato.CONFERMATA);
+
+        // Aggiorna fascia
+        fascia.setPostiPrenotati(fascia.getPostiPrenotati() + posti);
+
+        // Salva entrambi
+        prenotazioneService.aggiungiPrenotazione(prenotazione);
+        fasciaService.salvaFascia(fascia);
+
+        return "redirect:/evento/"+ fascia.getEvento().getId(); // oppure torna alla pagina corrente
+    }
+
 }

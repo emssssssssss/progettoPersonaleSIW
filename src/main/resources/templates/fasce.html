@@ -38,22 +38,37 @@
                     <td data-label="Posti Disponibili" th:text="${postiDisponibili}">15</td>
 
                     <td data-label="Azione" sec:authorize="isAuthenticated()">
-                        <form th:action="@{/prenotazioni/nuova}" method="get">
-                            <input type="hidden" name="fasciaId" th:value="${fascia.id}" />
-                            <button type="submit">Prenota</button>
-                        </form>
+                        <button type="button" th:data-fascia-id="${fascia.id}"
+                            th:data-posti-disponibili="${postiDisponibili}" onclick="apriModale(this)">
+                            Prenota
+                        </button>
                     </td>
+
                 </tr>
             </tbody>
         </table>
 
         <!-- Messaggio per utenti non autenticati -->
         <div sec:authorize="!isAuthenticated()">
-            <p><a th:href="@{/login(redirect=${currentUri})}">Accedi per prenotare</a><p>
+            <p><a th:href="@{/login(redirect=${currentUri})}">Accedi per prenotare</a>
+            <p>
 
         </div>
     </main>
 
+    <div id="modalePrenotazione" class="modale" style="display:none;">
+        <div class="modale-contenuto">
+            <span class="chiudi" onclick="chiudiModale()">&times;</span>
+            <form id="formPrenotazione" th:action="@{/prenotazioni/nuova}" method="post">
+                <input type="hidden" name="fasciaId" id="inputFasciaId">
+                <label for="posti">Numero di posti da prenotare:</label>
+                <input type="number" name="posti" id="inputPosti" min="1" required>
+                <button type="submit">Conferma</button>
+            </form>
+        </div>
+    </div>
+
+    <script th:src="@{/js/prenotazione.js}"></script>
 </body>
 
 </html>
