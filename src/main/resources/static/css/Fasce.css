@@ -175,3 +175,93 @@ body {
         font-size: 2.5vw;
     }
 }
+
+/* Sfondo semi-trasparente */
+.modale {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+/* Contenuto del modale */
+.modale-contenuto {
+    background-color: #fff;
+    margin: 15vh auto;
+    padding: 4vw;
+    border-radius: 1.5vw;
+    width: 80vw;
+    max-width: 50vw;
+    box-shadow: 0 0.5vw 1.5vw rgba(0, 0, 0, 0.25);
+    position: relative;
+    animation: slideDown 0.3s ease-out;
+}
+
+/* Animazione apertura */
+@keyframes slideDown {
+    from {
+        transform: translateY(-5vh);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Pulsante di chiusura */
+.chiudi {
+    position: absolute;
+    top: 1vw;
+    right: 1.5vw;
+    font-size: 2vw;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+.chiudi:hover {
+    color: #d00;
+}
+
+/* Stile del form */
+#formPrenotazione {
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+}
+
+#formPrenotazione label {
+    font-size: 1.2vw;
+    font-weight: 500;
+}
+
+#formPrenotazione input[type="number"] {
+    padding: 1vh 1vw;
+    font-size: 1.1vw;
+    border: 0.15vw solid #ccc;
+    border-radius: 1vw;
+    width: 100%;
+}
+
+/* Bottone di conferma */
+#formPrenotazione button[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 1vh 1vw;
+    font-size: 1.2vw;
+    border-radius: 1vw;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+#formPrenotazione button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+

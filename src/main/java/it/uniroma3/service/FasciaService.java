@@ -40,8 +40,7 @@ public class FasciaService {
     }
 
 
-    public Fascia salvaFascia(Fascia fascia, Utente utente){
-        verificaAccessoStaff(utente);
+    public Fascia salvaFascia(Fascia fascia){
         return fasciaRepository.save(fascia);
     }
 

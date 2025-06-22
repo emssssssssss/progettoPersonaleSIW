@@ -54,9 +54,7 @@ public class FasciaController {
         if (result.hasErrors()) {
             return "formFascia";
         }
-
-        Utente utenteAutenticato = utenteService.getUtenteAutenticato();
-        fasciaService.salvaFascia(fascia, utenteAutenticato);
+        fasciaService.salvaFascia(fascia);
 
         return "redirect:/staff/fasce";
     }
@@ -75,8 +73,7 @@ public class FasciaController {
             return "formFascia";
         }
 
-        Utente utenteAutenticato = utenteService.getUtenteAutenticato();
-        fasciaService.salvaFascia(fascia, utenteAutenticato);
+        fasciaService.salvaFascia(fascia);
 
         return "redirect:/staff/fasce";
     }
