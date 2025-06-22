@@ -1,0 +1,133 @@
+/* Navbar */
+nav {
+  background-color: rgba(0, 0, 0, 0.85);
+  padding: 0.5rem 1rem;
+  z-index: 100;
+}
+
+.navbar-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo img {
+  height: 50px;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+}
+
+nav ul li {
+  display: inline;
+}
+
+nav a,
+nav button {
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+/* Opera.css */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f8f8;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+.opera-container {
+    max-width: 800px;
+    margin: 40px auto;
+    background-color: white;
+    padding: 20px 30px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+
+.opera-container h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2em;
+}
+
+.opera-container > div:first-of-type {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.opera-container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.opera-container p {
+    font-size: 1.1em;
+    line-height: 1.5em;
+    margin: 10px 0;
+}
+
+.artista-info {
+    display: flex;
+    align-items: center;
+    margin-top: 25px;
+    border-top: 1px solid #ddd;
+    padding-top: 15px;
+}
+
+.artista-info h3 {
+    margin-right: 15px;
+    font-weight: 600;
+}
+
+.artista-info a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #333;
+}
+
+.artista-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 15px;
+    border: 2px solid #ccc;
+    transition: border-color 0.3s ease;
+}
+
+.artista-img:hover {
+    border-color: #666;
+}
+
+.artista-info p {
+    margin: 0;
+    font-size: 1.2em;
+    font-weight: 600;
+}
+
+.opera-container ul {
+    list-style-type: disc;
+    margin-left: 20px;
+    margin-top: 10px;
+}
+
+.opera-container ul li {
+    margin: 5px 0;
+}
+

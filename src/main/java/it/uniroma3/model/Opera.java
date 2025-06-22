@@ -2,6 +2,7 @@ package it.uniroma3.model;
 
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,10 +29,11 @@ public class Opera {
 	@NotNull(message = "L'anno è obbligatorio")
 	private int anno;
 
+	@Column(name = "immagine_url")
 	@NotBlank(message = "L'URL dell'immagine non può essere vuoto")
 	@Size(max = 2048, message = "L'URL dell'immagine è troppo lungo")
 	@Pattern(regexp = "^(http|https)://.*\\.(jpg|jpeg|png|gif)$", message = "L'URL deve essere valido e puntare a un'immagine (jpg, jpeg, png, gif)")
-	private String immagineUrl;
+	private String urlImage;
 
 	@ManyToOne
 	private Artista artista;
@@ -74,13 +76,13 @@ public class Opera {
 		this.anno = anno;
 	}
 
-	public String getImmagineUrl() {
-		return immagineUrl;
-	}
+	 public String getUrlImage() {
+        return urlImage;
+    }
 
-	public void setImmagineUrl(String immagineUrl) {
-		this.immagineUrl = immagineUrl;
-	}
+    public void setUrlImage(String urlImage) {
+        this.urlImage = urlImage;
+    }
 
 	public void setArtista(Artista artista) {
 		this.artista = artista;
@@ -127,7 +129,7 @@ public class Opera {
 				", titolo='" + titolo + '\'' +
 				", descrizione='" + descrizione + '\'' +
 				", anno=" + anno +
-				", immagineUrl='" + immagineUrl + '\'' +
+				", immagineUrl='" + urlImage + '\'' +
 				'}';
 	}
 

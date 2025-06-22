@@ -25,13 +25,13 @@ public class OperaController {
     @GetMapping("/opera/{id}")
     public String getOpera(@PathVariable Long id, Model model) {
         model.addAttribute("opera", this.operaService.getOperaById(id));
-        return new String();
+        return "Opera";
     }
 
     @GetMapping("/opere")
     public String getOpere(Model model) {
         model.addAttribute("opere", this.operaService.getAllOpere());
-        return "opere";
+        return "Opere";
     }
 
     @GetMapping("/opere/{idEvento}")
@@ -39,7 +39,7 @@ public class OperaController {
         Evento evento = this.eventoService.getEventoById(id);
         model.addAttribute("evento", evento);
         model.addAttribute("opere", evento.getOpere());
-        return "opere";
+        return "Opere";
     }
     
     

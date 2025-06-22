@@ -72,6 +72,10 @@ public class UtenteService {
         return utente != null && utente.getRuolo() == Utente.Ruolo.STAFF;
     }
 
+    public boolean isAmministartore (String codice) {
+        return codice.equals("Panino_con_pomodori");
+    }
+
     public boolean permessoAdmin(String codice) {
         return "HanShotFirst".equals(codice);
     }
