@@ -31,7 +31,7 @@
                 <td th:text="${evento.dataInizio}">Data inizio</td>
                 <td th:text="${evento.dataFine}">Data fine</td>
                 <td>
-                    <a th:href="@{/evento/{id}(id=${evento.id})}">Visualizza</a>
+                    <a th:href="@{/fasce/{id}(id=${evento.id})}">Prenota</a>
 
                     <!-- Azioni extra per utenti STAFF -->
                     <span class="azioni-staff" sec:authorize="hasRole('STAFF')">

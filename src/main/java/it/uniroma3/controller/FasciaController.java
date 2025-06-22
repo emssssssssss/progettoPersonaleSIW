@@ -1,11 +1,15 @@
 package it.uniroma3.controller;
 
+import java.util.Comparator;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
+import it.uniroma3.model.Evento;
 import it.uniroma3.model.Fascia;
+import it.uniroma3.service.EventoService;
 import it.uniroma3.service.FasciaService;
 import it.uniroma3.model.Utente;
 import it.uniroma3.service.UtenteService;
@@ -18,36 +22,36 @@ import org.springframework.web.bind.annotation.PostMapping;
 import jakarta.validation.Valid;
 //import org.springframework.web.bind.annotation.RequestParam;
 
-
-
-
 @Controller
 public class FasciaController {
 
-    @Autowired 
+    @Autowired
     private FasciaService fasciaService;
 
     @Autowired
     private UtenteService utenteService;
 
-    //visualizza tutte le fasce
+    @Autowired
+    private EventoService eventoService;
+
+    // visualizza tutte le fasce
     @GetMapping("/staff/fasce")
     public String getAllFasce(Model model) {
         model.addAttribute("fasce", this.fasciaService.getAllFascia());
-         return "fasceStaff";
+        return "fasceStaff";
     }
-    
-    //mostra form per creare nuova fascia
+
+    // mostra form per creare nuova fascia
     @GetMapping("/staff/fasce/nuova")
     public String showCreateForm(Model model) {
         model.addAttribute("fascia", new Fascia());
         return "formFascia";
     }
 
-    //salva nuova fascia
+    // salva nuova fascia
     @PostMapping("/staff/fasce")
     public String creaFascia(@Valid @ModelAttribute Fascia fascia, BindingResult result) {
-        if(result.hasErrors()) {
+        if (result.hasErrors()) {
             return "formFascia";
         }
 
@@ -57,18 +61,17 @@ public class FasciaController {
         return "redirect:/staff/fasce";
     }
 
-
-    //mostra form per modificare una fascia eszistente
+    // mostra form per modificare una fascia eszistente
     @GetMapping("/staff/fasce/edit/{id}")
     public String mostraEditForm(@PathVariable Long id, Model model) {
         model.addAttribute("fascia", fasciaService.getFasciaById(id));
         return "formFascia";
     }
 
-    //salva modifiche fascia
+    // salva modifiche fascia
     @PostMapping("/staff/fasce/update")
     public String updateFascia(@Valid @ModelAttribute Fascia fascia, BindingResult result) {
-        if(result.hasErrors()) {
+        if (result.hasErrors()) {
             return "formFascia";
         }
 
@@ -78,8 +81,7 @@ public class FasciaController {
         return "redirect:/staff/fasce";
     }
 
-
-    //elimina fascia
+    // elimina fascia
     @GetMapping("/staff/fasce/delete/{id}")
     public String deleteFascia(@PathVariable Long id) {
         Utente utenteAutenticato = utenteService.getUtenteAutenticato();
@@ -88,21 +90,24 @@ public class FasciaController {
         return "redirect:/staff/fasce";
     }
 
-
     @GetMapping("/fascia/{id}")
     public String getFascia(@PathVariable Long id, Model model) {
         model.addAttribute("fascia", this.fasciaService.getFasciaById(id));
         return "fascia";
     }
 
+    @GetMapping("/fasce/{id}")
+    public String mostraFasceDisponibili(@PathVariable("id") Long idEvento, Model model) {
+        Evento evento = this.eventoService.getEventoById(idEvento);
 
-    @GetMapping("/fasce")
-    public String mostraFasceDisponibili(Model model) {
+        // Ordina le fasce orarie per data e orarioInizio (in ordine crescente)
+        evento.getFasceOrarie().sort(Comparator
+                .comparing(Fascia::getData)
+                .thenComparing(Fascia::getOrarioInizio));
+
+        model.addAttribute("evento", evento);
         model.addAttribute("fasce", fasciaService.getAllFascia());
         return "fasce";
     }
-    
 
-
-    
 }

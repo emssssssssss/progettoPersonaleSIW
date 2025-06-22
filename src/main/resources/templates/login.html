@@ -12,6 +12,7 @@
         <h2>Accedi al tuo profilo</h2>
 
         <form th:action="@{/login}" method="post" class="form-accedi">
+            <input type="hidden" name="redirect" th:value="${redirect}" />
             <label for="email">Email o Nome:</label>
             <input type="text" id="email" name="email" required class="input-stile"><br><br>
 

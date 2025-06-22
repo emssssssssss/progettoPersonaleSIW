@@ -6,11 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,48 +20,44 @@ import it.uniroma3.service.CustomUserDetailsService;
 @EnableMethodSecurity
 public class AuthConfiguration {
 
-        @Autowired
-        private DataSource dataSource;
-        @Autowired
-        private CustomUserDetailsService customUserDetailsService;
+    @Autowired
+    private DataSource dataSource;
 
-        private static final String ROLE_STAFF = "ROLE_STAFF";
-        private static final String ROLE_VISITATORE = "ROLE_VISITATORE";
+    @Autowired
+    private CustomUserDetailsService customUserDetailsService;
 
-        @Bean
-        SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-                http
-                                .authorizeHttpRequests(authz -> authz
-                                                .requestMatchers(HttpMethod.GET,
+    // Inietta il tuo custom success handler
+    @Autowired
+    private CustomAuthenticationSuccessHandler successHandler;
 
-                                                                "/", "/index", "/login", "/register", "/registrazione",
-                                                                "/eventi", "/evento/**", "/opere", "/opera/**", "/homepage",  
-                                                                "/artisti", "/artista/**", "/css/**", "/images/**", "/error")
+    @Bean
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .authorizeHttpRequests(authz -> authz
+                        .requestMatchers(HttpMethod.GET,
+                                "/", "/index", "/login", "/register", "/registrazione",
+                                "/eventi", "/evento/**", "/opere", "/opera/**", "/homepage", "/fasce/**",
+                                "/artisti", "/artista/**", "/css/**", "/images/**", "/error")
+                        .permitAll()
+                        .requestMatchers(HttpMethod.POST, "/login", "/register", "/registrazione").permitAll()
+                        .requestMatchers("/admin/**", "/staff/fasce/**").hasAuthority("ROLE_STAFF")
+                        .anyRequest().authenticated())
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .usernameParameter("email")
+                        .passwordParameter("password")
+                        .successHandler(successHandler) // Usa il custom handler qui
+                        .failureUrl("/loginError")
+                        .permitAll())
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/homepage")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                        .permitAll());
 
-                                                .permitAll()
-                                                .requestMatchers(HttpMethod.POST, "/login", "/register", "/registrazione").permitAll()
-                                                .requestMatchers("/admin/**").hasAuthority(ROLE_STAFF)
-                                                .requestMatchers("/staff/fasce/**").hasAuthority(ROLE_STAFF)
-                                                .anyRequest().authenticated())
-                                .formLogin(form -> form
-                                                .loginPage("/login")
-                                                .usernameParameter("email") // <-- nome del campo input del form (deve
-                                                                            // essere "email")
-                                                .passwordParameter("password")
-                                                .defaultSuccessUrl("/homepage", true)
-                                                .failureUrl("/loginError")
-                                                .permitAll())
-                                .logout(logout -> logout
-                                                .logoutUrl("/logout")
-                                                .logoutSuccessUrl("/homepage")
-                                                .invalidateHttpSession(true)
-                                                .deleteCookies("JSESSIONID")
-                                                .permitAll());
-
-                return http.build();
-        }
-
-         // Rimosso JdbcUserDetailsManager
+        return http.build();
+    }
 
     @Bean
     AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
