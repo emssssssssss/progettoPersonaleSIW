@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Profilo Utente</title>
+    <link rel="stylesheet" th:href="@{/css/Profilo.css}" />
+</head>
+
+<body>
+
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <div class="container">
+        <header>
+            <h1>Profilo Utente</h1>
+        </header>
+
+        <!-- Info utente -->
+        <section class="profile-card">
+            <h2 th:text="${utente.nome}">Nome Cognome</h2>
+            <p><strong>Email:</strong> <span th:text="${utente.email}">email@example.com</span></p>
+            <p><strong>Ruolo:</strong> <span th:text="${utente.ruolo}">VISITATORE</span></p>
+        </section>
+
+        <!-- Pulsanti azione -->
+        <section class="actions">
+            <a th:href="@{/logout}" class="button logout">Logout</a>
+        </section>
+
+        <!-- Prenotazioni -->
+        <section class="prenotazioni-list">
+            <h3>Le tue prenotazioni</h3>
+
+            <div th:if="${#lists.isEmpty(utente.prenotazioni)}">
+                <p>Non hai ancora effettuato prenotazioni.</p>
+            </div>
+
+            <div th:each="p : ${utente.prenotazioni}" class="prenotazione-card">
+                <p><strong>Data:</strong>
+                    <span th:text="${#temporals.format(p.fascia.data, 'dd/MM/yyyy')}">01/01/2025</span>
+                </p>
+                <p><strong>Orario:</strong>
+                    <span th:text="${#temporals.format(p.fascia.orarioInizio, 'HH:mm')}">10:00</span>
+                </p>
+                <p><strong>Evento:</strong>
+                    <span th:text="${p.fascia.evento.titolo}">Mostra Impressionisti</span>
+                </p>
+                <p><strong>Museo:</strong>
+                    <span th:text="${p.fascia.museo.nome}">Museo Nazionale</span>
+                </p>
+                <p><strong>Persone:</strong>
+                    <span th:text="${p.numeroPersone}">2</span>
+                </p>
+                <p><strong>Stato:</strong>
+                    <span th:text="${p.stato}">CONFERMATA</span>
+                </p>
+                <a class="button small" th:href="@{'/prenotazioni/' + ${p.id}}">Vedi Dettagli</a>
+            </div>
+        </section>
+
+        <footer>
+            <p>&copy; 2025 Museo Nazionale</p>
+        </footer>
+    </div>
+</body>
+
+</html>
