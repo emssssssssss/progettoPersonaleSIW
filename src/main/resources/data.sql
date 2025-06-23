@@ -13,12 +13,12 @@ values (1, 'Anna Rossi', 'anna.rossi@example.com', '$2a$10$7Y7pHVk6jHSHKCowPrSh8
 -- password: password123
 
 insert into utente (id, nome, email, password, ruolo) 
-values (2, 'Luca Bianchi', 'luca.bianchi@example.com', '$2a$10$WqPUKpgXgCkFHeCdrgvVO.6Bd4PHq11Xr5aln1GsTP9Vldn1piW/S', 'VISITATORE');
--- password: securepass
+values (2, 'Luca Bianchi', 'luca.bianchi@example.com', '$2a$10$7Y7pHVk6jHSHKCowPrSh8Opypb2coYl7/ShaATGtGOdtlchK9tgAK', 'VISITATORE');
+-- password: password123
 
 insert into utente (id, nome, email, password, ruolo) 
-values (3, 'Mario Verdi', 'mario.verdi@example.com', '$2a$10$dAyw2.3jE5OYjD4HD9k8q.SatCdL/6tpKAjrjwwA6H78gSk0QoC/C', 'STAFF');
--- password: staffpass1
+values (3, 'Mario Verdi', 'mario.verdi@example.com', '$2a$10$7Y7pHVk6jHSHKCowPrSh8Opypb2coYl7/ShaATGtGOdtlchK9tgAK', 'STAFF');
+-- password: password123
 
 -- Eventi per evento_id = 1
 insert into fascia (id, data, orario_inizio, capienza_massima, posti_prenotati, museo_id, evento_id) 

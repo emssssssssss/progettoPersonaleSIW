@@ -18,7 +18,7 @@ nav {
 nav ul {
   list-style: none;
   display: flex;
-  gap: 1.5rem;
+  gap: 5vw;
   margin: 0;
   padding: 0;
 }
@@ -36,6 +36,10 @@ nav button {
   border: none;
   cursor: pointer;
   font-size: 1rem;
+}
+
+body {
+  margin: 0;
 }
 
 /* Container principale */
