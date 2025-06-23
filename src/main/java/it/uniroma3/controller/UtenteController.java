@@ -1,7 +1,10 @@
 package it.uniroma3.controller;
 
 import java.security.Principal;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 //import java.util.Optional;
 
@@ -41,10 +44,29 @@ public class UtenteController {
 
     @GetMapping("/profilo")
     public String profilo(Model model, Principal principal) {
-        String email = principal.getName(); // email come username
-        Utente utente = utenteService.getUtenteByEmail(email).get(); // assicurati che esista questo metodo
-        utente.getPrenotazioni().sort(Comparator.comparing(Prenotazione::getDataPrenotazione).reversed());
+        String email = principal.getName();
+        Utente utente = utenteService.getUtenteByEmail(email).orElseThrow();
+
+        // Ordina le prenotazioni dalla più recente alla meno recente (opzionale)
+        List<Prenotazione> tutte = new ArrayList<>(utente.getPrenotazioni());
+        tutte.sort(Comparator.comparing(Prenotazione::getDataPrenotazione).reversed());
+
+        LocalDate oggi = LocalDate.now();
+
+        // Separazione in future e passate basata sulla data della fascia
+        List<Prenotazione> prenotazioniFuture = tutte.stream()
+                .filter(p -> !p.getFascia().getData().isBefore(oggi))
+                .toList();
+
+        List<Prenotazione> prenotazioniPassate = tutte.stream()
+                .filter(p -> p.getFascia().getData().isBefore(oggi))
+                .toList();
+
+        // Aggiunta attributi al model
         model.addAttribute("utente", utente);
+        model.addAttribute("prenotazioniFuture", prenotazioniFuture);
+        model.addAttribute("prenotazioniPassate", prenotazioniPassate);
+
         return "Profilo";
     }
 

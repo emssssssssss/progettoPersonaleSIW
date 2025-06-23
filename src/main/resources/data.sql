@@ -28,7 +28,7 @@ values (5, '2025-09-17', '10:00:00', 30, 8, 1, 1), (6, '2025-09-17', '15:00:00',
 -- Eventi per evento_id = 2
 insert into fascia (id, data, orario_inizio, capienza_massima, posti_prenotati, museo_id, evento_id) 
 values (8, '2025-12-02', '20:00:00', 50, 25, 1, 2), (9, '2025-12-03', '18:00:00', 45, 20, 1, 2), (10, '2025-12-04', '20:00:00', 50, 30, 1, 2),
-(3, '2025-12-01', '20:00:00', 50, 20, 1, 2);
+(3, '2025-04-01', '20:00:00', 50, 20, 1, 2);
 
 -- Eventi per evento_id = 3
 insert into fascia (id, data, orario_inizio, capienza_massima, posti_prenotati, museo_id, evento_id) 
@@ -46,7 +46,16 @@ insert into opera_eventi (opere_id, eventi_id) values (3, 3);  -- Girl with Ball
 
 insert into prenotazione (id, utente_id, fascia_id, numero_biglietti, numero_persone, stato, data_prenotazione) values (1, 1, 1, 2, 2, 'CONFERMATA', '2025-06-16');
 insert into prenotazione (id, utente_id, fascia_id, numero_biglietti, numero_persone, stato, data_prenotazione) values (2, 2, 2, 3, 3, 'CONFERMATA', '2025-06-15');
-insert into prenotazione (id, utente_id, fascia_id, numero_biglietti, numero_persone, stato, data_prenotazione) values (3, 3, 3, 1, 1, 'ANNULLATA',   '2025-06-14');
+insert into prenotazione (id, utente_id, fascia_id, numero_biglietti, numero_persone, stato, data_prenotazione) values (3, 3, 3, 1, 1, 'ANNULLATA',  '2025-06-14');
+insert into prenotazione (id, utente_id, fascia_id, numero_biglietti, numero_persone, stato, data_prenotazione) values (4, 1, 1, 2, 2, 'CONFERMATA', '2025-06-23');
+insert into prenotazione (id, utente_id, fascia_id, numero_biglietti, numero_persone, stato, data_prenotazione) values (5, 1, 5, 2, 2, 'CONFERMATA', '2025-06-23');
+insert into prenotazione (id, utente_id, fascia_id, numero_biglietti, numero_persone, stato, data_prenotazione) values (6, 1, 4, 2, 2, 'CONFERMATA', '2025-06-01');
+insert into prenotazione (id, utente_id, fascia_id, numero_biglietti, numero_persone, stato, data_prenotazione) values (7, 2, 2, 1, 1, 'CONFERMATA', '2025-06-23');
+insert into prenotazione (id, utente_id, fascia_id, numero_biglietti, numero_persone, stato, data_prenotazione) values (8, 2, 11, 3, 3, 'CONFERMATA','2025-06-23');
+insert into prenotazione (id, utente_id, fascia_id, numero_biglietti, numero_persone, stato, data_prenotazione) values (9, 2, 1, 1, 1, 'CONFERMATA', '2025-06-05');
+insert into prenotazione (id, utente_id, fascia_id, numero_biglietti, numero_persone, stato, data_prenotazione) values (10, 3, 3, 4, 4, 'ANNULLATA',  '2025-06-23');
+insert into prenotazione (id, utente_id, fascia_id, numero_biglietti, numero_persone, stato, data_prenotazione) values (11, 3, 12, 2, 2, 'CONFERMATA','2025-06-23');
+insert into prenotazione (id, utente_id, fascia_id, numero_biglietti, numero_persone, stato, data_prenotazione) values (12, 3, 6, 1, 1, 'CONFERMATA', '2025-06-10');
 
 select setval('museo_id_seq', (select MAX(id) from museo));
 select setval('artista_id_seq', (select MAX(id) from artista));
