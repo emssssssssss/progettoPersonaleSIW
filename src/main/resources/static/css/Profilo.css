@@ -1,43 +1,44 @@
 /* Navbar */
 nav {
-  background-color: rgba(0, 0, 0, 0.85);
-  padding: 0.5rem 1rem;
-  z-index: 100;
+    background-color: rgba(0, 0, 0, 0.85);
+    padding: 0.5rem 1rem;
+    z-index: 100;
 }
 
 .navbar-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .logo img {
-  height: 50px;
+    height: 50px;
 }
 
 nav ul {
-  list-style: none;
-  display: flex;
-  gap: 5vw;
-  margin: 0;
-  padding: 0;
+    list-style: none;
+    display: flex;
+    gap: 5vw;
+    margin: 0;
+    padding: 0;
 }
 
 nav ul li {
-  display: inline;
+    display: inline;
 }
 
 nav a,
 nav button {
-  text-decoration: none;
-  color: white;
-  font-weight: bold;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 1rem;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
 }
 
+/* Base */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -60,6 +61,7 @@ header h1 {
     margin-bottom: 2vw;
 }
 
+/* Profilo */
 .profile-card {
     margin-bottom: 3vw;
 }
@@ -73,10 +75,7 @@ header h1 {
     margin: 0.5vw 0;
 }
 
-.actions {
-    margin-bottom: 4vw;
-}
-
+/* Pulsanti */
 .button {
     display: inline-block;
     padding: 1vw 2vw;
@@ -92,21 +91,73 @@ header h1 {
     background-color: #b30000;
 }
 
+.button.small {
+    font-size: 1.1vw;
+    padding: 0.8vw 1.5vw;
+    margin-top: 1vw;
+}
+
+/* Prenotazioni */
 .prenotazioni-list {
     margin-top: 4vw;
 }
 
 .prenotazioni-list h3 {
     font-size: 2vw;
-    margin-bottom: 2vw;
+    margin-bottom: 1.5vw;
+    padding-bottom: 0.5vw;
+    border-bottom: 0.3vw solid #ccc;
+}
+
+/* Linguette tabs */
+.tabs {
+    display: flex;
+    gap: 2vw;
+    margin-bottom: 3vw;
+    border-bottom: 2px solid #ccc;
+    cursor: pointer;
+    user-select: none;
+    max-width: 80vw;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.tab {
+    padding: 1vw 3vw;
+    font-size: 1.8vw;
+    font-weight: bold;
+    color: #555;
+    border-bottom: 4px solid transparent;
+    transition: color 0.3s, border-color 0.3s;
+}
+
+.tab.active {
+    color: #0056b3;
+    border-color: #0056b3;
+}
+
+.prenotazioni-sezione {
+    max-width: 80vw;
+    margin: auto;
+}
+
+.prenotazioni-sezione:not(.active) {
+    display: none;
 }
 
 .prenotazione-card {
     background-color: #e6f0ff;
+    /* azzurro chiaro */
     padding: 2vw;
     border-radius: 1vw;
     margin-bottom: 2vw;
     box-shadow: 0 0.3vw 0.8vw rgba(0, 0, 0, 0.1);
+}
+
+.prenotazione-card.passata {
+    background-color: #f9f9f9;
+    border-left: 0.8vw solid #999;
+    opacity: 0.85;
 }
 
 .prenotazione-card p {
@@ -114,9 +165,9 @@ header h1 {
     margin: 0.5vw 0;
 }
 
-.button.small {
-    font-size: 1.1vw;
-    padding: 0.8vw 1.5vw;
-    margin-top: 1vw;
-    display: inline-block;
+footer {
+    margin-top: 4vw;
+    text-align: center;
+    font-size: 1vw;
+    color: #777;
 }

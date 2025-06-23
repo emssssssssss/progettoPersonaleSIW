@@ -2,9 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Profilo Utente</title>
     <link rel="stylesheet" th:href="@{/css/Profilo.css}" />
+    <style>
+        /* Inserirai qui il CSS che ti do nel prossimo messaggio */
+    </style>
 </head>
 
 <body>
@@ -23,46 +26,78 @@
             <p><strong>Ruolo:</strong> <span th:text="${utente.ruolo}">VISITATORE</span></p>
         </section>
 
-        <!-- Pulsanti azione -->
-        <section class="actions">
-            <a th:href="@{/logout}" class="button logout">Logout</a>
-        </section>
+        <!-- Linguette tabs -->
+        <div class="tabs">
+            <div class="tab active" data-tab="attive">Prenotazioni Attive</div>
+            <div class="tab" data-tab="passate">Prenotazioni Passate</div>
+        </div>
 
         <!-- Prenotazioni -->
         <section class="prenotazioni-list">
-            <h3>Le tue prenotazioni</h3>
 
-            <div th:if="${#lists.isEmpty(utente.prenotazioni)}">
-                <p>Non hai ancora effettuato prenotazioni.</p>
+            <!-- Prenotazioni attive -->
+            <div class="prenotazioni-sezione active" id="attive">
+                <div th:if="${#lists.isEmpty(prenotazioniFuture)}">
+                    <p>Non hai prenotazioni attive.</p>
+                </div>
+                <div th:each="p : ${prenotazioniFuture}" class="prenotazione-card">
+                    <p><strong>Data:</strong>
+                        <span th:text="${#temporals.format(p.fascia.data, 'dd/MM/yyyy')}">01/01/2025</span>
+                    </p>
+                    <p><strong>Orario:</strong>
+                        <span th:text="${#temporals.format(p.fascia.orarioInizio, 'HH:mm')}">10:00</span>
+                    </p>
+                    <p><strong>Evento:</strong>
+                        <span th:text="${p.fascia.evento.titolo}">Mostra Impressionisti</span>
+                    </p>
+                    <p><strong>Museo:</strong>
+                        <span th:text="${p.fascia.museo.nome}">Museo Nazionale</span>
+                    </p>
+                    <p><strong>Persone:</strong>
+                        <span th:text="${p.numeroPersone}">2</span>
+                    </p>
+                    <p><strong>Stato:</strong>
+                        <span th:text="${p.stato}">CONFERMATA</span>
+                    </p>
+                    <a class="button small" th:href="@{'/prenotazioni/' + ${p.id}}">Vedi Dettagli</a>
+                </div>
             </div>
 
-            <div th:each="p : ${utente.prenotazioni}" class="prenotazione-card">
-                <p><strong>Data:</strong>
-                    <span th:text="${#temporals.format(p.fascia.data, 'dd/MM/yyyy')}">01/01/2025</span>
-                </p>
-                <p><strong>Orario:</strong>
-                    <span th:text="${#temporals.format(p.fascia.orarioInizio, 'HH:mm')}">10:00</span>
-                </p>
-                <p><strong>Evento:</strong>
-                    <span th:text="${p.fascia.evento.titolo}">Mostra Impressionisti</span>
-                </p>
-                <p><strong>Museo:</strong>
-                    <span th:text="${p.fascia.museo.nome}">Museo Nazionale</span>
-                </p>
-                <p><strong>Persone:</strong>
-                    <span th:text="${p.numeroPersone}">2</span>
-                </p>
-                <p><strong>Stato:</strong>
-                    <span th:text="${p.stato}">CONFERMATA</span>
-                </p>
-                <a class="button small" th:href="@{'/prenotazioni/' + ${p.id}}">Vedi Dettagli</a>
+            <!-- Prenotazioni passate -->
+            <div class="prenotazioni-sezione" id="passate">
+                <div th:if="${#lists.isEmpty(prenotazioniPassate)}">
+                    <p>Non hai prenotazioni passate.</p>
+                </div>
+                <div th:each="p : ${prenotazioniPassate}" class="prenotazione-card passata">
+                    <p><strong>Data:</strong>
+                        <span th:text="${#temporals.format(p.fascia.data, 'dd/MM/yyyy')}">01/01/2024</span>
+                    </p>
+                    <p><strong>Orario:</strong>
+                        <span th:text="${#temporals.format(p.fascia.orarioInizio, 'HH:mm')}">14:00</span>
+                    </p>
+                    <p><strong>Evento:</strong>
+                        <span th:text="${p.fascia.evento.titolo}">Mostra Van Gogh</span>
+                    </p>
+                    <p><strong>Museo:</strong>
+                        <span th:text="${p.fascia.museo.nome}">Museo Moderno</span>
+                    </p>
+                    <p><strong>Persone:</strong>
+                        <span th:text="${p.numeroPersone}">4</span>
+                    </p>
+                    <p><strong>Stato:</strong>
+                        <span th:text="${p.stato}">UTILIZZATA</span>
+                    </p>
+                    <a class="button small" th:href="@{'/prenotazioni/' + ${p.id}}">Vedi Dettagli</a>
+                </div>
             </div>
+
         </section>
 
         <footer>
             <p>&copy; 2025 Museo Nazionale</p>
         </footer>
     </div>
-</body>
+    <script th:src="@{/js/profilo.js}"></script>
+    
 
 </html>
