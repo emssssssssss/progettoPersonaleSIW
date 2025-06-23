@@ -15,8 +15,11 @@
       <li><a th:href="@{/opere}">Opere</a></li>
       <li><a th:href="@{/artisti}">Artisti</a></li>
       <li><a th:href="@{/fasce}">Visite</a></li>
+      <li sec:authorize="isAuthenticated()">
+          <a th:href="@{/profilo}">Profilo</a>
+      </li>
 
-      <li sec:authorize="hasAuthority('STAFF')">
+      <li sec:authorize="hasRole('STAFF')">
         <a th:href="@{/staff/dashboard}">Gestione</a>
       </li>
 
