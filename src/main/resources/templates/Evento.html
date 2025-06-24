@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Singolo evento</title>
+    <title th:text="'Evento: ' + ${evento.titolo}">Dettaglio Evento</title>
     <link rel="stylesheet" th:href="@{/css/Evento.css}">
 </head>
 
@@ -12,43 +12,43 @@
     <!-- NAVBAR -->
     <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-    <h1>Evento</h1>
+    <h1 th:text="${evento.titolo}">Titolo Evento</h1>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Titolo</th>
-                <th>Descrizione</th>
-                <th>Data Inizio</th>
-                <th>Data Fine</th>
-                <th>Azioni</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td th:text="${evento.titolo}">Titolo</td>
-                <td th:text="${evento.descrizione}">Descrizione</td>
-                <td th:text="${evento.dataInizio}">Data inizio</td>
-                <td th:text="${evento.dataFine}">Data fine</td>
-                <td>
-                    <a th:href="@{/fasce/{id}(id=${evento.id})}">Prenota</a>
+    <div class="evento-info">
+        <p><strong>Descrizione:</strong> <span th:text="${evento.descrizione}">Descrizione</span></p>
+        <p><strong>Data Inizio:</strong> <span th:text="${evento.dataInizio}">Data inizio</span></p>
+        <p><strong>Data Fine:</strong> <span th:text="${evento.dataFine}">Data fine</span></p>
 
-                    <!-- Azioni extra per utenti STAFF -->
-                    <span class="azioni-staff" sec:authorize="hasRole('STAFF')">
-                        |
-                        <a th:href="@{/evento/modifica/{id}(id=${evento.id})}">Modifica</a>
-                        |
-                        <form th:action="@{'/evento/elimina/' + ${evento.id}}" method="post" style="display:inline;"
-                            onsubmit="return confirm('Confermi l\'eliminazione?');">
-                            <button type="submit" class="btn-elimina">Elimina</button>
-                        </form>
-                    </span>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+        <div class="azioni-evento">
+            <a th:href="@{/fasce/{id}(id=${evento.id})}" class="btn-prenota">Prenota</a>
 
-    <!-- Pulsante Crea Evento, visibile solo agli STAFF -->
+            <!-- Azioni extra per STAFF -->
+            <span sec:authorize="hasRole('STAFF')">
+                |
+                <a th:href="@{/evento/modifica/{id}(id=${evento.id})}">Modifica</a>
+                |
+                <form th:action="@{'/evento/elimina/' + ${evento.id}}" method="post" style="display:inline;"
+                    onsubmit="return confirm('Confermi l\'eliminazione?');">
+                    <button type="submit" class="btn-elimina">Elimina</button>
+                </form>
+            </span>
+        </div>
+    </div>
+
+    <!-- Opere collegate all'evento -->
+    <div class="opere-evento">
+        <h2>Opere presenti in questa mostra</h2>
+        <div class="galleria-opere">
+            <div class="opera" th:each="opera : ${evento.opere}">
+                <a th:href="@{/opera/{id}(id=${opera.id})}">
+                    <img th:src="${opera.urlImage}" alt="Immagine Opera" class="img-opera" />
+                    <p th:text="${opera.titolo}">Nome Opera</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pulsante Crea Evento, visibile solo allo staff -->
     <div class="crea-evento-container" sec:authorize="hasRole('STAFF')">
         <a th:href="@{/evento/aggiungi}">
             <button class="btn-crea">Crea Nuovo Evento</button>
