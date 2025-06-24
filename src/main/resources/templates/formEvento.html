@@ -33,8 +33,14 @@
     <div th:if="${#fields.hasErrors('dataFine')}" th:errors="*{dataFine}" style="color:red"></div>
     <br>
 
+    <!--per mantenere id quando vado a modificare evento-->
+    <input type="hidden" th:field="*{id}" />
+
+      <!--per mantenere foto quando vado a modificare evento-->
+    <input type="hidden" th:field="*{urlImage}" />
+
     <!-- Pulsante visibile solo a STAFF -->
-    <div sec:authorize="hasAuthority('STAFF')">
+    <div sec:authorize="hasAuthority('ROLE_STAFF')">
         <button type="submit">Salva Evento</button>
     </div>
 </form>
