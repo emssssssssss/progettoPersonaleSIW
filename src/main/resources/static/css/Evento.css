@@ -146,6 +146,23 @@ h1 {
     background-color: #2980b9;
 }
 
+.btn-modifica {
+  padding: 0.8vw 1.5vw;
+  font-size: 1.2vw;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 0.5vw;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  text-decoration: none;
+}
+
+.btn-modifica:hover {
+  background-color: #218838;
+  text-decoration: none;
+}
+
 /* Pulsanti */
 button {
   padding: 0.8vw 1.5vw;
