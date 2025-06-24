@@ -25,7 +25,7 @@
             <!-- Azioni extra per STAFF -->
             <span sec:authorize="hasRole('STAFF')">
                 |
-                <a th:href="@{/evento/modifica/{id}(id=${evento.id})}">Modifica</a>
+                <a th:href="@{/evento/modifica/{id}(id=${evento.id})}" class="btn-modifica">Modifica</a>
                 |
                 <form th:action="@{'/evento/elimina/' + ${evento.id}}" method="post" style="display:inline;"
                     onsubmit="return confirm('Confermi l\'eliminazione?');">
