@@ -1,6 +1,7 @@
 package it.uniroma3.controller;
 
 import java.util.Comparator;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -106,5 +107,12 @@ public class FasciaController {
         model.addAttribute("fasce", fasciaService.getAllFascia());
         return "fasce";
     }
+
+        @GetMapping("/visite")
+        public String mostraTutteLeFasce(Model model) {
+            List<Evento> eventiConFasce = eventoService.getAllEventiConFasce();
+            model.addAttribute("eventi", eventiConFasce);
+            return "visite"; 
+        }
 
 }

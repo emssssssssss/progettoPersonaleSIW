@@ -36,7 +36,7 @@ public class AuthConfiguration {
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers(HttpMethod.GET,
                                 "/", "/index", "/login", "/register", "/registrazione",
-                                "/eventi", "/evento/**", "/opere", "/opera/**", "/homepage", "/fasce/**",
+                                "/eventi", "/evento/**", "/opere", "/opera/**", "/homepage", "/fasce","/fasce/**", "/visite",
                                 "/artisti", "/artista/**", "/css/**", "/images/**", "/error")
                         .permitAll()
                         .requestMatchers(HttpMethod.POST, "/login", "/register", "/registrazione").permitAll()
