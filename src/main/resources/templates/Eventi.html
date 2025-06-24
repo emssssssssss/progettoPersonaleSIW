@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="it"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org" lang="it" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8" />
@@ -9,10 +9,16 @@
 
 <body>
     <div th:replace="~{fragments/navbar :: navbar}"></div>
-    
+
     <h1>Lista Eventi</h1>
 
     <ul class="eventi-lista">
+        <!-- Pulsante Crea Evento, visibile solo allo staff -->
+        <div class="crea-evento-container" sec:authorize="hasRole('STAFF')">
+            <a th:href="@{/evento/aggiungi}">
+                <button class="btn-crea">Crea Nuovo Evento</button>
+            </a>
+        </div>
         <li th:each="evento : ${eventi}" class="evento-item">
             <a th:href="@{/evento/{id}(id=${evento.id})}" class="evento-link">
                 <div class="evento-immagine">
