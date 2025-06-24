@@ -66,3 +66,34 @@ nav button {
   color: white;
   text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
 }
+
+.footer-contatti {
+  background-color: rgba(0, 0, 0, 0.85);
+  color: white;
+  padding: 0.6rem 1rem;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.footer-riga-centrata {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.footer-item {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.footer-item a {
+  color: #f0f0f0;
+  text-decoration: none;
+}
+
+.footer-item a:hover {
+  text-decoration: underline;
+}
