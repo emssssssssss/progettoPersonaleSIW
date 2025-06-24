@@ -1,5 +1,7 @@
 package it.uniroma3.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,4 +50,9 @@ public class EventoService {
         }
         return eventoRepository.save(evento);
     }
+
+    public List<Evento> getAllEventiConFasce() {
+    return eventoRepository.findAllWithFasceOrarie();
+}
+
 }
