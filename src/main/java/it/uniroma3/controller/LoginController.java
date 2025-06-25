@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Controller;
@@ -66,9 +65,10 @@ public class LoginController {
         Utente utente = new Utente();
         utente.setEmail(email);
         utente.setNome(nome);
-        PasswordEncoder encoder = new BCryptPasswordEncoder();
-        String hashedPassword = encoder.encode(password);
+        // Usa il bean PasswordEncoder, così hai la stessa codifica
+        String hashedPassword = passwordEncoder.encode(password);
         utente.setPassword(hashedPassword);
+
         if (this.utenteService.isAmministartore(codiceAmministratore)) {
             utente.setRuolo(Utente.Ruolo.STAFF);
         } else {
@@ -76,22 +76,18 @@ public class LoginController {
         }
 
         this.utenteService.addUtente(utente);
-
-        // Auto-login qui:
+        // Auto-login
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(utente.getEmail());
-        System.out.println(userDetails.getUsername());
-        System.out.println(userDetails.getPassword());
 
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null,
                 userDetails.getAuthorities());
 
         SecurityContextHolder.getContext().setAuthentication(authToken);
-        // 🔑 Salva il contesto nella sessione
+
         HttpSession session = request.getSession(true);
         session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
                 SecurityContextHolder.getContext());
 
         return "redirect:/homepage";
     }
-
 }
