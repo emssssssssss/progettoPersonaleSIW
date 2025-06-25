@@ -72,7 +72,7 @@ public class UtenteService {
         return utente != null && utente.getRuolo() == Utente.Ruolo.STAFF;
     }
 
-    public boolean isAmministartore (String codice) {
+    public boolean isAmministartore(String codice) {
         return codice.equals("Panino_con_pomodori");
     }
 
@@ -89,11 +89,7 @@ public class UtenteService {
     }
 
     public void addUtente(Utente utente) {
-        // cifra la password prima di salvarla
-        String hashedPassword = passwordEncoder.encode(utente.getPassword());
-        utente.setPassword(hashedPassword);
         this.utenteRepository.save(utente);
-
     }
 
     public void modificaUtente(Utente utente) {

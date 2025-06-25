@@ -36,7 +36,8 @@ public class AuthConfiguration {
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers(HttpMethod.GET,
                                 "/", "/index", "/login", "/register", "/registrazione",
-                                "/eventi", "/evento/**", "/opere", "/opera/**", "/homepage", "/fasce","/fasce/**", "/visite",
+                                "/eventi", "/evento/**", "/opere", "/opera/**", "/homepage", "/fasce", "/fasce/**",
+                                "/visite",
                                 "/artisti", "/artista/**", "/css/**", "/images/**", "/error")
                         .permitAll()
                         .requestMatchers(HttpMethod.POST, "/login", "/register", "/registrazione").permitAll()
@@ -60,7 +61,7 @@ public class AuthConfiguration {
     }
 
     @Bean
-    AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
     }
 

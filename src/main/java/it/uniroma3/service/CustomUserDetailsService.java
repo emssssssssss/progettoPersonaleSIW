@@ -23,10 +23,15 @@ public class CustomUserDetailsService implements UserDetailsService {
         List<UserDetails> usersByEmail = jdbcTemplate.query(
                 sqlByEmail,
                 ps -> ps.setString(1, usernameOrEmail),
-                (rs, rowNum) -> User.withUsername(rs.getString("email"))
-                        .password(rs.getString("password"))
-                        .roles(rs.getString("ruolo"))
-                        .build());
+                (rs, rowNum) -> {
+                    String email = rs.getString("email");
+                    String password = rs.getString("password");
+                    String ruolo = rs.getString("ruolo");
+                    return User.withUsername(email)
+                            .password(password)
+                            .roles(ruolo)
+                            .build();
+                });
 
         if (!usersByEmail.isEmpty()) {
             return usersByEmail.get(0);
@@ -37,10 +42,15 @@ public class CustomUserDetailsService implements UserDetailsService {
         List<UserDetails> usersByNome = jdbcTemplate.query(
                 sqlByNome,
                 ps -> ps.setString(1, usernameOrEmail),
-                (rs, rowNum) -> User.withUsername(rs.getString("nome"))
-                        .password(rs.getString("password"))
-                        .roles(rs.getString("ruolo"))
-                        .build());
+                (rs, rowNum) -> {
+                    String nome = rs.getString("nome");
+                    String password = rs.getString("password");
+                    String ruolo = rs.getString("ruolo");
+                    return User.withUsername(nome)
+                            .password(password)
+                            .roles(ruolo)
+                            .build();
+                });
 
         if (!usersByNome.isEmpty()) {
             return usersByNome.get(0);
