@@ -1,6 +1,7 @@
 package it.uniroma3.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,8 +19,8 @@ public class ArtistaService {
     @Autowired
     public UtenteService utenteService;  //per controllare i ruoli
 
-    public Artista getArtistaById(Long id) {
-        return artistaRepository.findById(id).orElse(null);
+    public Optional<Artista> getArtistaById(Long id) {
+        return artistaRepository.findById(id);
     }
 
     public Iterable<Artista> getAllArtisti() {
@@ -48,11 +49,29 @@ public class ArtistaService {
         return artistaRepository.save(artista);
     }
 
-    //modifica con controllo admin
-    public Artista modificaArtista(Artista artista, Utente utenteCheRichiede) {
+    public Artista modificaArtista(Artista artistaDalForm, Utente utenteCheRichiede) {
         if (!utenteService.isAdmin(utenteCheRichiede)) {
             throw new RuntimeException("Accesso negato: non sei amministratore");
         }
-        return artistaRepository.save(artista);
+
+        Artista artistaOriginale = artistaRepository.findById(artistaDalForm.getId())
+            .orElseThrow(() -> new RuntimeException("Artista non trovato"));
+
+        // Aggiorna tutti i campi modificabili
+        artistaOriginale.setNome(artistaDalForm.getNome());
+        artistaOriginale.setAnnoNascita(artistaDalForm.getAnnoNascita());
+        artistaOriginale.setAnnoMorte(artistaDalForm.getAnnoMorte());
+        artistaOriginale.setBiografia(artistaDalForm.getBiografia());
+        artistaOriginale.setUrlImage(artistaDalForm.getUrlImage());
+        artistaOriginale.setMuseo(artistaDalForm.getMuseo());
+
+        return artistaRepository.save(artistaOriginale);
     }
+
+    public Artista aggiornaArtista(Artista artistaDalForm, Utente utenteCheRichiede) {
+    // Riusa il metodo modificaArtista per evitare duplicazioni
+    return modificaArtista(artistaDalForm, utenteCheRichiede);
+}
+
+
 }

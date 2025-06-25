@@ -19,9 +19,6 @@
           <a th:href="@{/profilo}">Profilo</a>
       </li>
 
-      <li sec:authorize="hasRole('STAFF')">
-        <a th:href="@{/staff/dashboard}">Gestione</a>
-      </li>
 
       <li sec:authorize="isAnonymous()">
         <!-- Assumendo che currentUri sia valorizzato nel model con l'URI corrente -->
