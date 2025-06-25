@@ -46,6 +46,17 @@
                 </li>
             </ul>
         </div>
+
+        <!-- Azioni staff -->
+        <div class="azioni-opera" sec:authorize="hasRole('STAFF')">
+            <a th:href="@{/opera/modifica/{id}(id=${opera.id})}" class="btn-modifica">Modifica</a>
+            |
+            <form th:action="@{/opera/elimina/{id}(id=${opera.id})}" method="post" style="display:inline;"
+                onsubmit="return confirm('Sei sicuro di voler eliminare quest\'opera?');">
+                <button type="submit" class="btn-elimina">Elimina</button>
+            </form>
+        </div>
+
     </div>
 </body>
 

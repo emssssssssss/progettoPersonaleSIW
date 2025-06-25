@@ -1,5 +1,7 @@
 package it.uniroma3.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +18,8 @@ public class OperaService {
     @Autowired
     private UtenteService utenteService;
 
-    public Opera getOperaById(Long id) {
-        return this.operaRepository.findById(id).get();
+    public Optional<Opera> getOperaById(Long id) {
+        return operaRepository.findById(id);
     }
 
     public Iterable<Opera> getAllOpere() {
@@ -28,24 +30,40 @@ public class OperaService {
         return this.operaRepository.findByTitolo(titolo);
     }
 
-     public void cancellaOpera(Long id, Utente utenteCheRichiede) {
-        if (!utenteService.isAdmin(utenteCheRichiede)) {
-            throw new RuntimeException("Accesso negato: non sei amministratore");
+    public void cancellaOpera(Long id, Optional<Utente> utenteOpt) {
+        Utente utente = utenteOpt.orElseThrow(() -> new RuntimeException("Utente non trovato"));
+        if (!utenteService.isAdmin(utente)) {
+            throw new RuntimeException("Accesso negato: non sei staff");
         }
         operaRepository.deleteById(id);
     }
 
-     public Opera aggiungiOpera(Opera opera, Utente utenteCheRichiede) {
-        if (!utenteService.isAdmin(utenteCheRichiede)) {
-            throw new RuntimeException("Accesso negato: non sei amministratore");
+
+    public Opera aggiungiOpera(Opera opera, Optional<Utente> utenteOpt) {
+        Utente utente = utenteOpt.orElseThrow(() -> new RuntimeException("Utente non trovato"));
+        if (!utenteService.isAdmin(utente)) {
+            throw new RuntimeException("Accesso negato: non sei staff");
         }
         return operaRepository.save(opera);
     }
 
-    public Opera modificaOpera(Opera opera, Utente utenteCheRichiede) {
-        if (!utenteService.isAdmin(utenteCheRichiede)) {
-            throw new RuntimeException("Accesso negato: non sei amministratore");
-        }
-        return operaRepository.save(opera);
+public Opera modificaOpera(Opera operaDalForm, Optional<Utente> utenteOpt) {
+    Utente utente = utenteOpt.orElseThrow(() -> new RuntimeException("Utente non trovato"));
+    if (!utenteService.isAdmin(utente)) {
+        throw new RuntimeException("Accesso negato: non sei staff");
     }
+
+    Opera operaOriginale = operaRepository.findById(operaDalForm.getId())
+        .orElseThrow(() -> new RuntimeException("Opera non trovata"));
+
+    // aggiorna solo i campi modificati
+    operaOriginale.setTitolo(operaDalForm.getTitolo());
+    operaOriginale.setDescrizione(operaDalForm.getDescrizione());
+    operaOriginale.setAnno(operaDalForm.getAnno());
+    operaOriginale.setArtista(operaDalForm.getArtista());
+    operaOriginale.setMuseo(operaDalForm.getMuseo());
+
+    return operaRepository.save(operaOriginale);
+}
+
 }

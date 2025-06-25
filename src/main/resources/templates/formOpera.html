@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="it">
+<head>
+    <meta charset="UTF-8" />
+    <title>Form Opera</title>
+    <link rel="stylesheet" th:href="@{/css/FormOpera.css}" />
+</head>
+<body>
+
+    <h1 th:text="${opera.id != null} ? 'Modifica Opera' : 'Aggiungi Opera'"></h1>
+
+
+    <form th:action="@{${opera.id != null} ? '/opera/modifica/' + ${opera.id} : '/opera/aggiungi'}"
+          th:object="${opera}" method="post">
+        <label>Titolo:</label>
+        <input type="text" th:field="*{titolo}" required/><br/>
+
+        <label>Descrizione:</label>
+        <textarea th:field="*{descrizione}" required></textarea><br/>
+
+        <label>Anno:</label>
+        <input type="number" th:field="*{anno}" required/><br/>
+
+        <label>URL Immagine:</label>
+        <input type="text" th:field="*{urlImage}" required/><br/>
+
+        <label for="artista">Artista:</label>
+        <select id="artista" name="artista.id" required>
+            <option value="">-- Seleziona artista --</option>
+            <option th:each="a : ${artisti}" th:value="${a.id}" th:text="${a.nome}">Artista</option>
+        </select><br/>
+
+        <input type="hidden" name="museo.id" th:value="${museoGestito.id}" />
+
+
+        <button type="submit">Salva</button>
+    </form>
+</body>
+</html>
