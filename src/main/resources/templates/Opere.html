@@ -24,6 +24,15 @@
                 <a th:href="@{/opera/{id}(id=${opera.id})}" th:text="${opera.titolo}">Nome</a>
             </li>
         </ul>
+
+        <!-- Pulsante Aggiungi Opera, visibile solo allo staff -->
+        <div class="aggiungi-opera-container" sec:authorize="hasRole('STAFF')">
+            <a th:href="@{/opera/aggiungi}">
+                <button class="btn-aggiungi-opera">Aggiungi Nuova Opera</button>
+            </a>
+        </div>
+
+
         <div th:if="${opere == null}">Non ci sono opere nel sistema</div>
     </div>
 

@@ -131,3 +131,26 @@ body {
     margin: 5px 0;
 }
 
+.btn-crea,
+.btn-modifica,
+.btn-elimina {
+    padding: 0.5em 1em;
+    margin: 10px 5px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-elimina {
+    background-color: #dc3545;
+}
+
+.btn-crea:hover,
+.btn-modifica:hover,
+.btn-elimina:hover {
+    opacity: 0.9;
+}
+
+
