@@ -47,6 +47,17 @@
       </ul>
     </div>
 
+    <div sec:authorize="hasRole('STAFF')" class="action-buttons">
+        <a th:href="@{'/artista/modifica/' + ${artista.id}}">
+            <button class="btn-modifica">Modifica</button>
+        </a>
+
+        <form th:action="@{'/artista/elimina/' + ${artista.id}}" method="post" style="display:inline;">
+            <button class="btn-elimina" type="submit" onclick="return confirm('Sei sicuro di voler eliminare questo artista?')">Elimina</button>
+        </form>
+    </div>
+
+
   </div>
 
 </body>

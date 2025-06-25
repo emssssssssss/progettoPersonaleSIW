@@ -81,3 +81,25 @@ body {
 .container1 ul li a:hover {
     text-decoration: underline;
 }
+
+.aggiungi-artista-container {
+    display: flex;
+    justify-content: center;
+    margin: 40px auto;
+}
+
+.btn-aggiungi-artista {
+    font-size: 1.5em;
+    padding: 15px 30px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+    transition: background-color 0.3s ease;
+}
+
+.btn-aggiungi-artista:hover {
+    background-color: #005fa3;
+}
