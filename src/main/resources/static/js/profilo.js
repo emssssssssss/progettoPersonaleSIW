@@ -22,3 +22,31 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+// Funzione per aprire il popup con i dettagli della prenotazione
+function apriPopup(button) {
+    const id = button.getAttribute('data-id'); // <-- recupera l'id
+    const popup = document.getElementById('popup-' + id);
+    if (popup) {
+        popup.style.display = 'block';
+    }
+}
+
+// Funzione per chiudere il popup
+function chiudiPopup(span) {
+    const popup = span.closest('.popup'); // trova il popup più vicino
+    if (popup) {
+        popup.style.display = 'none';
+    }
+}
+
+// Chiudi il popup se clicchi fuori dal contenuto
+window.onclick = function(event) {
+    // Tutti i popup (se ne hai più di uno)
+    const popups = document.querySelectorAll('.popup');
+    popups.forEach(popup => {
+        if (event.target === popup) {
+            popup.style.display = 'none';
+        }
+    });
+}

@@ -6,7 +6,7 @@
     <title>Profilo Utente</title>
     <link rel="stylesheet" th:href="@{/css/Profilo.css}" />
     <style>
-        /* Inserirai qui il CSS che ti do nel prossimo messaggio */
+        /* Inserire qui il CSS fornito nel file Profilo.css o nel file CSS dedicato */
     </style>
 </head>
 
@@ -59,7 +59,37 @@
                     <p><strong>Stato:</strong>
                         <span th:text="${p.stato}">CONFERMATA</span>
                     </p>
-                    <a class="button small" th:href="@{'/prenotazioni/' + ${p.id}}">Vedi Dettagli</a>
+                    <!-- Pulsante per aprire popup -->
+                    <button class="button small" th:attr="data-id=${p.id}" onclick="apriPopup(this)">Modifica
+                        Dettagli</button>
+
+                    <!-- Popup con dettagli prenotazione -->
+                    <div class="popup" th:attr="id='popup-' + ${p.id}">
+                        <div class="popup-content">
+                            <span class="close" onclick="chiudiPopup(this)">&times;</span>
+                            <h3>Dettagli Prenotazione</h3>
+                            <p><strong>Data:</strong> <span
+                                    th:text="${#temporals.format(p.fascia.data, 'dd/MM/yyyy')}"></span></p>
+                            <p><strong>Orario:</strong> <span
+                                    th:text="${#temporals.format(p.fascia.orarioInizio, 'HH:mm')}"></span></p>
+                            <p><strong>Evento:</strong> <span th:text="${p.fascia.evento.titolo}"></span></p>
+                            <p><strong>Museo:</strong> <span th:text="${p.fascia.museo.nome}"></span></p>
+                            <p><strong>Persone:</strong> <span th:text="${p.numeroPersone}"></span></p>
+                            <p><strong>Biglietti:</strong> <span th:text="${p.numeroBiglietti}"></span></p>
+                            <p><strong>Stato:</strong> <span th:text="${p.stato}"></span></p>
+                            <p><strong>Data Prenotazione:</strong> <span
+                                    th:text="${#temporals.format(p.dataPrenotazione, 'dd/MM/yyyy')}"></span></p>
+
+                            <div class="popup-actions">
+                                <form th:action="@{/prenotazioniElimina/{id}(id=${p.id})}" method="post"
+                                    onsubmit="return confirm('Sei sicuro di voler annullare questa prenotazione?');">
+                                    <button type="submit" class="annulla">Annulla Prenotazione</button>
+                                </form>
+
+                                <a th:href="@{/prenotazioni/modifica/{id}(id=${p.id})}" class="modifica">Modifica</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -97,7 +127,9 @@
             <p>&copy; 2025 Museo Nazionale</p>
         </footer>
     </div>
+
     <script th:src="@{/js/profilo.js}"></script>
-    
+
+</body>
 
 </html>
