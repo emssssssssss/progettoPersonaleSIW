@@ -1,39 +1,63 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="it">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="it">
+
 <head>
-    <meta charset="UTF-8" />
-    <title>Form Opera</title>
+    <meta charset="UTF-8">
+    <title th:text="${opera.id != null} ? 'Modifica Opera' : 'Aggiungi Opera'">Opera</title>
     <link rel="stylesheet" th:href="@{/css/FormOpera.css}" />
 </head>
+
 <body>
 
-    <h1 th:text="${opera.id != null} ? 'Modifica Opera' : 'Aggiungi Opera'"></h1>
+    <h1 th:text="${opera.id != null} ? 'Modifica Opera' : 'Aggiungi Nuova Opera'"></h1>
 
+    <form th:action="@{/opera/salva}" th:object="${opera}" method="post">
 
-    <form th:action="@{${opera.id != null} ? '/opera/modifica/' + ${opera.id} : '/opera/aggiungi'}"
-          th:object="${opera}" method="post">
-        <label>Titolo:</label>
-        <input type="text" th:field="*{titolo}" required/><br/>
+        <label for="titolo">Titolo:</label>
+        <input type="text" id="titolo" th:field="*{titolo}" required>
+        <div th:if="${#fields.hasErrors('titolo')}" th:errors="*{titolo}" style="color:red"></div>
+        <br>
 
-        <label>Descrizione:</label>
-        <textarea th:field="*{descrizione}" required></textarea><br/>
+        <label for="descrizione">Descrizione:</label>
+        <textarea id="descrizione" th:field="*{descrizione}" required></textarea>
+        <div th:if="${#fields.hasErrors('descrizione')}" th:errors="*{descrizione}" style="color:red"></div>
+        <br>
 
-        <label>Anno:</label>
-        <input type="number" th:field="*{anno}" required/><br/>
+        <label for="anno">Anno:</label>
+        <input type="number" id="anno" th:field="*{anno}" required>
+        <div th:if="${#fields.hasErrors('anno')}" th:errors="*{anno}" style="color:red"></div>
+        <br>
 
-        <label>URL Immagine:</label>
-        <input type="text" th:field="*{urlImage}" required/><br/>
+        <label for="urlImage">URL Immagine:</label>
+        <input type="text" id="urlImage" th:field="*{urlImage}" required>
+        <div th:if="${#fields.hasErrors('urlImage')}" th:errors="*{urlImage}" style="color:red"></div>
+        <br>
 
         <label for="artista">Artista:</label>
         <select id="artista" name="artista.id" required>
             <option value="">-- Seleziona artista --</option>
             <option th:each="a : ${artisti}" th:value="${a.id}" th:text="${a.nome}">Artista</option>
-        </select><br/>
+        </select>
+        <div th:if="${#fields.hasErrors('artista')}" th:errors="*{artista}" style="color:red"></div>
+        <br>
 
         <input type="hidden" name="museo.id" th:value="${museoGestito.id}" />
+        <input type="hidden" th:field="*{id}" />
 
-
-        <button type="submit">Salva</button>
+        <div class="salvaAnnulla">
+            <button type="submit">Salva Opera</button>
+            <a th:href="@{/opere}" class="button-annulla">Annulla</a>
+        </div>
     </form>
+
+    <!-- Pulsante elimina opera (visibile solo se già esiste) -->
+    <div th:if="${opera.id != null}" sec:authorize="hasAuthority('STAFF')">
+        <form th:action="@{'/opera/elimina/' + ${opera.id}}" method="post"
+            onsubmit="return confirm('Sei sicuro di voler eliminare questa opera?');">
+            <button type="submit" style="color:red;">Elimina Opera</button>
+        </form>
+    </div>
+
 </body>
+
 </html>
