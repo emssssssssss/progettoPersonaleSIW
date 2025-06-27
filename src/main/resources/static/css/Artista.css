@@ -133,12 +133,12 @@ body {
 }
 
 .btn-modifica {
-    background-color: #ffc107;
-    color: black;
+    background-color: #3498db;
+    color: white;
 }
 
 .btn-modifica:hover {
-    background-color: #e0a800;
+    background-color: #2980b9;
 }
 
 .btn-elimina {

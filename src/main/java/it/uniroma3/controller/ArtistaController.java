@@ -50,27 +50,32 @@ public class ArtistaController {
     @GetMapping("/artista/aggiungi")
     public String mostraFormArtista(Model model) {
         model.addAttribute("artista", new Artista());
-        return "ArtistaNuovo";
+        return "formArtista";
     }
 
-    // Gestisce submit form nuovo artista
-    @PostMapping("/artista/aggiungi")
-    public String aggiungiArtista(@Valid @ModelAttribute Artista artista,
-                                BindingResult bindingResult,
-                                @AuthenticationPrincipal User currentUser,
-                                Model model) {
+    @PostMapping("/artista/salva")
+public String salvaArtista(@Valid @ModelAttribute Artista artista,
+                           BindingResult bindingResult,
+                           @AuthenticationPrincipal User currentUser,
+                           Model model) {
 
-        if (bindingResult.hasErrors()) {
-            return "ArtistaNuovo";
-        }
-
-        Utente utente = utenteService.getUtenteByEmail(currentUser.getUsername())
-                        .orElseThrow(() -> new RuntimeException("Utente non trovato"));
-
-        Artista artistaSalvato = artistaService.aggiungiArtista(artista, utente);
-
-        return "redirect:/artista/" + artistaSalvato.getId();
+    if (bindingResult.hasErrors()) {
+        model.addAttribute("formError", true);
+        return "formArtista"; // Nome del template Thymeleaf unificato per aggiunta/modifica
     }
+
+    Utente utente = utenteService.getUtenteByEmail(currentUser.getUsername())
+                    .orElseThrow(() -> new RuntimeException("Utente non trovato"));
+
+    if (artista.getId() == null) {
+        artistaService.aggiungiArtista(artista, utente);
+    } else {
+        artistaService.aggiornaArtista(artista, utente);
+    }
+
+    return "redirect:/artista/" + artista.getId();
+}
+
 
     // Elimina artista
     @PostMapping("/artista/elimina/{id}")
@@ -90,29 +95,7 @@ public class ArtistaController {
         Artista artista = artistaService.getArtistaById(id)
             .orElseThrow(() -> new RuntimeException("Artista non trovato"));
         model.addAttribute("artista", artista);
-        return "ArtistaNuovo";
-    } 
-
-
-    // Gestisce il submit del form di modifica
-    @PostMapping("/artista/modifica/{id}")
-    public String modificaArtista(@PathVariable Long id,
-                                @Valid @ModelAttribute Artista artista,
-                                BindingResult bindingResult,
-                                @AuthenticationPrincipal User currentUser,
-                                Model model) {
-
-        if (bindingResult.hasErrors()) {
-            return "ArtistaModifica";
-        }
-
-        Utente utente = utenteService.getUtenteByEmail(currentUser.getUsername())
-                        .orElseThrow(() -> new RuntimeException("Utente non trovato"));
-
-        artista.setId(id);
-        artistaService.aggiornaArtista(artista, utente);
-
-        return "redirect:/artista/" + id;
+        return "formArtista";
     }
 
 }
