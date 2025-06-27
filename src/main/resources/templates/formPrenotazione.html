@@ -2,20 +2,21 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Nuova Prenotazione</title>
+    <title>Prenotazione per [[${evento.titolo}]]</title>
     <link rel="stylesheet" th:href="@{/css/style.css}" />
 </head>
 <body>
 
-<h2>Effettua una Prenotazione</h2>
+<h2 th:text="'Prenota per l\'evento: ' + ${evento.titolo}"></h2>
 
 <form th:action="@{/prenotazioni}" th:object="${prenotazione}" method="post">
     
     <label for="disponibilita">Fascia oraria:</label>
-    <select th:field="*{fascia.id}" required>
+    <select id="fasciaSelect" th:field="*{fascia.id}" required>
         <option th:each="fascia : ${fasce}" 
                 th:value="${fascia.id}" 
-                th:text="${fascia.data} + ' - posti: ' + (fascia.capienzaMassima - fascia.postiPrenotati)">
+                th:data-data="${fascia.data}"
+                th:text="${fascia.data} + ' - ore: ' + ${fascia.orarioInizio} + ' - posti: ' + (${fascia.capienzaMassima} - ${fascia.postiPrenotati})">
         </option>
     </select>
     <br/><br/>
@@ -25,12 +26,42 @@
     <br/><br/>
 
     <label for="dataPrenotazione">Data visita:</label>
-    <input type="date" th:field="*{dataPrenotazione}" required />
+    <input type="date" id="dataPrenotazione" th:field="*{dataPrenotazione}" required />
     <br/><br/>
 
     <button type="submit">Prenota</button>
 
 </form>
+
+<script>
+// Filtra le date disponibili (quelle delle fasce) e blocca tutte le altre
+document.addEventListener("DOMContentLoaded", function() {
+    const dateInput = document.getElementById("dataPrenotazione");
+    const fasciaSelect = document.getElementById("fasciaSelect");
+
+    const dateSet = new Set();
+    Array.from(fasciaSelect.options).forEach(opt => {
+        const date = opt.dataset.data;
+        if (date) dateSet.add(date);
+    });
+
+    // Intercetta modifiche e blocca date non valide
+    dateInput.addEventListener("change", function() {
+        const selected = this.value;
+        if (!dateSet.has(selected)) {
+            alert("Seleziona una data valida disponibile tra le fasce dell’evento.");
+            this.value = "";
+        }
+    });
+
+    // Imposta minimo e massimo (opzionale)
+    if (dateSet.size > 0) {
+        const dateArray = Array.from(dateSet).sort();
+        dateInput.setAttribute("min", dateArray[0]);
+        dateInput.setAttribute("max", dateArray[dateArray.length - 1]);
+    }
+});
+</script>
 
 </body>
 </html>

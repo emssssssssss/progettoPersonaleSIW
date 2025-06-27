@@ -30,15 +30,7 @@ public class PrenotazioneService {
         return this.prenotazioneRepository.findAll();
     }
     
-    public void cancellaPrenotazione(Long id, Utente utenteCheRichiede) {
-    Prenotazione prenotazione = prenotazioneRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Prenotazione non trovata"));
-
-    // Se non admin e non proprietario -> Accesso negato
-    if (!utenteService.isAdmin(utenteCheRichiede) && 
-        !utenteCheRichiede.getId().equals(prenotazione.getUtente().getId())) {
-        throw new RuntimeException("Accesso negato: non puoi cancellare questa prenotazione");
-    }
+    public void cancellaPrenotazione(Long id) {
     prenotazioneRepository.deleteById(id);
 }
 

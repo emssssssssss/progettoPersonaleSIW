@@ -136,4 +136,14 @@ public class PrenotazioneController {
         return "redirect:/evento/"+ fascia.getEvento().getId(); // oppure torna alla pagina corrente
     }
 
+    @PostMapping("/prenotazioniElimina/{id}")
+    public String getMethodName(@PathVariable("id") Long idPrenotazione) {
+        Prenotazione pre = this.prenotazioneService.getPrenotazione(idPrenotazione);
+        pre.getFascia().setPostiPrenotati(pre.getFascia().getPostiPrenotati()-pre.getNumeroBiglietti());;
+        this.prenotazioneService.cancellaPrenotazione(idPrenotazione);
+
+        return "redirect:/profilo";
+    }
+    
+
 }
