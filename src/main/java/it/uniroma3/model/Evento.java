@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -46,7 +47,7 @@ public class Evento {
 	@ManyToMany(mappedBy = "eventi")
 	private List<Opera> opere = new ArrayList<>();
 
-	@OneToMany(mappedBy = "evento")
+	@OneToMany(mappedBy = "evento", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Fascia> fasceOrarie = new ArrayList<>();
 
 	// --- Getters e Setters ---

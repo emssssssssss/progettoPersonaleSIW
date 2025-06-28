@@ -37,10 +37,7 @@ public class EventoService {
         eventoRepository.deleteById(id);
     }
 
-     public Evento aggiungiEvento(Evento evento, Utente utenteCheRichiede) {
-        if (!utenteService.isAdmin(utenteCheRichiede)) {
-            throw new RuntimeException("Accesso negato: non sei amministratore");
-        }
+     public Evento aggiungiEvento(Evento evento) {
         return eventoRepository.save(evento);
     }
 

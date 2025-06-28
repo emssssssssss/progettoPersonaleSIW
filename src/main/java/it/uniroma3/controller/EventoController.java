@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
 import it.uniroma3.model.Evento;
+import it.uniroma3.model.Fascia;
 import it.uniroma3.model.Utente;
 import it.uniroma3.service.EventoService;
 import it.uniroma3.service.OperaService;
@@ -88,10 +89,15 @@ public class EventoController {
             return "formEvento";
         }
         if (evento.getId() == null) {
-            eventoService.aggiungiEvento(evento, utente);
+            eventoService.aggiungiEvento(evento);
         } else {
             eventoService.modificaEvento(evento, utente);
         }
+        for (Fascia f : evento.getFasceOrarie()) {
+            f.setEvento(evento);
+        }
+        eventoService.aggiungiEvento(evento);
+
         return "redirect:/evento/" + evento.getId();
     }
 

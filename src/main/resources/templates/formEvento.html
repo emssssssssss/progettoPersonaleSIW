@@ -48,6 +48,34 @@
 
         <br>
 
+        <h3>Aggiungi Fasce</h3>
+        <div id="fasce-container">
+            <!-- Fasce dinamicamente aggiunte -->
+        </div>
+
+        <div class="fascia-form">
+            <label>
+                Data:
+                <input type="date" id="fascia-data">
+            </label>
+
+            <label>
+                Orario Inizio:
+                <input type="time" id="fascia-orario">
+            </label>
+
+            <label>
+                Capienza:
+                <input type="number" id="fascia-capienza" min="1">
+            </label>
+
+            <label>
+                <span style="visibility: hidden;">Aggiungi</span>
+                <button type="button" id="aggiungi-fascia">Aggiungi Fascia</button>
+            </label>
+        </div>
+
+
 
         <!--per mantenere id quando vado a modificare evento-->
         <input type="hidden" th:field="*{id}" />
