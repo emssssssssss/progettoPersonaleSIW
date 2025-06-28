@@ -34,6 +34,21 @@
         <div th:if="${#fields.hasErrors('dataFine')}" th:errors="*{dataFine}" style="color:red"></div>
         <br>
 
+        <label for="opera-select">Aggiungi Opera:</label>
+        <select id="opera-select">
+            <option value="">-- Seleziona un'opera --</option>
+            <option th:each="opera : ${opereDisponibili}" th:value="${opera.id}" th:text="${opera.titolo}">Opera
+            </option>
+        </select>
+        <br>
+
+        <div id="opere-selezionate">
+            <!-- Qui verranno aggiunte dinamicamente le opere selezionate -->
+        </div>
+
+        <br>
+
+
         <!--per mantenere id quando vado a modificare evento-->
         <input type="hidden" th:field="*{id}" />
 
@@ -54,7 +69,7 @@
             <button type="submit" style="color:red;">Elimina Evento</button>
         </form>
     </div>
-
+    <script th:src="@{/js/formEvento.js}"></script>
 </body>
 
 </html>
