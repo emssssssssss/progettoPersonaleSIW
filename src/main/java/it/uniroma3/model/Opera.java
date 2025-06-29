@@ -4,9 +4,12 @@ import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
@@ -41,7 +44,11 @@ public class Opera {
 	@ManyToOne
 	private Museo museo;
 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(
+    name = "opera_eventi",
+    joinColumns = @JoinColumn(name = "opere_id"),
+    inverseJoinColumns = @JoinColumn(name = "eventi_id"))
 	private List<Evento> eventi;
 
 	public void setId(Long id) {
@@ -98,6 +105,10 @@ public class Opera {
 
 	public Museo getMuseo() {
 		return this.museo;
+	}
+
+	public void setEventi (List<Evento> eventi) {
+		this.eventi = eventi;
 	}
 
 	public void setEvento(Evento evento) {

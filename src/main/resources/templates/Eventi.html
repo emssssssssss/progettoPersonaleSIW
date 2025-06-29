@@ -22,7 +22,7 @@
         <li th:each="evento : ${eventi}" class="evento-item">
             <a th:href="@{/evento/{id}(id=${evento.id})}" class="evento-link">
                 <div class="evento-immagine">
-                    <img th:src="${evento.urlImage}" alt="Immagine evento" />
+                    <img th:src="@{${'/uploads/' + evento.urlImage}}" alt="Foto evento"/>
                 </div>
                 <div class="evento-titolo">
                     <span th:text="${evento.titolo}">Titolo Evento</span>

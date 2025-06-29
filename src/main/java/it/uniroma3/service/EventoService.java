@@ -4,8 +4,10 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import it.uniroma3.model.Evento;
+import it.uniroma3.model.Opera;
 import it.uniroma3.model.Utente;
 import it.uniroma3.repository.EventoRepository;
 
@@ -18,6 +20,9 @@ public class EventoService {
     @Autowired
     private UtenteService utenteService;
 
+    @Autowired
+    private OperaService operaService;
+
     public Evento getEventoById(Long id) {
         return this.eventoRepository.findById(id).get();
     }
@@ -26,7 +31,7 @@ public class EventoService {
         return this.eventoRepository.findAll();
     }
 
-    public Evento getEventoByTitolo (String titolo) {
+    public Evento getEventoByTitolo(String titolo) {
         return this.eventoRepository.findByTitolo(titolo);
     }
 
@@ -37,7 +42,7 @@ public class EventoService {
         eventoRepository.deleteById(id);
     }
 
-     public Evento aggiungiEvento(Evento evento) {
+    public Evento aggiungiEvento(Evento evento) {
         return eventoRepository.save(evento);
     }
 
@@ -49,7 +54,44 @@ public class EventoService {
     }
 
     public List<Evento> getAllEventiConFasce() {
-    return eventoRepository.findAllWithFasceOrarie();
-}
+        return eventoRepository.findAllWithFasceOrarie();
+    }
+
+    /*
+     * @Transactional
+     * public void rimuoviOperaDaEvento(Long eventoId, Long operaId) {
+     * Evento evento = eventoRepository.findByIdWithOpereAndArtisti(eventoId);
+     * Opera opera = operaService.getOperaById(operaId).get();
+     * 
+     * List<Opera> opere = evento.getOpere();
+     * opere.remove(opera);
+     * evento.setOpere(opere);
+     * eventoRepository.save(evento);
+     * 
+     * 
+     * List<Evento> eventi = opera.getEventi();
+     * eventi.remove(evento);
+     * opera.setEventi(eventi);
+     * operaService.aggiungiOpera(opera);
+     * }
+     */
+
+    @Transactional
+    public void rimuoviOperaDaEvento(Long eventoId, Long operaId) {
+        Evento evento = eventoRepository.findById(eventoId)
+                .orElseThrow(() -> new IllegalArgumentException("Evento non trovato: " + eventoId));
+
+        Opera opera = operaService.getOperaById(operaId)
+                .orElseThrow(() -> new IllegalArgumentException("Opera non trovata: " + operaId));
+
+        if (evento.getOpere() == null) {
+            throw new IllegalStateException("La lista opere dell'evento è null.");
+        }
+
+        boolean removed = evento.getOpere().remove(opera);
+        System.out.println(">>> Opera rimossa da Evento? " + removed);
+
+        eventoRepository.save(evento);
+    }
 
 }

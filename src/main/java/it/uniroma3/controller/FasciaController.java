@@ -12,7 +12,6 @@ import it.uniroma3.model.Evento;
 import it.uniroma3.model.Fascia;
 import it.uniroma3.service.EventoService;
 import it.uniroma3.service.FasciaService;
-import it.uniroma3.model.Utente;
 import it.uniroma3.service.UtenteService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -79,13 +78,11 @@ public class FasciaController {
         return "redirect:/staff/fasce";
     }
 
-    // elimina fascia
-    @GetMapping("/staff/fasce/delete/{id}")
-    public String deleteFascia(@PathVariable Long id) {
-        Utente utenteAutenticato = utenteService.getUtenteAutenticato();
-        fasciaService.cancellaFascia(id, utenteAutenticato);
-
-        return "redirect:/staff/fasce";
+    @PostMapping("/fasce/elimina/{id}")
+    public String eliminaFascia(@PathVariable Long id) {
+        fasciaService.cancellaFascia(id);
+        Long eventoId = fasciaService.getEventoIdByFasciaId(id);
+        return "redirect:/eventi/modifica"  + eventoId; // oppure la pagina corretta
     }
 
     @GetMapping("/fascia/{id}")
@@ -108,11 +105,11 @@ public class FasciaController {
         return "fasce";
     }
 
-        @GetMapping("/visite")
-        public String mostraTutteLeFasce(Model model) {
-            List<Evento> eventiConFasce = eventoService.getAllEventiConFasce();
-            model.addAttribute("eventi", eventiConFasce);
-            return "visite"; 
-        }
+    @GetMapping("/visite")
+    public String mostraTutteLeFasce(Model model) {
+        List<Evento> eventiConFasce = eventoService.getAllEventiConFasce();
+        model.addAttribute("eventi", eventiConFasce);
+        return "visite";
+    }
 
 }

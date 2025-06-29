@@ -15,7 +15,7 @@
     <h1 th:text="${artista.nome}">Nome Artista</h1>
 
     <div class="img-container">
-      <img th:src="${artista.urlImage}" alt="Immagine Artista" />
+      <img th:src="@{${'/uploads/' + artista.urlImage}}" alt="Foto asrtista" />
     </div>
 
     <p><strong>Biografia:</strong></p>
@@ -48,13 +48,14 @@
     </div>
 
     <div sec:authorize="hasRole('STAFF')" class="action-buttons">
-        <a th:href="@{'/artista/modifica/' + ${artista.id}}">
-            <button class="btn-modifica">Modifica</button>
-        </a>
+      <a th:href="@{'/artista/modifica/' + ${artista.id}}">
+        <button class="btn-modifica">Modifica</button>
+      </a>
 
-        <form th:action="@{'/artista/elimina/' + ${artista.id}}" method="post" style="display:inline;">
-            <button class="btn-elimina" type="submit" onclick="return confirm('Sei sicuro di voler eliminare questo artista?')">Elimina</button>
-        </form>
+      <form th:action="@{'/artista/elimina/' + ${artista.id}}" method="post" style="display:inline;">
+        <button class="btn-elimina" type="submit"
+          onclick="return confirm('Sei sicuro di voler eliminare questo artista?')">Elimina</button>
+      </form>
     </div>
 
 

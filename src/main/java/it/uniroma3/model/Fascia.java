@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -37,7 +38,7 @@ public class Fascia {
 	
 	@ManyToOne
 	private Museo museo;
-	@OneToMany(mappedBy = "fascia")
+	@OneToMany(mappedBy = "fascia", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private List<Prenotazione> prenotazioni;
 	@ManyToOne
 	private Evento evento;
@@ -88,6 +89,10 @@ public class Fascia {
 
 	public List<Prenotazione> getPrenotazioni() {
 		return this.prenotazioni;
+	}
+
+	public void setPrenotazioni (List<Prenotazione> prenotazioni) {
+		this.prenotazioni = prenotazioni;
 	}
 
 	public void setMuseo(Museo museo) {

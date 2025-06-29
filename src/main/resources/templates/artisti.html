@@ -18,7 +18,7 @@
             <li th:each="artista : ${artisti}">
                 <div>
                     <a th:href="@{/artista/{id}(id=${artista.id})}">
-                        <img th:src="${artista.urlImage}" alt="Foto Artista" />
+                        <img th:src="@{${'/uploads/' + artista.urlImage}}" alt="Foto asrtista"/>
                     </a>
                 </div>
                 <a th:href="@{/artista/{id}(id=${artista.id})}" th:text="${artista.nome}">Nome</a>
