@@ -97,15 +97,14 @@ public class EventoController {
             @RequestParam(value = "fasceOrarioInizio", required = false) List<String> fasceOrarioInizio,
             @RequestParam(value = "fasceCapienza", required = false) List<Integer> fasceCapienza,
             @RequestParam(value = "immagine", required = false) MultipartFile immagine,
-            HttpServletRequest request, // ⬅️ AGGIUNTO
+            HttpServletRequest request,
             Model model) {
+
         try {
-            int numParts = request.getParts().size();
-            System.out.println("📦 Numero di parti multipart ricevute: " + numParts);
+            System.out.println("🚨 Numero parts ricevuti: " + request.getParts().size());
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         Evento eventoDaSalvare;
 
         if (evento.getId() != null) {
@@ -114,7 +113,6 @@ public class EventoController {
             eventoDaSalvare.setDescrizione(evento.getDescrizione());
             eventoDaSalvare.setDataInizio(evento.getDataInizio());
             eventoDaSalvare.setDataFine(evento.getDataFine());
-            eventoDaSalvare.setUrlImage(evento.getUrlImage());
             eventoDaSalvare.setMuseo(evento.getMuseo());
         } else {
             eventoDaSalvare = new Evento();
@@ -122,9 +120,10 @@ public class EventoController {
             eventoDaSalvare.setDescrizione(evento.getDescrizione());
             eventoDaSalvare.setDataInizio(evento.getDataInizio());
             eventoDaSalvare.setDataFine(evento.getDataFine());
+            eventoDaSalvare.setMuseo(evento.getMuseo());
         }
 
-        // Caricamento immagine se presente
+        // ✅ Caricamento immagine se presente
         if (immagine != null && !immagine.isEmpty()) {
             String uploadDir = "C:\\Users\\182935\\Documents\\workspace-spring-tool-suite-4-4.28.1.RELEASE\\progettoPersonaleSIW-1\\uploads\\images\\";
             File directory = new File(uploadDir);
@@ -135,22 +134,22 @@ public class EventoController {
             try {
                 String nomeFile = UUID.randomUUID() + "_" + immagine.getOriginalFilename();
                 immagine.transferTo(new File(uploadDir + nomeFile));
-                evento.setUrlImage("images/" + nomeFile);
+                eventoDaSalvare.setUrlImage("images/" + nomeFile); // ✅ CORRETTO
             } catch (IOException e) {
                 model.addAttribute("errore", "Errore nel caricamento immagine: " + e.getMessage());
                 model.addAttribute("evento", evento);
-                return "formEvento"; // o AutoreForm se hai unificato anche il template
+                return "formEvento";
             }
         }
 
-        // 🖼️ Gestione OPERE
-        List<Opera> opere = opereIds.stream()
+        // 🖼️ Associa le opere selezionate
+        List<Opera> opere = (opereIds != null) ? opereIds.stream()
                 .map(id -> operaService.getOperaById(id).orElse(null))
                 .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()) : new ArrayList<>();
         eventoDaSalvare.setOpere(opere);
 
-        // 🕒 Gestione FASCE
+        // 🕒 Gestione fasce orarie
         Map<String, Fascia> fasceEsistenti = new HashMap<>();
         List<Fascia> fasceAggiornate = new ArrayList<>();
 
@@ -188,7 +187,7 @@ public class EventoController {
             }
         }
 
-        // 🔴 Rimozione delle fasce eliminate dal form
+        // 🔴 Rimuovi le fasce eliminate
         List<Fascia> fasceDaRimuovere = new ArrayList<>();
         for (Fascia esistente : eventoDaSalvare.getFasceOrarie()) {
             String key = esistente.getData() + "|" + esistente.getOrarioInizio();
@@ -197,20 +196,12 @@ public class EventoController {
             }
         }
 
-        // ⚠️ Prima aggiorni le fasce
         eventoDaSalvare.getFasceOrarie().clear();
         eventoDaSalvare.getFasceOrarie().addAll(fasceAggiornate);
-
-        // ⚠️ Poi rimuovi dal repository le fasce eliminate (se non usi orphanRemoval)
         fasciaRepository.deleteAll(fasceDaRimuovere);
 
         // ✅ Salva evento
         eventoService.aggiungiEvento(eventoDaSalvare);
-
-        System.out.println("Opere: " + opereIds);
-        System.out.println("Date: " + fasceData);
-        System.out.println("Orari: " + fasceOrarioInizio);
-        System.out.println("Capienze: " + fasceCapienza);
 
         return "redirect:/evento/" + eventoDaSalvare.getId();
     }
