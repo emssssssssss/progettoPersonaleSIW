@@ -26,6 +26,7 @@ import it.uniroma3.model.Utente;
 import it.uniroma3.service.EventoService;
 import it.uniroma3.service.OperaService;
 import it.uniroma3.service.UtenteService;
+import jakarta.servlet.http.HttpServletRequest;
 import it.uniroma3.repository.EventoRepository;
 import it.uniroma3.repository.FasciaRepository;
 
@@ -96,7 +97,14 @@ public class EventoController {
             @RequestParam(value = "fasceOrarioInizio", required = false) List<String> fasceOrarioInizio,
             @RequestParam(value = "fasceCapienza", required = false) List<Integer> fasceCapienza,
             @RequestParam(value = "immagine", required = false) MultipartFile immagine,
+            HttpServletRequest request,
             Model model) {
+
+        try {
+            System.out.println("🔍 Richiesta multipart con parts: " + request.getParts().size());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         Evento eventoDaSalvare;
 
