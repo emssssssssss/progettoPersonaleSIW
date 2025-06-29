@@ -18,30 +18,30 @@ public class FasciaService {
 
     public Fascia getFasciaById(Long id) {
         return this.fasciaRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Fascia non trovata"));
+                .orElseThrow(() -> new RuntimeException("Fascia non trovata"));
     }
 
     public Iterable<Fascia> getAllFascia() {
         return this.fasciaRepository.findAll();
     }
 
-    public void cancellaFascia(Long id, Utente utente) {
-        verificaAccessoStaff(utente);
-        if (!fasciaRepository.existsById(id)) {
-            throw new RuntimeException("Fascia con ID" + id + "non trovata");
-        }
+    public void cancellaFascia(Long id) {
         fasciaRepository.deleteById(id);
     }
 
-    private void verificaAccessoStaff(Utente utente){
-        if(!utenteService.isAdmin(utente)){
+    private void verificaAccessoStaff(Utente utente) {
+        if (!utenteService.isAdmin(utente)) {
             throw new RuntimeException("Accesso negato");
         }
     }
 
-
-    public Fascia salvaFascia(Fascia fascia){
+    public Fascia salvaFascia(Fascia fascia) {
         return fasciaRepository.save(fascia);
+    }
+
+    public Long getEventoIdByFasciaId(Long fasciaId) {
+        Fascia fascia = fasciaRepository.findById(fasciaId).orElseThrow();
+        return fascia.getEvento().getId();
     }
 
 }

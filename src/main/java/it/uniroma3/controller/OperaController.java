@@ -83,9 +83,8 @@ public class OperaController {
     @PostMapping("/opera/aggiungi")
     public String aggiungiOpera(@ModelAttribute("opera") @Valid Opera opera,
                                 @AuthenticationPrincipal User currentUser) {
-        Optional<Utente> utente = utenteService.getUtenteByEmail(currentUser.getUsername());
         opera.setMuseo(museoService.getMuseoUnico());
-        operaService.aggiungiOpera(opera, utente);
+        operaService.aggiungiOpera(opera);
         return "redirect:/opere";
     }
 

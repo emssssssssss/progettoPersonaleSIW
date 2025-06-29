@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="it"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org" lang="it" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta charset="UTF-8" />
@@ -18,7 +18,7 @@
             <li th:each="opera : ${opere}">
                 <div>
                     <a th:href="@{/opera/{id}(id=${opera.id})}">
-                        <img th:src="${opera.urlImage}" alt="Foto opera" />
+                        <img th:src="@{${'/uploads/' + opera.urlImage}}" alt="Foto opera" />
                     </a>
                 </div>
                 <a th:href="@{/opera/{id}(id=${opera.id})}" th:text="${opera.titolo}">Nome</a>

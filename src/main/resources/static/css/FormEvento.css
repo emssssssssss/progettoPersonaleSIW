@@ -1,3 +1,4 @@
+/* --- Stili globali e base --- */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: #f5f7fa;
@@ -13,6 +14,7 @@ h1 {
     margin-top: 0;
 }
 
+/* --- Form principale --- */
 form {
     max-width: 35vw;
     margin: 0 auto;
@@ -22,6 +24,7 @@ form {
     box-shadow: 0 0.3vw 0.8vw rgba(0, 0, 0, 0.1);
 }
 
+/* --- Label e campi input --- */
 label {
     display: block;
     margin-top: 1.5vw;
@@ -31,7 +34,10 @@ label {
 
 input[type="text"],
 input[type="date"],
-textarea {
+input[type="time"],
+input[type="number"],
+textarea,
+select {
     width: 100%;
     padding: 0.8vw 1vw;
     margin-top: 0.7vw;
@@ -46,6 +52,7 @@ textarea {
     min-height: 8vw;
 }
 
+/* --- Pulsanti --- */
 button[type="submit"] {
     background-color: #2ecc71;
     color: white;
@@ -79,12 +86,14 @@ button[type="submit"]:hover {
     background-color: #c0392b;
 }
 
+/* --- Messaggi di errore --- */
 div[style="color:red"] {
     margin-top: 0.4vw;
     font-size: 0.9vw;
 }
 
-form+div {
+/* --- Container azioni evento (es. elimina) dopo il form --- */
+form + div {
     max-width: 45vw;
     margin: 2vw auto;
     text-align: center;
@@ -92,7 +101,7 @@ form+div {
     justify-content: space-between;
 }
 
-form+div form button {
+form + div form button {
     background-color: #e74c3c;
     border: none;
     padding: 1vw 2vw;
@@ -104,19 +113,20 @@ form+div form button {
     transition: background-color 0.3s ease;
 }
 
-form+div form button:hover {
+form + div form button:hover {
     background-color: #c0392b;
 }
 
+/* --- Container bottoni Salva e Annulla --- */
 .salvaAnnulla {
     display: flex;
     justify-content: space-between;
     align-items: center;
     max-width: 45vw;
-    margin: 0 auto;
-    margin-top: 2vw;
+    margin: 2vw auto 0 auto;
 }
 
+/* --- Lista opere selezionate --- */
 .opera-item {
     display: flex;
     align-items: center;
@@ -126,21 +136,72 @@ form+div form button:hover {
 }
 
 .opera-item button {
-    background-color: red;
+    background-color: #e74c3c;
     color: white;
     border: none;
     cursor: pointer;
-    font-size: 0.5vw;
+    font-size: 0.8vw;
     padding: 0.3vw 0.6vw;
     border-radius: 0.4vw;
+    transition: background-color 0.3s ease;
 }
 
+.opera-item button:hover {
+    background-color: #c0392b;
+}
+
+/* --- Lista Fasce Esistenti --- */
+.fasce-esistenti {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 1vw;
+    max-width: 45vw;
+    overflow-x: auto;
+    background-color: #ffffff;
+    border: 0px solid #ffffff;
+    border-radius: 0.8vw;
+    padding: 0.8vw 1vw;
+}
+
+.fasce-esistenti li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    font-size: 1vw;
+    max-width: 40vw;
+    word-wrap: break-word;
+}
+
+.fasce-esistenti li button {
+    background-color: #e74c3c;
+    border: none;
+    cursor: pointer;
+    font-size: 0.8vw;
+    padding: 0.3vw 0.6vw;
+    border-radius: 0.4vw;
+    transition: background-color 0.3s ease;
+}
+
+.fasce-esistenti li button:hover {
+    background-color: #c0392b;
+}
+
+.fasce-esistenti form {
+    padding: 0;
+    margin: 0;
+    padding-top: 0;
+    box-shadow: none;
+}
+
+/* --- Form per aggiungere nuove fasce --- */
 .fascia-form {
     display: flex;
     flex-wrap: wrap;
     gap: 3.5vw;
-    align-items: flex-end; /* allinea in basso i label */
+    align-items: flex-end;
     margin-bottom: 2vw;
+    max-width: 45vw;
 }
 
 .fascia-form label {
@@ -171,8 +232,26 @@ form+div form button:hover {
     cursor: pointer;
     transition: background-color 0.3s ease;
     width: 100%;
+    max-width: 15vw;
 }
 
 #aggiungi-fascia:hover {
     background-color: #ccc;
 }
+
+/* --- Wrapper per fasce esistenti + nuove --- */
+#fasce-wrapper {
+    max-width: 45vw;
+    margin-bottom: 1.5vw;
+}
+
+/* --- Wrapper opere selezionate --- */
+#opere-selezionate {
+    max-width: 35vw;
+    margin-top: 1vw;
+}
+
+/* --- Wrapper opere selezionate - singolo item --- */
+
+
+/* --- Messaggi di errore e altri dettagli già coperti --- */

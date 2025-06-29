@@ -132,6 +132,11 @@ public class Evento {
 		this.fasceOrarie.add(fascia);
 	}
 
+	public void removeFasciaOraria(Fascia fascia) {
+		this.fasceOrarie.remove(fascia);
+		fascia.setEvento(null);
+	}
+
 	// --- equals, hashCode e toString ---
 
 	@Override

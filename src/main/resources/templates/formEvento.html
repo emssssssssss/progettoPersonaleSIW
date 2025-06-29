@@ -4,100 +4,117 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="${evento.id != null} ? 'Modifica Evento' : 'Crea Evento'">Evento</title>
-    <link rel="stylesheet" th:href="@{/css/formEvento.css}">
+    <link rel="stylesheet" th:href="@{/css/EventoForm.css}">
 </head>
 
 <body>
 
+    <h1 th:text="${evento.id != null} ? 'Modifica Evento' : 'Nuovo Evento'"></h1>
 
-    <h1 th:text="${evento.id != null} ? 'Modifica Evento' : 'Crea Nuovo Evento'"></h1>
+    <form th:action="@{/evento/salva}" th:object="${evento}" method="post" enctype="multipart/form-data" class="form-evento">
 
-    <form th:action="@{/evento/salva}" th:object="${evento}" method="post">
+         <!-- <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />-->
 
-        <label for="titolo">Titolo:</label>
-        <input type="text" id="titolo" th:field="*{titolo}" required>
+
+        <input type="hidden" th:field="*{id}" />
+        <input type="hidden" th:field="*{urlImage}" />
+
+        <!-- Titolo -->
+        <label for="titolo">Titolo Evento:</label>
+        <input type="text" id="titolo" th:field="*{titolo}" required class="input-stile" />
         <div th:if="${#fields.hasErrors('titolo')}" th:errors="*{titolo}" style="color:red"></div>
-        <br>
 
+        <!-- Descrizione -->
         <label for="descrizione">Descrizione:</label>
-        <textarea id="descrizione" th:field="*{descrizione}"></textarea>
+        <textarea id="descrizione" th:field="*{descrizione}" required class="input-stile"></textarea>
         <div th:if="${#fields.hasErrors('descrizione')}" th:errors="*{descrizione}" style="color:red"></div>
-        <br>
 
+        <!-- Data Inizio -->
         <label for="dataInizio">Data Inizio:</label>
-        <input type="date" id="dataInizio" th:field="*{dataInizio}" required>
+        <input type="date" id="dataInizio" name="dataInizio"
+            th:value="${#temporals.format(evento.dataInizio, 'yyyy-MM-dd')}" required>
         <div th:if="${#fields.hasErrors('dataInizio')}" th:errors="*{dataInizio}" style="color:red"></div>
         <br>
 
         <label for="dataFine">Data Fine:</label>
-        <input type="date" id="dataFine" th:field="*{dataFine}" required>
+        <input type="date" id="dataFine" name="dataFine" th:value="${#temporals.format(evento.dataFine, 'yyyy-MM-dd')}"
+            required>
+
         <div th:if="${#fields.hasErrors('dataFine')}" th:errors="*{dataFine}" style="color:red"></div>
         <br>
 
-        <label for="opera-select">Aggiungi Opera:</label>
-        <select id="opera-select">
-            <option value="">-- Seleziona un'opera --</option>
-            <option th:each="opera : ${opereDisponibili}" th:value="${opera.id}" th:text="${opera.titolo}">Opera
-            </option>
-        </select>
-        <br>
-
-        <div id="opere-selezionate">
-            <!-- Qui verranno aggiunte dinamicamente le opere selezionate -->
+        <!-- URL Immagine -->
+        <label for="immagine">Foto Evento:</label>
+        <input type="file" id="immagine" name="immagine" accept="image/*">
+        <div th:if="${evento.urlImage != null}">
+            <img th:src="@{'/uploads/' + ${evento.urlImage}}" class="profilo" alt="Foto evento" />
         </div>
 
-        <br>
 
-        <h3>Aggiungi Fasce</h3>
+
+
+        <!-- Opere associate -->
+        <label>Opere associate:</label>
+        <div class="opere-container">
+            <div th:each="opera : ${tutteLeOpere}">
+                <label>
+                    <input type="checkbox" name="opereIds" th:value="${opera.id}"
+                        th:checked="${evento.opere.contains(opera)}" />
+                    <span th:text="${opera.titolo}"></span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Fasce Orarie -->
+        <label>Fasce orarie:</label>
         <div id="fasce-container">
-            <!-- Fasce dinamicamente aggiunte -->
+            <div th:each="fascia, iterStat : ${evento.fasceOrarie}" class="fascia-item">
+                <label>Data:</label>
+                <input type="date" name="fasceData" th:value="${fascia.data}" required />
+                <label>Ora Inizio:</label>
+                <input type="time" name="fasceOrarioInizio" th:value="${fascia.orarioInizio}" required />
+                <label>Capienza:</label>
+                <input type="number" name="fasceCapienza" min="1" th:value="${fascia.capienzaMassima}" required />
+            </div>
         </div>
 
-        <div class="fascia-form">
-            <label>
-                Data:
-                <input type="date" id="fascia-data">
-            </label>
+        <button type="button" onclick="aggiungiFascia()">Aggiungi Fascia</button>
 
-            <label>
-                Orario Inizio:
-                <input type="time" id="fascia-orario">
-            </label>
+        <br><br>
 
-            <label>
-                Capienza:
-                <input type="number" id="fascia-capienza" min="1">
-            </label>
+        <button type="submit">Salva Evento</button>
+        <a th:href="@{/eventi}" class="button-annulla">Annulla</a>
 
-            <label>
-                <span style="visibility: hidden;">Aggiungi</span>
-                <button type="button" id="aggiungi-fascia">Aggiungi Fascia</button>
-            </label>
-        </div>
-
-
-
-        <!--per mantenere id quando vado a modificare evento-->
-        <input type="hidden" th:field="*{id}" />
-
-        <!--per mantenere foto quando vado a modificare evento-->
-        <input type="hidden" th:field="*{urlImage}" />
-
-        <!-- Pulsante visibile solo a STAFF -->
-        <div class="salvaAnnulla">
-            <button type="submit">Salva Evento</button>
-            <a th:href="@{/eventi}" class="button-annulla">Annulla</a>
-        </div>
     </form>
 
-    <!-- Pulsante elimina evento (visibile solo se già esiste) -->
-    <div th:if="${evento.id != null}" sec:authorize="hasAuthority('STAFF')">
+    <div th:if="${evento.id != null}">
         <form th:action="@{'/evento/elimina/' + ${evento.id}}" method="post"
             onsubmit="return confirm('Sei sicuro di voler eliminare questo evento?');">
-            <button type="submit" style="color:red;">Elimina Evento</button>
+            <button type="submit" class="btn-elimina">Elimina Evento</button>
         </form>
     </div>
-    <script th:src="@{/js/formEvento.js}"></script>
+
+    <div th:if="${errore}" style="color:red;">
+        <p th:text="${errore}"></p>
+    </div>
+
+    <script>
+        function aggiungiFascia() {
+            const container = document.getElementById('fasce-container');
+            const fascia = document.createElement('div');
+            fascia.classList.add('fascia-item');
+            fascia.innerHTML = `
+                <label>Data:</label>
+                <input type="date" name="fasceData" required />
+                <label>Ora Inizio:</label>
+                <input type="time" name="fasceOrarioInizio" required />
+                <label>Capienza:</label>
+                <input type="number" name="fasceCapienza" min="1" required />
+            `;
+            container.appendChild(fascia);
+        }
+    </script>
+
 </body>
 
 </html>
