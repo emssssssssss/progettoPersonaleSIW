@@ -8,14 +8,10 @@
 </head>
 
 <body>
-
     <h1 th:text="${evento.id != null} ? 'Modifica Evento' : 'Nuovo Evento'"></h1>
 
     <form th:action="@{/evento/salva}" th:object="${evento}" method="post" enctype="multipart/form-data"
         class="form-evento">
-
-        <!-- <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />-->
-
 
         <input type="hidden" th:field="*{id}" />
         <input type="hidden" th:field="*{urlImage}" />
@@ -30,34 +26,23 @@
         <textarea id="descrizione" th:field="*{descrizione}" required class="input-stile"></textarea>
         <div th:if="${#fields.hasErrors('descrizione')}" th:errors="*{descrizione}" style="color:red"></div>
 
-        <!-- Data Inizio -->
+        <!-- Date -->
         <label for="dataInizio">Data Inizio:</label>
         <input type="date" id="dataInizio" name="dataInizio"
             th:value="${#temporals.format(evento.dataInizio, 'yyyy-MM-dd')}" required>
-        <div th:if="${#fields.hasErrors('dataInizio')}" th:errors="*{dataInizio}" style="color:red"></div>
-        <br>
 
         <label for="dataFine">Data Fine:</label>
         <input type="date" id="dataFine" name="dataFine" th:value="${#temporals.format(evento.dataFine, 'yyyy-MM-dd')}"
             required>
 
-        <div th:if="${#fields.hasErrors('dataFine')}" th:errors="*{dataFine}" style="color:red"></div>
-        <br>
-
-        <!-- Upload immagine singola -->
+        <!-- Immagine -->
         <label for="immagine">Foto Evento:</label>
         <input type="file" id="immagine" name="immagine" accept="image/*">
-
-        <!-- Mostra l'immagine esistente, se presente -->
         <div th:if="${evento.urlImage != null}">
             <img th:src="@{'/uploads/' + ${evento.urlImage}}" class="profilo" alt="Foto evento" />
         </div>
 
-
-
-
-
-        <!-- Opere associate -->
+        <!-- Opere -->
         <label>Opere associate:</label>
         <div class="opere-container">
             <div th:each="opera : ${tutteLeOpere}">
@@ -69,26 +54,29 @@
             </div>
         </div>
 
-        <!-- Fasce Orarie -->
-        <label>Fasce orarie:</label>
-        <div id="fasce-container">
+        <!-- Fasce orarie (esistenti in sola lettura con rimozione) -->
+        <label>Fasce orarie esistenti:</label>
+        <div id="fasce-esistenti">
             <div th:each="fascia, iterStat : ${evento.fasceOrarie}" class="fascia-item">
-                <label>Data:</label>
-                <input type="date" name="fasceData" th:value="${fascia.data}" required />
-                <label>Ora Inizio:</label>
-                <input type="time" name="fasceOrarioInizio" th:value="${fascia.orarioInizio}" required />
-                <label>Capienza:</label>
-                <input type="number" name="fasceCapienza" min="1" th:value="${fascia.capienzaMassima}" required />
+                <input type="hidden" name="fasceData" th:value="${fascia.data}" />
+                <input type="hidden" name="fasceOrarioInizio" th:value="${fascia.orarioInizio}" />
+                <input type="hidden" name="fasceCapienza" th:value="${fascia.capienzaMassima}" />
+
+                <span th:text="${fascia.data}"></span>
+                <span th:text="${fascia.orarioInizio}"></span>
+                <span th:text="${fascia.capienzaMassima + ' posti'}"></span>
+                <button type="button" onclick="this.parentElement.remove()">❌</button>
             </div>
         </div>
 
+        <!-- Nuove fasce orarie -->
+        <label>Nuove fasce orarie:</label>
+        <div id="fasce-nuove"></div>
         <button type="button" onclick="aggiungiFascia()">Aggiungi Fascia</button>
 
         <br><br>
-
         <button type="submit">Salva Evento</button>
         <a th:href="@{/eventi}" class="button-annulla">Annulla</a>
-
     </form>
 
     <div th:if="${evento.id != null}">
@@ -104,21 +92,18 @@
 
     <script>
         function aggiungiFascia() {
-            const container = document.getElementById('fasce-container');
+            const container = document.getElementById('fasce-nuove');
             const fascia = document.createElement('div');
             fascia.classList.add('fascia-item');
             fascia.innerHTML = `
-                <label>Data:</label>
                 <input type="date" name="fasceData" required />
-                <label>Ora Inizio:</label>
                 <input type="time" name="fasceOrarioInizio" required />
-                <label>Capienza:</label>
-                <input type="number" name="fasceCapienza" min="1" required />
+                <input type="number" name="fasceCapienza" min="1" placeholder="Capienza" required />
+                <button type="button" onclick="this.parentElement.remove()">❌</button>
             `;
             container.appendChild(fascia);
         }
     </script>
-
 </body>
 
 </html>
