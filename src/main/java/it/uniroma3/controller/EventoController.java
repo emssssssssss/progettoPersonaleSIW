@@ -80,23 +80,26 @@ public class EventoController {
     // gestione della modifica
     @PostMapping("/evento/salva")
     public String salvaEvento(@Valid @ModelAttribute Evento evento,
-            BindingResult bindingResult, Model model) {
+            BindingResult bindingResult,  Model model) {
         Utente utente = utenteService.getUtenteAutenticato();
         if (!utenteService.isAdmin(utente)) {
             throw new RuntimeException("Accesso negato: solo lo staff può salvare eventi.");
         }
         if (bindingResult.hasErrors()) {
+            model.addAttribute("opereDisponibili", operaService.getAllOpere());
             return "formEvento";
         }
+        
+        // Imposta la relazione bidirezionale tra fasce e evento
+        for (Fascia f : evento.getFasceOrarie()) {
+            f.setEvento(evento);
+        }
+
         if (evento.getId() == null) {
             eventoService.aggiungiEvento(evento);
         } else {
             eventoService.modificaEvento(evento, utente);
         }
-        for (Fascia f : evento.getFasceOrarie()) {
-            f.setEvento(evento);
-        }
-        eventoService.aggiungiEvento(evento);
 
         return "redirect:/evento/" + evento.getId();
     }
@@ -113,4 +116,4 @@ public class EventoController {
         return "redirect:/eventi";
     }
 
-}
+} 

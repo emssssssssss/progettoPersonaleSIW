@@ -14,6 +14,15 @@
 
     <form th:action="@{/evento/salva}" th:object="${evento}" method="post">
 
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+        <!--  inserimento URL immagine di copertina -->
+        <label for="urlImage">URL Immagine di Copertina:</label>
+        <input type="url" id="urlImage" th:field="*{urlImage}" placeholder="https://..." />
+        <div th:if="${#fields.hasErrors('urlImage')}" th:errors="*{urlImage}" style="color:red"></div>
+        <br>
+
+
         <label for="titolo">Titolo:</label>
         <input type="text" id="titolo" th:field="*{titolo}" required>
         <div th:if="${#fields.hasErrors('titolo')}" th:errors="*{titolo}" style="color:red"></div>
@@ -33,7 +42,6 @@
         <input type="date" id="dataFine" th:field="*{dataFine}" required>
         <div th:if="${#fields.hasErrors('dataFine')}" th:errors="*{dataFine}" style="color:red"></div>
         <br>
-
         <label for="opera-select">Aggiungi Opera:</label>
         <select id="opera-select">
             <option value="">-- Seleziona un'opera --</option>
@@ -80,8 +88,7 @@
         <!--per mantenere id quando vado a modificare evento-->
         <input type="hidden" th:field="*{id}" />
 
-        <!--per mantenere foto quando vado a modificare evento-->
-        <input type="hidden" th:field="*{urlImage}" />
+
 
         <!-- Pulsante visibile solo a STAFF -->
         <div class="salvaAnnulla">
@@ -100,4 +107,4 @@
     <script th:src="@{/js/formEvento.js}"></script>
 </body>
 
-</html>
+</html> 

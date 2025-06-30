@@ -10,7 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.validation.constraints.Future;
+//import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
@@ -21,7 +21,7 @@ public class Fascia {
 	private Long id;
 
 	@NotNull(message = "La data non può essere nulla")
-    @Future(message = "La data deve essere nel futuro")
+    //@Future(message = "La data deve essere nel futuro")
 	private LocalDate data;
 
 	

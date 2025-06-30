@@ -13,18 +13,20 @@ select.addEventListener("change", function () {
         wrapper.classList.add("opera-item");
         wrapper.dataset.id = selectedId;
 
+        const index = container.children.length;
+
         wrapper.innerHTML = `
-                <span>${selectedText}</span>
-                <button type="button" onclick="this.parentElement.remove(); opereAggiunte.delete('${selectedId}')">✖</button>
-                <input type="hidden" name="opere" value="${selectedId}" />
-            `;
+            <span>${selectedText}</span>
+            <button type="button" onclick="this.parentElement.remove(); opereAggiunte.delete('${selectedId}')">✖</button>
+            <input type="hidden" name="opere[${index}].id" value="${selectedId}" />
+        `;
 
         container.appendChild(wrapper);
     }
 
-    // Reset select dopo selezione
     this.selectedIndex = 0;
 });
+
 
 // Qui fuori dal change della select
 let fasciaIndex = 0;
