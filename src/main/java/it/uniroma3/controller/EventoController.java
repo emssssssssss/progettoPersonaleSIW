@@ -78,7 +78,6 @@ public class EventoController {
         Evento evento = eventoRepository.findByIdWithOpereAndArtisti(id);
         model.addAttribute("evento", evento);
         model.addAttribute("tutteLeOpere", operaService.getAllOpere()); // se serve
-
         return "formEvento"; // il nome del tuo HTML
     }
 
@@ -87,8 +86,8 @@ public class EventoController {
             @ModelAttribute Evento evento,
             @RequestParam(name = "opereIds", required = false) List<Long> opereIds,
             @RequestParam(value = "immagine", required = false) MultipartFile immagine,
-            Model model) {
-
+            @RequestParam(name = "fasceIds", required = false) List<Long> fasceIds,
+            Model model){
         Evento eventoDaSalvare;
 
         if (evento.getId() != null) {
@@ -98,11 +97,12 @@ public class EventoController {
             eventoDaSalvare.setDataInizio(evento.getDataInizio());
             eventoDaSalvare.setDataFine(evento.getDataFine());
             eventoDaSalvare.setMuseo(evento.getMuseo());
-            eventoDaSalvare.setFasceOrarie(evento.getFasceOrarie());
+            eventoDaSalvare.getFasceOrarie().clear();
             for (Fascia fascia : evento.getFasceOrarie()) {
                 fascia.setEvento(eventoDaSalvare);
-                fasciaRepository.save(fascia);
+                eventoDaSalvare.addFasciaOraria(fascia);
             }
+
         } else {
             eventoDaSalvare = new Evento();
             eventoDaSalvare.setTitolo(evento.getTitolo());

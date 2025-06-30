@@ -10,13 +10,15 @@
 <body>
     <h1 th:text="${evento.id != null} ? 'Modifica Evento' : 'Nuovo Evento'"></h1>
 
-    <form th:action="@{/evento/salva}" th:object="${evento}" method="post" enctype="multipart/form-data" class="form-evento">
+    <form th:action="@{/evento/salva}" th:object="${evento}" method="post" enctype="multipart/form-data"
+        class="form-evento">
 
-        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 
 
         <input type="hidden" th:field="*{id}" />
         <input type="hidden" th:field="*{urlImage}" />
+
 
         <!-- Titolo -->
         <label for="titolo">Titolo Evento:</label>
@@ -44,6 +46,19 @@
             <img th:src="@{'/uploads/' + ${evento.urlImage}}" class="profilo" alt="Foto evento" />
         </div>
 
+        <div style="display:none;" th:each="fascia, iterStat : ${evento.fasceOrarie}">
+            <input type="hidden" th:field="*{fasceOrarie[__${iterStat.index}__].id}" />
+            <input type="hidden" th:field="*{fasceOrarie[__${iterStat.index}__].data}" />
+            <input type="hidden" th:field="*{fasceOrarie[__${iterStat.index}__].capienzaMassima}" />
+            <input type="hidden" th:field="*{fasceOrarie[__${iterStat.index}__].postiPrenotati}" />
+            <input type="hidden" th:field="*{fasceOrarie[__${iterStat.index}__].evento.id}" />
+            <input type="hidden" th:field="*{fasceOrarie[__${iterStat.index}__].museo.id}" />
+        </div>
+
+
+
+
+
 
         <!-- Opere -->
         <label for="opere">Opere:</label>
@@ -52,26 +67,23 @@
             <option th:each="o : ${tutteLeOpere}" th:value="${o.id}" th:text="${o.titolo}"></option>
         </select>
 
-    
         <!-- Container visivo delle opere selezionate -->
-        <div id="opere-selezionate" class="opere-selezionate">
-            <div th:each="o : ${evento.opere}" class="opera-item">
-                <span th:text="${o.titolo}">Titolo opera</span>
-                <button type="button" class="rimuovi-opera" th:attr="data-id=${o.id}">❌</button>
+        <div id="opere-selezionate" class="opere-selezionate"
+            th:with="ids=${evento.opere.![id]}, titoli=${evento.opere.![titolo]}">
+            <div th:each="i, iterStat : ${#lists.size(ids) > 0 ? ids : {}}" class="opera-item">
+                <span th:text="${titoli[iterStat.index]}">Titolo opera</span>
+                <button type="button" class="rimuovi-opera" th:attr="data-id=${i}">❌</button>
             </div>
         </div>
 
-
-        <!-- Container per gli input nascosti -->
-        <div id="opere-hidden">
-            <input type="hidden" th:each="o : ${evento.opere}" name="opereIds" th:value="${o.id}"
-                th:attr="data-id=${o.id}" />
-        </div>
-
+        <!-- Un solo input nascosto con array JSON -->
+        <input type="hidden" name="opereIdsJson" id="opereIdsJson"
+            th:value="${#lists.size(evento.opere) > 0} ? ${evento.opere.![id]} : '[]'" />
 
         <div th:if="${erroreOpere}" style="color:red">
             <p th:text="${erroreOpere}"></p>
         </div>
+
 
 
 

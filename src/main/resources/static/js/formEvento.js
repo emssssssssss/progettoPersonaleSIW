@@ -1,19 +1,21 @@
 document.addEventListener("DOMContentLoaded", function () {
     const selectOpere = document.getElementById('opere');
     const container = document.getElementById('opere-selezionate');
-    const hiddenInputs = document.getElementById('opere-hidden');
+    const hiddenJsonInput = document.getElementById('opereIdsJson');
+
     const opereAggiunte = new Set();
 
-    // --- Precarica le opere già associate (modifica evento) ---
-    /*<![CDATA[*/
-    let opereIniziali = /*[[${evento.opere}]]*/[];
-    /*]]>*/
+    // Precarica eventuali ID già presenti nel campo JSON
+    try {
+        const iniziali = JSON.parse(hiddenJsonInput.value || "[]");
+        iniziali.forEach(id => opereAggiunte.add(String(id)));
+    } catch (e) {
+        console.error("Errore parsing iniziali:", e);
+    }
 
-    opereIniziali.forEach(opera => {
-        aggiungiOpera(opera.id, opera.titolo);
-    });
+    aggiornaHiddenJson();
 
-    // --- Aggiunta opera nuova ---
+    // Aggiunta opera da select
     selectOpere.addEventListener('change', () => {
         const selectedId = selectOpere.value;
         const selectedText = selectOpere.options[selectOpere.selectedIndex].text;
@@ -25,55 +27,33 @@ document.addEventListener("DOMContentLoaded", function () {
         selectOpere.selectedIndex = 0; // reset selezione
     });
 
-    // --- Funzione per aggiungere opera ---
+    // Aggiungi opera visivamente e in JSON
     function aggiungiOpera(id, titolo) {
         opereAggiunte.add(id);
 
-        // Box visivo
         const item = document.createElement('div');
         item.className = 'opera-item';
         item.innerHTML = `
-    <span>${titolo}</span>
-    <button type="button" class="rimuovi-opera" data-id="${id}">❌</button>
-    `;
+            <span>${titolo}</span>
+            <button type="button" class="rimuovi-opera" data-id="${id}">❌</button>
+        `;
         container.appendChild(item);
 
-        // Input hidden
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = 'opereIds';
-        input.value = id;
-        input.dataset.id = id;
-        hiddenInputs.appendChild(input);
+        aggiornaHiddenJson();
     }
 
-    // --- Rimozione opera ---
+    // Rimozione opera
     container.addEventListener('click', (e) => {
         if (e.target.classList.contains('rimuovi-opera')) {
             const id = e.target.dataset.id;
             opereAggiunte.delete(id);
-
-            // Rimuove visual
             e.target.parentElement.remove();
-
-            // Rimuove input hidden
-            hiddenInputs.querySelector(`input[data-id="${id}"]`)?.remove();
+            aggiornaHiddenJson();
         }
     });
 
-
-    document.addEventListener("DOMContentLoaded", function () {
-        const selectOpere = document.getElementById('opere');
-        const container = document.getElementById('opere-selezionate');
-        const hiddenInputs = document.getElementById('opere-hidden');
-
-        // Legge gli ID già presenti nel DOM
-        const opereAggiunte = new Set();
-        hiddenInputs.querySelectorAll('input[name="opereIds"]').forEach(input => {
-            opereAggiunte.add(input.value);
-        });
-
-        // ... (resto del codice invariato)
-    });
-
+    // Aggiorna l'input hidden JSON
+    function aggiornaHiddenJson() {
+        hiddenJsonInput.value = JSON.stringify(Array.from(opereAggiunte));
+    }
 });
