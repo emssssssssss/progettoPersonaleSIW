@@ -4,14 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="${evento.id != null} ? 'Modifica Evento' : 'Crea Evento'">Evento</title>
-    <link rel="stylesheet" th:href="@{/css/EventoForm.css}">
+    <link rel="stylesheet" th:href="@{/css/FormEvento.css}">
 </head>
 
 <body>
     <h1 th:text="${evento.id != null} ? 'Modifica Evento' : 'Nuovo Evento'"></h1>
 
-    <form th:action="@{/evento/salva}" th:object="${evento}" method="post" enctype="multipart/form-data"
-        class="form-evento">
+    <form th:action="@{/evento/salva}" th:object="${evento}" method="post" enctype="multipart/form-data" class="form-evento">
+
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
 
         <input type="hidden" th:field="*{id}" />
         <input type="hidden" th:field="*{urlImage}" />
@@ -42,37 +44,37 @@
             <img th:src="@{'/uploads/' + ${evento.urlImage}}" class="profilo" alt="Foto evento" />
         </div>
 
+
         <!-- Opere -->
-        <label>Opere associate:</label>
-        <div class="opere-container">
-            <div th:each="opera : ${tutteLeOpere}">
-                <label>
-                    <input type="checkbox" name="opereIds" th:value="${opera.id}"
-                        th:checked="${evento.opere.contains(opera)}" />
-                    <span th:text="${opera.titolo}"></span>
-                </label>
+        <label for="opere">Opere:</label>
+        <select id="opere" name="opere-select">
+            <option disabled selected value="">-- Seleziona un'opera --</option>
+            <option th:each="o : ${tutteLeOpere}" th:value="${o.id}" th:text="${o.titolo}"></option>
+        </select>
+
+    
+        <!-- Container visivo delle opere selezionate -->
+        <div id="opere-selezionate" class="opere-selezionate">
+            <div th:each="o : ${evento.opere}" class="opera-item">
+                <span th:text="${o.titolo}">Titolo opera</span>
+                <button type="button" class="rimuovi-opera" th:attr="data-id=${o.id}">❌</button>
             </div>
         </div>
 
-        <!-- Fasce orarie (esistenti in sola lettura con rimozione) -->
-        <label>Fasce orarie esistenti:</label>
-        <div id="fasce-esistenti">
-            <div th:each="fascia, iterStat : ${evento.fasceOrarie}" class="fascia-item">
-                <input type="hidden" name="fasceData" th:value="${fascia.data}" />
-                <input type="hidden" name="fasceOrarioInizio" th:value="${fascia.orarioInizio}" />
-                <input type="hidden" name="fasceCapienza" th:value="${fascia.capienzaMassima}" />
 
-                <span th:text="${fascia.data}"></span>
-                <span th:text="${fascia.orarioInizio}"></span>
-                <span th:text="${fascia.capienzaMassima + ' posti'}"></span>
-                <button type="button" onclick="this.parentElement.remove()">❌</button>
-            </div>
+        <!-- Container per gli input nascosti -->
+        <div id="opere-hidden">
+            <input type="hidden" th:each="o : ${evento.opere}" name="opereIds" th:value="${o.id}"
+                th:attr="data-id=${o.id}" />
         </div>
 
-        <!-- Nuove fasce orarie -->
-        <label>Nuove fasce orarie:</label>
-        <div id="fasce-nuove"></div>
-        <button type="button" onclick="aggiungiFascia()">Aggiungi Fascia</button>
+
+        <div th:if="${erroreOpere}" style="color:red">
+            <p th:text="${erroreOpere}"></p>
+        </div>
+
+
+
 
         <br><br>
         <button type="submit">Salva Evento</button>
@@ -90,20 +92,7 @@
         <p th:text="${errore}"></p>
     </div>
 
-    <script>
-        function aggiungiFascia() {
-            const container = document.getElementById('fasce-nuove');
-            const fascia = document.createElement('div');
-            fascia.classList.add('fascia-item');
-            fascia.innerHTML = `
-                <input type="date" name="fasceData" required />
-                <input type="time" name="fasceOrarioInizio" required />
-                <input type="number" name="fasceCapienza" min="1" placeholder="Capienza" required />
-                <button type="button" onclick="this.parentElement.remove()">❌</button>
-            `;
-            container.appendChild(fascia);
-        }
-    </script>
+    <script th:src="@{/js/formEvento.js}"></script>
 </body>
 
 </html>

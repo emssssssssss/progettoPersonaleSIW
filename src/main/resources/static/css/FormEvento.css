@@ -1,50 +1,50 @@
-/* --- Stili globali e base --- */
+/* EventoForm.css - Responsive in vw */
+
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: #f5f7fa;
-    margin: 0;
-    padding: 1vw;
+    background: #f4f6f8;
     color: #333;
+    margin: 0;
+    padding: 2vw;
 }
 
 h1 {
     text-align: center;
     color: #2c3e50;
-    font-size: 2.5vw;
-    margin-top: 0;
+    margin-bottom: 2vw;
+    font-size: 3vw;
 }
 
-/* --- Form principale --- */
-form {
-    max-width: 35vw;
+.form-evento {
+    max-width: 80vw;
     margin: 0 auto;
-    background: #ffffff;
-    padding: 2vw 3vw;
+    background: #fff;
+    padding: 3vw;
     border-radius: 1vw;
-    box-shadow: 0 0.3vw 0.8vw rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0.5vw 1.5vw rgba(0, 0, 0, 0.1);
 }
 
-/* --- Label e campi input --- */
 label {
     display: block;
-    margin-top: 1.5vw;
+    margin: 2vw 0 0.5vw;
     font-weight: 600;
-    font-size: 1.1vw;
+    font-size: 1.3vw;
+    color: #34495e;
 }
 
-input[type="text"],
+.input-stile,
 input[type="date"],
 input[type="time"],
 input[type="number"],
-textarea,
-select {
+input[type="file"],
+textarea {
     width: 100%;
-    padding: 0.8vw 1vw;
-    margin-top: 0.7vw;
-    border: 0.1vw solid #ccc;
-    border-radius: 0.8vw;
-    font-size: 1vw;
+    padding: 1vw;
+    font-size: 1.1vw;
+    border: 1px solid #ccc;
+    border-radius: 0.5vw;
     box-sizing: border-box;
+    margin-bottom: 1vw;
 }
 
 textarea {
@@ -52,206 +52,147 @@ textarea {
     min-height: 8vw;
 }
 
-/* --- Pulsanti --- */
-button[type="submit"] {
-    background-color: #2ecc71;
-    color: white;
-    padding: 1vw 2vw;
+.opere-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1vw;
+    margin-top: 1vw;
+}
+
+.opere-container label {
+    display: flex;
+    align-items: center;
+    gap: 0.5vw;
+    background-color: #ecf0f1;
+    padding: 0.5vw 1vw;
+    border-radius: 0.5vw;
+    font-size: 1.1vw;
+}
+
+button[type="submit"],
+.button-annulla,
+.btn-elimina {
+    display: inline-block;
     margin-top: 2vw;
+    padding: 1vw 2vw;
+    font-size: 1.2vw;
     border: none;
-    border-radius: 0.8vw;
-    font-size: 1vw;
+    border-radius: 0.7vw;
     cursor: pointer;
+    text-decoration: none;
     transition: background-color 0.3s ease;
 }
 
-button[type="submit"]:hover {
+button[type="submit"] {
     background-color: #27ae60;
+    color: white;
 }
 
 .button-annulla {
-    display: inline-block;
+    background-color: #95a5a6;
+    color: white;
+    margin-left: 1vw;
+}
+
+.btn-elimina {
     background-color: #e74c3c;
     color: white;
-    padding: 0.9vw 1.8vw;
-    text-decoration: none;
-    border-radius: 0.8vw;
-    font-weight: 500;
-    margin-top: 2vw;
-    font-size: 1vw;
-    transition: background-color 0.3s ease;
-}
-
-.button-annulla:hover {
-    background-color: #c0392b;
-}
-
-/* --- Messaggi di errore --- */
-div[style="color:red"] {
-    margin-top: 0.4vw;
-    font-size: 0.9vw;
-}
-
-/* --- Container azioni evento (es. elimina) dopo il form --- */
-form + div {
-    max-width: 45vw;
-    margin: 2vw auto;
-    text-align: center;
-    display: flex;
-    justify-content: space-between;
-}
-
-form + div form button {
-    background-color: #e74c3c;
-    border: none;
     padding: 1vw 2vw;
-    color: white;
-    font-weight: bold;
-    border-radius: 0.8vw;
-    cursor: pointer;
-    font-size: 1vw;
-    transition: background-color 0.3s ease;
-}
-
-form + div form button:hover {
-    background-color: #c0392b;
-}
-
-/* --- Container bottoni Salva e Annulla --- */
-.salvaAnnulla {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 45vw;
-    margin: 2vw auto 0 auto;
-}
-
-/* --- Lista opere selezionate --- */
-.opera-item {
-    display: flex;
-    align-items: center;
-    gap: 1vw;
-    margin: 0.5vw 0;
-    font-size: 1vw;
-}
-
-.opera-item button {
-    background-color: #e74c3c;
-    color: white;
-    border: none;
-    cursor: pointer;
-    font-size: 0.8vw;
-    padding: 0.3vw 0.6vw;
-    border-radius: 0.4vw;
-    transition: background-color 0.3s ease;
-}
-
-.opera-item button:hover {
-    background-color: #c0392b;
-}
-
-/* --- Lista Fasce Esistenti --- */
-.fasce-esistenti {
-    list-style: none;
-    padding-left: 0;
     margin-top: 1vw;
-    max-width: 45vw;
-    overflow-x: auto;
-    background-color: #ffffff;
-    border: 0px solid #ffffff;
-    border-radius: 0.8vw;
-    padding: 0.8vw 1vw;
 }
 
-.fasce-esistenti li {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    font-size: 1vw;
-    max-width: 40vw;
-    word-wrap: break-word;
+button:hover,
+.button-annulla:hover,
+.btn-elimina:hover {
+    opacity: 0.9;
 }
 
-.fasce-esistenti li button {
-    background-color: #e74c3c;
-    border: none;
-    cursor: pointer;
-    font-size: 0.8vw;
-    padding: 0.3vw 0.6vw;
-    border-radius: 0.4vw;
-    transition: background-color 0.3s ease;
+.profilo {
+    max-width: 30vw;
+    margin-top: 1vw;
+    border-radius: 0.5vw;
+    box-shadow: 0 0.3vw 1vw rgba(0, 0, 0, 0.2);
 }
 
-.fasce-esistenti li button:hover {
-    background-color: #c0392b;
-}
-
-.fasce-esistenti form {
-    padding: 0;
-    margin: 0;
-    padding-top: 0;
-    box-shadow: none;
-}
-
-/* --- Form per aggiungere nuove fasce --- */
-.fascia-form {
+.fascia-item {
     display: flex;
     flex-wrap: wrap;
-    gap: 3.5vw;
-    align-items: flex-end;
-    margin-bottom: 2vw;
-    max-width: 45vw;
-}
-
-.fascia-form label {
-    font-size: 1.1vw;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5vw;
-    color: #333;
-    min-width: 15vw;
-}
-
-.fascia-form input {
-    padding: 0.6vw;
-    font-size: 1vw;
-    border: 1px solid #ccc;
-    border-radius: 0.5vw;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-#aggiungi-fascia {
-    background-color: #e0e0e0;
-    border: none;
-    padding: 0.8vw 2vw;
-    border-radius: 0.8vw;
-    font-size: 1vw;
-    color: #333;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    width: 100%;
-    max-width: 15vw;
-}
-
-#aggiungi-fascia:hover {
-    background-color: #ccc;
-}
-
-/* --- Wrapper per fasce esistenti + nuove --- */
-#fasce-wrapper {
-    max-width: 45vw;
-    margin-bottom: 1.5vw;
-}
-
-/* --- Wrapper opere selezionate --- */
-#opere-selezionate {
-    max-width: 35vw;
+    gap: 1vw;
+    align-items: center;
     margin-top: 1vw;
 }
 
-/* --- Wrapper opere selezionate - singolo item --- */
+.fascia-item input,
+.fascia-item button {
+    font-size: 1.1vw;
+}
+
+.fascia-item button {
+    background: none;
+    border: none;
+    font-size: 1.5vw;
+    cursor: pointer;
+    color: #e74c3c;
+}
 
 
-/* --- Messaggi di errore e altri dettagli già coperti --- */
+/* Sezione Select Opere */
+
+select[multiple] {
+    width: 100%;
+    min-height: 10vw;
+    padding: 1vw;
+    font-size: 1.1vw;
+    border: 1px solid #ccc;
+    border-radius: 0.5vw;
+    background-color: #fff;
+    box-sizing: border-box;
+    margin-top: 0.5vw;
+    margin-bottom: 1vw;
+    resize: vertical;
+    overflow-y: auto;
+}
+
+select[multiple] option {
+    padding: 0.5vw;
+    font-size: 1vw;
+}
+
+label[for="opere"] {
+    display: block;
+    margin-top: 2vw;
+    font-weight: 600;
+    font-size: 1.3vw;
+    color: #34495e;
+}
+
+.opere-selezionate {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1vw;
+    margin-top: 1vw;
+}
+
+.opera-item {
+    background-color: #dff0d8;
+    color: #2c3e50;
+    padding: 0.5vw 1vw;
+    border-radius: 0.5vw;
+    font-size: 1.1vw;
+    display: flex;
+    align-items: center;
+    gap: 0.7vw;
+    border: 1px solid #b2d8b2;
+}
+
+.rimuovi-opera {
+    background: none;
+    border: none;
+    font-size: 1.2vw;
+    cursor: pointer;
+    color: #e74c3c;
+}
+
+
+
+
