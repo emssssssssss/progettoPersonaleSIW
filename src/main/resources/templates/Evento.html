@@ -23,7 +23,7 @@
             <a th:href="@{/fasce/{id}(id=${evento.id})}" class="btn-prenota">Prenota</a>
 
             <!-- Azioni extra per STAFF -->
-           <!-- <span sec:authorize="hasRole('STAFF')">-->
+            <span sec:authorize="hasRole('STAFF')">
                 |
                 <a th:href="@{/evento/modifica/{id}(id=${evento.id})}" class="btn-modifica">Modifica</a>
                 |
@@ -31,7 +31,8 @@
                     onsubmit="return confirm('Confermi l\'eliminazione?');">
                     <button type="submit" class="btn-elimina">Elimina</button>
                 </form>
-           <!-- </span>-->
+                
+            </span>
         </div>
     </div>
 
@@ -41,7 +42,7 @@
         <div class="galleria-opere">
             <div class="opera" th:each="opera : ${evento.opere}">
                 <a th:href="@{/opera/{id}(id=${opera.id})}">
-                    <img th:src="@{${'/uploads/' + opera.urlImage}}" alt="Foto opera"  class="img-opera"/>
+                    <img th:src="@{${'/uploads/' + opera.urlImage}}" alt="Foto opera" class="img-opera" />
                     <p th:text="${opera.titolo}">Nome Opera</p>
                 </a>
             </div>
