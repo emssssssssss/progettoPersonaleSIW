@@ -47,7 +47,7 @@
 
         <!-- Opere -->
         <label for="opere">Opere:</label>
-        <select id="opere" name="opere-select">
+        <select id="opere" name="opere-select" multiple size="10">
             <option disabled selected value="">-- Seleziona un'opera --</option>
             <option th:each="o : ${tutteLeOpere}" th:value="${o.id}" th:text="${o.titolo}"></option>
         </select>
