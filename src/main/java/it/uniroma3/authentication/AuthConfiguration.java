@@ -43,7 +43,7 @@ public class AuthConfiguration {
                         .requestMatchers(HttpMethod.HEAD, "/uploads/images/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/login", "/register").permitAll()
                         .requestMatchers("/admin/**", "/staff/fasce/**").hasAuthority("ROLE_STAFF")
-                        .requestMatchers(HttpMethod.POST, "/evento/rimuovi-opera/**", "/evento/salva").hasAuthority("ROLE_STAFF")
+                        .requestMatchers(HttpMethod.POST, "/evento/rimuovi-opera/**", "/evento/salva","/opera/salva").hasAuthority("ROLE_STAFF")
                         .requestMatchers("/eventoNuovo").hasAuthority("ROLE_STAFF")
                         .requestMatchers("/eventoModifica/**").hasAuthority("ROLE_STAFF")
                         .anyRequest().authenticated())

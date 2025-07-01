@@ -11,7 +11,8 @@
 
     <h1 th:text="${opera.id != null} ? 'Modifica Opera' : 'Aggiungi Nuova Opera'"></h1>
 
-    <form th:action="@{/opera/salva}" th:object="${opera}" method="post">
+    <form th:action="@{/opera/salva}" th:object="${opera}" method="post" enctype="multipart/form-data">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 
         <label for="titolo">Titolo:</label>
         <input type="text" id="titolo" th:field="*{titolo}" required>
@@ -28,15 +29,22 @@
         <div th:if="${#fields.hasErrors('anno')}" th:errors="*{anno}" style="color:red"></div>
         <br>
 
-        <label for="urlImage">URL Immagine:</label>
-        <input type="text" id="urlImage" th:field="*{urlImage}" required>
-        <div th:if="${#fields.hasErrors('urlImage')}" th:errors="*{urlImage}" style="color:red"></div>
+        <!-- Se esiste già un'immagine, mostriamola -->
+        <div th:if="${opera.urlImage != null}">
+            <p>Immagine attuale:</p>
+            <img th:src="@{'/uploads/' + ${opera.urlImage}}" alt="Immagine opera" style="max-width: 200px;">
+        </div>
+
+        <label for="urlImage">Foto Opera:</label>
+        <input type="file" id="urlImage" name="urlImage" accept="image/*">
+         <div th:if="${#fields.hasErrors('urlImage')}" th:errors="*{urlImage}" style="color:red"></div>
         <br>
 
         <label for="artista">Artista:</label>
         <select id="artista" name="artista.id" required>
             <option value="">-- Seleziona artista --</option>
-            <option th:each="a : ${artisti}" th:value="${a.id}" th:text="${a.nome}">Artista</option>
+            <option th:each="a : ${artisti}" th:value="${a.id}" th:text="${a.nome}"
+                th:selected="${opera.artista != null and opera.artista.id == a.id}">Artista</option>
         </select>
         <div th:if="${#fields.hasErrors('artista')}" th:errors="*{artista}" style="color:red"></div>
         <br>
@@ -49,6 +57,7 @@
             <a th:href="@{/opere}" class="button-annulla">Annulla</a>
         </div>
     </form>
+
 
     <!-- Pulsante elimina opera (visibile solo se già esiste) -->
     <div th:if="${opera.id != null}" sec:authorize="hasAuthority('STAFF')">
