@@ -1,5 +1,6 @@
 package it.uniroma3.controller;
 
+import java.security.Principal;
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -133,17 +134,77 @@ public class PrenotazioneController {
         prenotazioneService.aggiungiPrenotazione(prenotazione);
         fasciaService.salvaFascia(fascia);
 
-        return "redirect:/evento/"+ fascia.getEvento().getId(); // oppure torna alla pagina corrente
+        return "redirect:/evento/" + fascia.getEvento().getId(); // oppure torna alla pagina corrente
     }
 
     @PostMapping("/prenotazioniElimina/{id}")
     public String getMethodName(@PathVariable("id") Long idPrenotazione) {
         Prenotazione pre = this.prenotazioneService.getPrenotazione(idPrenotazione);
-        pre.getFascia().setPostiPrenotati(pre.getFascia().getPostiPrenotati()-pre.getNumeroBiglietti());;
+        pre.getFascia().setPostiPrenotati(pre.getFascia().getPostiPrenotati() - pre.getNumeroBiglietti());
+        ;
         this.prenotazioneService.cancellaPrenotazione(idPrenotazione);
 
         return "redirect:/profilo";
     }
-    
+
+    @GetMapping("/prenotazione/modifica/{id}")
+    public String getMOdifica(@PathVariable("id") Long idPrenotazione,
+            Model model) {
+        model.addAttribute("prenotazione", this.prenotazioneService.getPrenotazione(idPrenotazione));
+        model.addAttribute("fasceDisponibili",
+                this.prenotazioneService.getPrenotazione(idPrenotazione).getFascia().getEvento().getFasceOrarie());
+        return "formPrenotazione";
+    }
+
+    @PostMapping("/prenotazioni/modifica")
+    public String modificaPrenotazione(@RequestParam Long id,
+            @RequestParam Long fasciaId,
+            @RequestParam int numeroPersone,
+            Model model,
+            Principal principal) {
+
+        // Recupera la prenotazione esistente
+        Prenotazione prenotazione = prenotazioneService.getPrenotazione(id);
+        if (prenotazione == null) {
+            model.addAttribute("errore", "Prenotazione non trovata");
+            return "redirect:/profilo";
+        }
+
+
+        // Fascia attuale e nuova
+        Fascia fasciaAttuale = prenotazione.getFascia();
+        Fascia nuovaFascia = fasciaService.getFasciaById(fasciaId);
+        if (nuovaFascia == null) {
+            model.addAttribute("errore", "Fascia selezionata non valida");
+            return "redirect:/profilo";
+        }
+
+        // Calcolo disponibilità: aggiunge prima i posti della prenotazione esistente se
+        // è la stessa fascia
+        int postiPrenotabili = nuovaFascia.getCapienzaMassima() - nuovaFascia.getPostiPrenotati();
+        if (fasciaAttuale.getId().equals(nuovaFascia.getId())) {
+            postiPrenotabili += prenotazione.getNumeroPersone(); // li stava già occupando
+        }
+
+        if (numeroPersone > postiPrenotabili) {
+            model.addAttribute("errore", "Non ci sono abbastanza posti disponibili per la fascia selezionata.");
+            return "redirect:/profilo";
+        }
+
+        // Aggiorna i posti prenotati nelle fasce
+        fasciaAttuale.setPostiPrenotati(fasciaAttuale.getPostiPrenotati() - prenotazione.getNumeroPersone());
+        nuovaFascia.setPostiPrenotati(nuovaFascia.getPostiPrenotati() + numeroPersone);
+
+        fasciaService.salvaFascia(fasciaAttuale);
+        fasciaService.salvaFascia(nuovaFascia);
+
+        // Aggiorna la prenotazione
+        prenotazione.setFascia(nuovaFascia);
+        prenotazione.setNumeroPersone(numeroPersone);
+        prenotazione.setDataPrenotazione(LocalDate.now());
+        prenotazioneService.aggiungiPrenotazione(prenotazione);
+
+        return "redirect:/profilo";
+    }
 
 }
