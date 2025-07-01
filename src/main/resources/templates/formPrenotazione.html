@@ -1,67 +1,48 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>Prenotazione per [[${evento.titolo}]]</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <title>Modifica Prenotazione</title>
+    <link rel="stylesheet" th:href="@{/css/FormPrenotazione.css}">
 </head>
+
 <body>
 
-<h2 th:text="'Prenota per l\'evento: ' + ${evento.titolo}"></h2>
+    <div class="container">
+        <h1>Modifica Prenotazione</h1>
 
-<form th:action="@{/prenotazioni}" th:object="${prenotazione}" method="post">
-    
-    <label for="disponibilita">Fascia oraria:</label>
-    <select id="fasciaSelect" th:field="*{fascia.id}" required>
-        <option th:each="fascia : ${fasce}" 
-                th:value="${fascia.id}" 
-                th:data-data="${fascia.data}"
-                th:text="${fascia.data} + ' - ore: ' + ${fascia.orarioInizio} + ' - posti: ' + (${fascia.capienzaMassima} - ${fascia.postiPrenotati})">
-        </option>
-    </select>
-    <br/><br/>
+        <form th:action="@{/prenotazioni/modifica}" method="post" th:object="${prenotazione}">
+            <input type="hidden" th:field="*{id}" />
 
-    <label for="numeroPersone">Numero di persone:</label>
-    <input type="number" min="1" max="8" th:field="*{numeroPersone}" required />
-    <br/><br/>
+            <!-- Selezione nuova fascia -->
+            <label for="fasciaId">Seleziona nuova fascia oraria:</label>
+            <select id="fasciaId" name="fasciaId" required>
+                <option th:each="fascia : ${fasceDisponibili}" th:value="${fascia.id}"
+                    th:text="${#temporals.format(fascia.data, 'dd/MM/yyyy') + ' - ' + #temporals.format(fascia.orarioInizio, 'HH:mm')}"
+                    th:data-posti-disponibili="${fascia.capienzaMassima - fascia.postiPrenotati}"
+                    th:selected="${fascia.id == prenotazione.fascia.id}">
+                </option>
+            </select>
+            <br>
 
-    <label for="dataPrenotazione">Data visita:</label>
-    <input type="date" id="dataPrenotazione" th:field="*{dataPrenotazione}" required />
-    <br/><br/>
+            <!-- Visualizzazione posti disponibili -->
+            <p id="postiDisponibili" style="font-size: 1.1vw; margin-bottom: 2vw;">
+                Posti disponibili: <span id="postiValue">Seleziona una fascia</span>
+            </p>
 
-    <button type="submit">Prenota</button>
+            <!-- Selezione numero persone -->
+            <label for="numeroPersone">Numero persone:</label>
+            <input type="number" id="numeroPersone" name="numeroPersone" th:value="*{numeroPersone}" min="1" required>
+            <br>
 
-</form>
+            <button type="submit">Salva Modifiche</button>
+            <a th:href="@{/profilo}" class="button-annulla">Annulla</a>
+        </form>
+    </div>
 
-<script>
-// Filtra le date disponibili (quelle delle fasce) e blocca tutte le altre
-document.addEventListener("DOMContentLoaded", function() {
-    const dateInput = document.getElementById("dataPrenotazione");
-    const fasciaSelect = document.getElementById("fasciaSelect");
-
-    const dateSet = new Set();
-    Array.from(fasciaSelect.options).forEach(opt => {
-        const date = opt.dataset.data;
-        if (date) dateSet.add(date);
-    });
-
-    // Intercetta modifiche e blocca date non valide
-    dateInput.addEventListener("change", function() {
-        const selected = this.value;
-        if (!dateSet.has(selected)) {
-            alert("Seleziona una data valida disponibile tra le fasce dell’evento.");
-            this.value = "";
-        }
-    });
-
-    // Imposta minimo e massimo (opzionale)
-    if (dateSet.size > 0) {
-        const dateArray = Array.from(dateSet).sort();
-        dateInput.setAttribute("min", dateArray[0]);
-        dateInput.setAttribute("max", dateArray[dateArray.length - 1]);
-    }
-});
-</script>
+   <script th:src="@{/js/formPrenotazione.js}"></script>
 
 </body>
+
 </html>
