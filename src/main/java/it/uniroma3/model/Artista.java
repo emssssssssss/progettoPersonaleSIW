@@ -12,7 +12,6 @@ import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -36,8 +35,6 @@ public class Artista {
 
 	@Column(name = "immagine_url")
 	@NotBlank(message = "L'URL dell'immagine non può essere vuoto")
-	@Size(max = 2048, message = "L'URL dell'immagine è troppo lungo")
-	@Pattern(regexp = "^(http|https)://.*\\.(jpg|jpeg|png|gif)$", message = "L'URL deve essere valido e puntare a un'immagine (jpg, jpeg, png, gif)")
 	private String urlImage;
 
 	@OneToMany(mappedBy = "artista")

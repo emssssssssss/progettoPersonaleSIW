@@ -42,10 +42,7 @@ public class ArtistaService {
     }
 
     //aggiunta con controllo admin
-    public Artista aggiungiArtista(Artista artista, Utente utenteCheRichiede) {
-        if (!utenteService.isAdmin(utenteCheRichiede)) {
-            throw new RuntimeException("Accesso negato: non sei amministratore");
-        }
+    public Artista aggiungiArtista(Artista artista) {
         return artistaRepository.save(artista);
     }
 

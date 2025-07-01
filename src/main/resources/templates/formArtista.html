@@ -11,7 +11,8 @@
 
     <h1 th:text="${artista.id != null} ? 'Modifica Artista' : 'Aggiungi Nuovo Artista'"></h1>
 
-    <form th:action="@{/artista/salva}" th:object="${artista}" method="post">
+    <form th:action="@{/artista/salva}" th:object="${artista}" method="post" enctype="multipart/form-data">
+         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 
         <label for="nome">Nome:</label>
         <input type="text" id="nome" th:field="*{nome}" required>
@@ -33,9 +34,11 @@
         <div th:if="${#fields.hasErrors('biografia')}" th:errors="*{biografia}" style="color:red"></div>
         <br>
 
-        <label for="urlImage">URL immagine:</label>
-        <input type="text" id="urlImage" th:field="*{urlImage}" required>
+
+        <label for="urlImage">Foto Artista:</label>
+        <input type="file" id="urlImage" name="urlImage" accept="image/*">
         <div th:if="${#fields.hasErrors('urlImage')}" th:errors="*{urlImage}" style="color:red"></div>
+        <br>
         <br>
 
         <input type="hidden" th:field="*{id}" />
