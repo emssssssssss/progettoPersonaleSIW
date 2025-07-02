@@ -92,6 +92,12 @@ h1 {
   text-decoration: none;
 }
 
+.opere-evento a {
+  text-decoration: none;
+  color: inherit; /* opzionale: mantiene il colore del testo genitore */
+}
+
+
 .galleria-opere {
   display: flex;
   flex-wrap: wrap;

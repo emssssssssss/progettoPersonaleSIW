@@ -49,6 +49,14 @@ body {
     color: #333;
 }
 
+.page-content h3 {
+  text-align: center;
+  font-size: 2vw;
+  margin-top: 3vw;
+  margin-bottom: 1.5vw;
+}
+
+
 .page-content h2 {
     text-align: center;
     color: #2c3e50;
