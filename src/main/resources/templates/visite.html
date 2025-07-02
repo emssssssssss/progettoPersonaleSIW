@@ -13,6 +13,10 @@
     <main class="page-content">
         <h2>Fasce Orarie Disponibili per tutti gli eventi</h2>
 
+        <div sec:authorize="!isAuthenticated()">
+            <p><a th:href="@{/login(redirect=${currentUri})}">Accedi per prenotare</a></p>
+        </div>
+
         <div th:each="evento : ${eventi}">
             <h3 th:text="${evento.titolo}">Nome Evento</h3>
             <table>
@@ -27,10 +31,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="fascia : ${evento.fasceOrarie}" 
-                        th:with="postiDisponibili=${fascia.capienzaMassima - fascia.postiPrenotati},
-                                 percentuale=${(postiDisponibili * 100) / fascia.capienzaMassima}" 
-                        th:classappend="${percentuale < 25} ? 'quasi-pieno' : 
+                    <tr th:each="fascia : ${evento.fasceOrarie}" th:with="postiDisponibili=${fascia.capienzaMassima - fascia.postiPrenotati},
+                                 percentuale=${(postiDisponibili * 100) / fascia.capienzaMassima}" th:classappend="${percentuale < 25} ? 'quasi-pieno' : 
                                        (${percentuale < 50} ? 'medio-pieno' : 'disponibile')">
 
                         <td th:text="${fascia.data}">2025-06-30</td>
@@ -41,7 +43,7 @@
 
                         <td sec:authorize="isAuthenticated()">
                             <button type="button" th:data-fascia-id="${fascia.id}"
-                                    th:data-posti-disponibili="${postiDisponibili}" onclick="apriModale(this)">
+                                th:data-posti-disponibili="${postiDisponibili}" onclick="apriModale(this)">
                                 Prenota
                             </button>
                         </td>
@@ -51,9 +53,7 @@
             </table>
         </div>
 
-        <div sec:authorize="!isAuthenticated()">
-            <p><a th:href="@{/login(redirect=${currentUri})}">Accedi per prenotare</a></p>
-        </div>
+
     </main>
 
     <div id="modalePrenotazione" class="modale" style="display:none;">

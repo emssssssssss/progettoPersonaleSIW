@@ -13,6 +13,13 @@
 
 
     <h1>Artisti</h1>
+      <!-- Bottone aggiungi artista al centro -->
+    <div class="aggiungi-artista-container" sec:authorize="hasRole('STAFF')">
+        <a th:href="@{/artista/aggiungi}">
+            <button class="btn-aggiungi-artista">Aggiungi Artista</button>
+        </a>
+    </div>
+    
     <div class="container1">
         <ul>
             <li th:each="artista : ${artisti}">
@@ -29,12 +36,7 @@
         <div th:if="${artisti == null}">Non ci sono artisti nel sistema</div>
     </div>
 
-    <!-- Bottone aggiungi artista al centro -->
-    <div class="aggiungi-artista-container" sec:authorize="hasRole('STAFF')">
-        <a th:href="@{/artista/aggiungi}">
-            <button class="btn-aggiungi-artista">Aggiungi Artista</button>
-        </a>
-    </div>
+  
 
 
 </body>

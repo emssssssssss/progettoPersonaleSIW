@@ -11,18 +11,19 @@
     <div th:replace="~{fragments/navbar :: navbar}"></div>
 
     <h1>Lista Eventi</h1>
+    <!-- Pulsante Crea Evento, visibile solo allo staff -->
+    <div class="crea-evento-container" sec:authorize="hasRole('STAFF')">
+        <a th:href="@{/evento/aggiungi}">
+            <button class="btn-crea">Crea Nuovo Evento</button>
+        </a>
+    </div>
 
     <ul class="eventi-lista">
-        <!-- Pulsante Crea Evento, visibile solo allo staff -->
-        <div class="crea-evento-container" sec:authorize="hasRole('STAFF')">
-            <a th:href="@{/evento/aggiungi}">
-                <button class="btn-crea">Crea Nuovo Evento</button>
-            </a>
-        </div>
+
         <li th:each="evento : ${eventi}" class="evento-item">
             <a th:href="@{/evento/{id}(id=${evento.id})}" class="evento-link">
                 <div class="evento-immagine">
-                    <img th:src="@{${'/uploads/' + evento.urlImage}}" alt="Foto evento"/>
+                    <img th:src="@{${'/uploads/' + evento.urlImage}}" alt="Foto evento" />
                 </div>
                 <div class="evento-titolo">
                     <span th:text="${evento.titolo}">Titolo Evento</span>
