@@ -1,19 +1,26 @@
 package it.uniroma3.controller;
 
-import java.io.File;
+//import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 
 import it.uniroma3.model.Artista;
-import it.uniroma3.model.Museo;
+//import it.uniroma3.model.Museo;
+//import it.uniroma3.model.Artista;
+//import it.uniroma3.model.Museo;
 import it.uniroma3.model.Opera;
 import it.uniroma3.model.Utente;
 import it.uniroma3.service.ArtistaService;
@@ -46,7 +53,10 @@ public class OperaController {
     private MuseoService museoService;
 
     @Autowired
-    private UtenteService utenteService;
+    private UtenteService utenteService; 
+
+    @Value("${app.upload.dir}")
+    private String uploadDir;  
 
     @GetMapping("/opera/{id}")
     public String getOpera(@PathVariable Long id, Model model) {
@@ -69,7 +79,10 @@ public class OperaController {
 
     @GetMapping("/opera/aggiungi")
     public String formAggiungiOpera(Model model) {
-        model.addAttribute("opera", new Opera());
+        Opera opera = new Opera();          // <— nuova istanza
+        opera.setArtista(new Artista());
+
+        model.addAttribute("opera", opera);
         model.addAttribute("museoGestito", museoService.getMuseoUnico());
         model.addAttribute("artisti", artistaService.getAllArtisti());
 
@@ -91,44 +104,58 @@ public class OperaController {
     }
 
     @PostMapping("/opera/salva")
-    public String salvaOpera(@Valid @ModelAttribute("opera") Opera opera,
+    public String salvaOpera(
+            @Valid @ModelAttribute("opera") Opera opera,
             BindingResult bindingResult,
             @RequestParam("artista.id") Long artistaId,
-            @RequestParam("museo.id") Long museoId,
-            @RequestParam("urlImage") MultipartFile immagine,
+            @RequestParam("fileImage") MultipartFile fileImage,
             Model model) {
 
-        Artista artista = artistaService.getArtistaById(artistaId).get();
-        Museo museo = museoService.getMuseoUnico();
-
-        opera.setArtista(artista);
-        opera.setMuseo(museo);
-
-        // Caricamento immagine
-        if (immagine != null && !immagine.isEmpty()) {
-            String uploadDir = "C:\\Users\\182935\\Documents\\workspace-spring-tool-suite-4-4.28.1.RELEASE\\progettoPersonaleSIW-1\\uploads\\images\\";
-            File directory = new File(uploadDir);
-            if (!directory.exists()) {
-                directory.mkdirs();
+        // Se ci sono errori di validazione, torniamo al form
+        if (bindingResult.hasErrors()) {
+            // Evita il null pointer in Thymeleaf
+            if (opera.getArtista() == null) {
+                opera.setArtista(new Artista());
             }
+            model.addAttribute("artisti", artistaService.getAllArtisti());
+            model.addAttribute("museoGestito", museoService.getMuseoUnico());
+            return "formOpera";
+        }
+        // Associazione artista
+        artistaService.getArtistaById(artistaId)
+                    .ifPresent(opera::setArtista);
+
+        // Caricamento fileImage
+        if (fileImage != null && !fileImage.isEmpty()) {
+            String filename = UUID.randomUUID() + "_" +
+                            StringUtils.cleanPath(fileImage.getOriginalFilename());
+            Path uploadPath = Paths.get(uploadDir);
 
             try {
-                String nomeFile = UUID.randomUUID() + "_" + immagine.getOriginalFilename();
-                immagine.transferTo(new File(uploadDir + nomeFile));
-                opera.setUrlImage("images/" + nomeFile);
+                // Creo la cartella (e tutte le sottocartelle) se non esiste
+                Files.createDirectories(uploadPath);
+
+                // Salvo il file fisico
+                Path filePath = uploadPath.resolve(filename);
+                fileImage.transferTo(filePath.toFile());
+
+                // Imposto in Opera solo il nome del file per il DB
+                opera.setUrlImage("images/" + filename);
+;
+
             } catch (IOException e) {
-                model.addAttribute("errore", "Errore nel caricamento immagine: " + e.getMessage());
-                model.addAttribute("opera", opera);
+                // In caso di errore di I/O torno al form con messaggio
+                model.addAttribute("errore", "Impossibile caricare l'fileImage: " + e.getMessage());
                 model.addAttribute("artisti", artistaService.getAllArtisti());
-                model.addAttribute("museoGestito", museo);
                 return "formOpera";
             }
         }
 
-
+        // Salvataggio dell'entità e redirect
         operaService.aggiungiOpera(opera);
         return "redirect:/opere";
     }
+
 
     @PostMapping("/opera/elimina/{id}")
     public String eliminaOpera(@PathVariable Long id,

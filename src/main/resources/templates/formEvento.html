@@ -17,8 +17,7 @@
 
 
         <input type="hidden" th:field="*{id}" />
-        <input type="hidden" th:field="*{urlImage}" />
-
+ 
 
         <!-- Titolo -->
         <label for="titolo">Titolo Evento:</label>
@@ -41,9 +40,9 @@
 
         <!-- Immagine -->
         <label for="immagine">Foto Evento:</label>
-        <input type="file" id="immagine" name="immagine" accept="image/*">
-        <div th:if="${evento.urlImage != null}">
-            <img th:src="@{'/uploads/' + ${evento.urlImage}}" class="profilo" alt="Foto evento" />
+        <input type="file" id="fileImage" name="fileImage" accept="image/*">
+        <div th:if="${evento.fileImage != null}">
+            <img th:src="@{'/uploads/' + ${evento.fileImage}}" class="profilo" alt="Foto evento" />
         </div>
 
         <div style="display:none;" th:each="fascia, iterStat : ${evento.fasceOrarie}">
@@ -62,10 +61,16 @@
 
         <!-- Opere -->
         <label for="opere">Opere:</label>
-        <select id="opere" name="opere-select" multiple size="10">
-            <option disabled selected value="">-- Seleziona un'opera --</option>
-            <option th:each="o : ${tutteLeOpere}" th:value="${o.id}" th:text="${o.titolo}"></option>
+        <select id="opere" name="opereIds" multiple size="10" class="input-stile">
+            <option th:each="o : ${tutteLeOpere}"
+                    th:value="${o.id}"
+                    th:text="${o.titolo}">
+                    th:selected="${evento.opere.contains(o)}">
+            </option>
         </select>
+        <div th:if="${#fields.hasErrors('opere')}" th:errors="*{opere}" style="color:red"></div>
+        <br>
+
 
         <!-- Container visivo delle opere selezionate -->
         <div id="opere-selezionate" class="opere-selezionate"

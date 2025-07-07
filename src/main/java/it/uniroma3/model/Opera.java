@@ -2,6 +2,8 @@ package it.uniroma3.model;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -12,6 +14,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -32,8 +35,11 @@ public class Opera {
 	private int anno;
 
 	@Column(name = "immagine_url")
-	@NotBlank(message = "L'URL dell'immagine non può essere vuoto")
 	private String urlImage;
+
+    // Campo transient per file upload, non salvato nel DB
+    @Transient
+    private MultipartFile fileImage;
 
 	@ManyToOne
 	private Artista artista;
@@ -140,6 +146,13 @@ public class Opera {
 				", immagineUrl='" + urlImage + '\'' +
 				'}';
 	}
+
+	public MultipartFile getFileImage() {
+        return fileImage;
+    }
+    public void setFileImage(MultipartFile fileImage) {
+        this.fileImage = fileImage;
+    }
 
 
 }

@@ -4,15 +4,21 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -41,10 +47,18 @@ public class Evento {
 	@Column(name = "immagine_url")
 	private String urlImage;
 
+	@Transient
+    private MultipartFile fileImage;
+
 	@ManyToOne
 	private Museo museo;
 
-	@ManyToMany(mappedBy = "eventi")
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(
+		name = "evento_opera",
+		joinColumns = @JoinColumn(name = "evento_id"),
+		inverseJoinColumns = @JoinColumn(name = "opera_id")
+	)
 	private List<Opera> opere = new ArrayList<>();
 
 	@OneToMany(mappedBy = "evento", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -136,6 +150,13 @@ public class Evento {
 		this.fasceOrarie.remove(fascia);
 		fascia.setEvento(null);
 	}
+
+	public MultipartFile getFileImage() {
+        return fileImage;
+    }
+    public void setFileImage(MultipartFile fileImage) {
+        this.fileImage = fileImage;
+    }
 
 	// --- equals, hashCode e toString ---
 

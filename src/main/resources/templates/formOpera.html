@@ -32,26 +32,33 @@
         <!-- Se esiste già un'immagine, mostriamola -->
         <div th:if="${opera.urlImage != null}">
             <p>Immagine attuale:</p>
-            <img th:src="@{'/uploads/' + ${opera.urlImage}}" alt="Immagine opera" style="max-width: 200px;">
+            <img th:src="@{'/uploads/images/' + ${opera.urlImage}}"
+                alt="Immagine opera"
+                style="max-width:200px;" />
         </div>
 
-        <label for="urlImage">Foto Opera:</label>
-        <input type="file" id="urlImage" name="urlImage" accept="image/*">
-         <div th:if="${#fields.hasErrors('urlImage')}" th:errors="*{urlImage}" style="color:red"></div>
+
+        <label for="fileImage">Foto Opera:</label>
+        <input type="file" id="fileImage" name="fileImage" accept="image/*">
+         <div th:if="${#fields.hasErrors('fileImage')}" th:errors="*{fileImage}" style="color:red"></div>
         <br>
 
         <label for="artista">Artista:</label>
         <select id="artista" name="artista.id" required>
             <option value="">-- Seleziona artista --</option>
-            <option th:each="a : ${artisti}" th:value="${a.id}" th:text="${a.nome}"
-                th:selected="${opera.artista != null and opera.artista.id == a.id}">Artista</option>
+            <option th:each="a : ${artisti}"
+                    th:value="${a.id}"
+                    th:text="${a.nome}"
+                    th:selected="${opera.artista != null and a.id != null and a.id.equals(opera.artista.id)}">
+                Artista
+            </option>
         </select>
         <div th:if="${#fields.hasErrors('artista')}" th:errors="*{artista}" style="color:red"></div>
         <br>
 
+
         <input type="hidden" name="museo.id" th:value="${museoGestito.id}" />
         <input type="hidden" th:field="*{id}" />
-        <input type="hidden" th:field="*{urlImage}" />
 
         <div class="salvaAnnulla">
             <button type="submit">Salva Opera</button>

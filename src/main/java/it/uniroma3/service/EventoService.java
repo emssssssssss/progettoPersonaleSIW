@@ -24,7 +24,7 @@ public class EventoService {
     private OperaService operaService;
 
     public Evento getEventoById(Long id) {
-        return this.eventoRepository.findById(id).get();
+        return this.eventoRepository.findByIdWithOpereAndArtisti(id);
     }
 
     public Iterable<Evento> getAllEventi() {

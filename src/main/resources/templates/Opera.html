@@ -15,7 +15,7 @@
 
         <div>
             <a th:href="@{/opera/{id}(id=${opera.id})}">
-                <img th:src="@{${'/uploads/' + opera.urlImage}}" alt="Foto opera"/>
+                <img th:src="@{'/uploads/' + ${opera.urlImage}}" alt="Foto opera"/>
             </a>
         </div>
 
@@ -25,7 +25,7 @@
         <div class="artista-info">
             <h3>Autore</h3>
             <a th:href="@{/artista/{id}(id=${opera.artista.id})}">
-                <img th:src="@{${'/uploads/' + opera.artista.urlImage}}" alt="Foto artista" class="artista-img"/>
+                <img th:src="@{'/uploads/' + ${opera.artista.urlImage}}" alt="Foto artista" class="artista-img"/>
                 <p th:text="${opera.artista.nome}">Nome artista</p>
             </a>
         </div>

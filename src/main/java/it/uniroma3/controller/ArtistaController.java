@@ -1,11 +1,15 @@
 package it.uniroma3.controller;
 
-import java.io.File;
+//import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
@@ -32,6 +36,10 @@ public class ArtistaController {
 
     @Autowired
     private UtenteService utenteService;
+
+    
+    @Value("${app.upload.dir}")
+    private String uploadDir;  
 
     @GetMapping("/artista/{id}")
     public String getArtista(@PathVariable Long id, Model model) {
@@ -67,22 +75,26 @@ public class ArtistaController {
     @PostMapping("/artista/salva")
     public String salvaArtista(@Valid @ModelAttribute("artista") Artista artista,
             BindingResult bindingResult,
-            @RequestParam("urlImage") MultipartFile immagine,
+            @RequestParam("fileImage") MultipartFile fileImage,
             Model model) {
 
 
-        // Caricamento immagine se presente
-        if (immagine != null && !immagine.isEmpty()) {
-            String uploadDir = "C:\\Users\\182935\\Documents\\workspace-spring-tool-suite-4-4.28.1.RELEASE\\progettoPersonaleSIW-1\\uploads\\images\\";
-            File directory = new File(uploadDir);
-            if (!directory.exists()) {
-                directory.mkdirs();
-            }
+
+        if (bindingResult.hasErrors()) {
+            return "formArtista";
+        }
+
+        if (fileImage != null && !fileImage.isEmpty()) {
+            String filename = UUID.randomUUID() + "_" + fileImage.getOriginalFilename();
+            Path uploadPath = Paths.get(uploadDir);
 
             try {
-                String nomeFile = UUID.randomUUID() + "_" + immagine.getOriginalFilename();
-                immagine.transferTo(new File(uploadDir + nomeFile));
-                artista.setUrlImage("images/" + nomeFile);
+                Files.createDirectories(uploadPath); // create dirs if not exists
+                Path filePath = uploadPath.resolve(filename);
+                fileImage.transferTo(filePath.toFile());
+
+                artista.setUrlImage("images/" + filename); // relativo alla cartella static
+
             } catch (IOException e) {
                 model.addAttribute("errore", "Errore nel caricamento immagine: " + e.getMessage());
                 model.addAttribute("artista", artista);
@@ -90,10 +102,7 @@ public class ArtistaController {
             }
         }
 
-        // Salvataggio artista (distinzione tra nuovo o esistente)
-        
-            artistaService.aggiungiArtista(artista);
-
+        artistaService.aggiungiArtista(artista);
         return "redirect:/artista/" + artista.getId();
     }
 

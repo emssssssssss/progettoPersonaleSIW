@@ -1,18 +1,25 @@
 package it.uniroma3.controller;
 
-import java.io.File;
+//import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+//import java.util.Objects;
 import java.util.UUID;
-import java.util.stream.Collectors;
+//import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
+import org.springframework.validation.BindingResult;
+
 import it.uniroma3.model.Evento;
 import it.uniroma3.model.Fascia;
 import it.uniroma3.model.Opera;
@@ -20,6 +27,7 @@ import it.uniroma3.model.Utente;
 import it.uniroma3.service.EventoService;
 import it.uniroma3.service.OperaService;
 import it.uniroma3.service.UtenteService;
+import jakarta.validation.Valid;
 import it.uniroma3.repository.EventoRepository;
 import it.uniroma3.repository.FasciaRepository;
 
@@ -49,6 +57,9 @@ public class EventoController {
     @Autowired
     private FasciaRepository fasciaRepository;
 
+    @Value("${app.upload.dir}")
+    private String uploadDir;
+
     // visualizza un singolo evento
     @GetMapping("/evento/{id}")
     public String getEvento(@PathVariable Long id, Model model) {
@@ -67,15 +78,16 @@ public class EventoController {
     // mostra il form per aggiungere un nuovo evento
     @GetMapping("/evento/aggiungi")
     public String mostraFormEvento(Model model) {
+        List<Opera> tutteLeOpere = operaService.getAllOpere();
         model.addAttribute("evento", new Evento());
-        model.addAttribute("tutteLeOpere", operaService.getAllOpere());
+        model.addAttribute("tutteLeOpere", tutteLeOpere);
         return "formEvento";
     }
 
     // mostra form di modifica di un evento esistente
     @GetMapping("/evento/modifica/{id}")
     public String mostraFormModificaEvento(@PathVariable Long id, Model model) {
-        Evento evento = eventoRepository.findByIdWithOpereAndArtisti(id);
+        Evento evento = eventoService.getEventoById(id);
         model.addAttribute("evento", evento);
         model.addAttribute("tutteLeOpere", operaService.getAllOpere()); // se serve
         return "formEvento"; // il nome del tuo HTML
@@ -83,67 +95,65 @@ public class EventoController {
 
     @PostMapping("/evento/salva")
     public String salvaEvento(
-            @ModelAttribute Evento evento,
-            @RequestParam(name = "opereIds", required = false) List<Long> opereIds,
-            @RequestParam(value = "immagine", required = false) MultipartFile immagine,
-            @RequestParam(name = "fasceIds", required = false) List<Long> fasceIds,
-            Model model){
-        Evento eventoDaSalvare;
+            @Valid @ModelAttribute("evento") Evento evento,
+            BindingResult bindingResult,
+            @RequestParam(value = "fileImage", required = false) MultipartFile fileImage,
+            @RequestParam(value = "opereIds", required = false) List<Long> opereIds,
+            Model model) throws IOException {
 
-        if (evento.getId() != null) {
-            eventoDaSalvare = eventoService.getEventoById(evento.getId());
-            eventoDaSalvare.setTitolo(evento.getTitolo());
-            eventoDaSalvare.setDescrizione(evento.getDescrizione());
-            eventoDaSalvare.setDataInizio(evento.getDataInizio());
-            eventoDaSalvare.setDataFine(evento.getDataFine());
-            eventoDaSalvare.setMuseo(evento.getMuseo());
-            eventoDaSalvare.getFasceOrarie().clear();
-            for (Fascia fascia : evento.getFasceOrarie()) {
-                fascia.setEvento(eventoDaSalvare);
-                eventoDaSalvare.addFasciaOraria(fascia);
-            }
-
-        } else {
-            eventoDaSalvare = new Evento();
-            eventoDaSalvare.setTitolo(evento.getTitolo());
-            eventoDaSalvare.setDescrizione(evento.getDescrizione());
-            eventoDaSalvare.setDataInizio(evento.getDataInizio());
-            eventoDaSalvare.setDataFine(evento.getDataFine());
-            eventoDaSalvare.setMuseo(evento.getMuseo());
-            eventoDaSalvare.setFasceOrarie(new ArrayList<>());
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("tutteLeOpere", operaService.getAllOpere());
+            return "formEvento";
         }
 
-        // ✅ Caricamento immagine se presente
-        if (immagine != null && !immagine.isEmpty()) {
-            String uploadDir = "C:\\Users\\182935\\Documents\\workspace-spring-tool-suite-4-4.28.1.RELEASE\\progettoPersonaleSIW-1\\uploads\\images\\";
-            File directory = new File(uploadDir);
-            if (!directory.exists()) {
-                directory.mkdirs();
-            }
+        // 1) Recupero o nuovo
+        Evento daSalvare = evento.getId() != null
+            ? eventoService.getEventoById(evento.getId())
+            : new Evento();
 
-            try {
-                String nomeFile = UUID.randomUUID() + "_" + immagine.getOriginalFilename();
-                immagine.transferTo(new File(uploadDir + nomeFile));
-                eventoDaSalvare.setUrlImage("images/" + nomeFile); // ✅ CORRETTO
-            } catch (IOException e) {
-                model.addAttribute("errore", "Errore nel caricamento immagine: " + e.getMessage());
-                model.addAttribute("evento", evento);
-                return "formEvento";
+        // 2) Campi semplici
+        daSalvare.setTitolo(evento.getTitolo());
+        daSalvare.setDescrizione(evento.getDescrizione());
+        daSalvare.setDataInizio(evento.getDataInizio());
+        daSalvare.setDataFine(evento.getDataFine());
+        daSalvare.setMuseo(evento.getMuseo());
+
+        // 3) Fasce orarie
+        daSalvare.getFasceOrarie().clear();
+        if (evento.getFasceOrarie() != null) {
+            for (Fascia f : evento.getFasceOrarie()) {
+                f.setEvento(daSalvare);
+                daSalvare.addFasciaOraria(f);
             }
         }
 
-        // 🖼️ Associa le opere selezionate
-        List<Opera> opere = (opereIds != null) ? opereIds.stream()
-                .map(id -> operaService.getOperaById(id).orElse(null))
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList()) : new ArrayList<>();
-        eventoDaSalvare.setOpere(opere);
+        // 4) Upload immagine
+        if (fileImage != null && !fileImage.isEmpty()) {
+            Path uploadPath = Paths.get(uploadDir);
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+            String filename = UUID.randomUUID() + "_" + StringUtils.cleanPath(fileImage.getOriginalFilename());
+            fileImage.transferTo(uploadPath.resolve(filename).toFile());
+            daSalvare.setUrlImage(filename);
+        }
 
-        // ✅ Salva evento
-        eventoService.aggiungiEvento(eventoDaSalvare);
+        // 5) Many‑to‑many Opere
+        List<Opera> scelte = new ArrayList<>();
+        if (opereIds != null) {
+            for (Long oid : opereIds) {
+                operaService.getOperaById(oid).ifPresent(scelte::add);
+            }
+        }
+        daSalvare.setOpere(scelte);
 
-        return "redirect:/evento/" + eventoDaSalvare.getId();
+        // 6) Salvo
+        eventoService.aggiungiEvento(daSalvare);
+        return "redirect:/evento/" + daSalvare.getId();
     }
+
+
+
 
     // eliminazione
     @PostMapping("/evento/elimina/{id}")

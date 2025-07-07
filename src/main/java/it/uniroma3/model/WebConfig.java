@@ -1,5 +1,6 @@
 package it.uniroma3.model;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -7,13 +8,18 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
+    @Value("${app.upload.dir}")
+    private String uploadDir;  // es. C:/.../uploads/images
+
+
+    
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        // Serve file da /uploads (quindi anche /uploads/images)
-        registry.addResourceHandler("/uploads/**")
-                .addResourceLocations("file:///C:/Users/182935/Documents/workspace-spring-tool-suite-4-4.28.1.RELEASE/progettoPersonaleSIW-1/uploads/");
+        // Mappiamo /uploads/images/** sulla cartella fisica
+        registry.addResourceHandler("/uploads/images/**")
+                .addResourceLocations("file:" + uploadDir.replace("\\", "/") + "/");
 
-        // Serve le risorse classiche da src/main/resources/static
+        // Risorse statiche di default
         registry.addResourceHandler("/**")
                 .addResourceLocations("classpath:/static/");
     }

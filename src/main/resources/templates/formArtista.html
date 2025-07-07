@@ -35,14 +35,14 @@
         <br>
 
 
-        <label for="urlImage">Foto Artista:</label>
-        <input type="file" id="urlImage" name="urlImage" accept="image/*">
-        <div th:if="${#fields.hasErrors('urlImage')}" th:errors="*{urlImage}" style="color:red"></div>
+        <label for="fileImage">Foto Artista:</label>
+        <input type="file" id="fileImage" name="fileImage" accept="image/*">
+        <div th:if="${#fields.hasErrors('fileImage')}" th:errors="*{fileImage}" style="color:red"></div>
         <br>
         <br>
 
         <input type="hidden" th:field="*{id}" />
-        <input type="hidden" th:field="*{urlImage}" />
+        <input type="hidden" th:field="*{fileImage}" />
 
         <div class="salvaAnnulla">
             <button type="submit">Salva Artista</button>

@@ -2,6 +2,9 @@ package it.uniroma3.model;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -33,11 +37,14 @@ public class Artista {
 	@Max(value = 2025, message = "L'anno di morte non può essere nel futuro")
 	private Integer annoMorte;
 
+	// Campo transient per file upload, non salvato nel DB
+    @Transient
+    private MultipartFile fileImage;
+
 	@Column(name = "immagine_url")
-	@NotBlank(message = "L'URL dell'immagine non può essere vuoto")
 	private String urlImage;
 
-	@OneToMany(mappedBy = "artista")
+	@OneToMany(mappedBy = "artista",  cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private List<Opera> opere;
 
 	@ManyToOne
@@ -132,4 +139,13 @@ public class Artista {
 				", immagineUrl='" + urlImage + '\'' +
 				'}';
 	}
+
+
+	public MultipartFile getFileImage() {
+        return fileImage;
+    }
+    public void setFileImage(MultipartFile fileImage) {
+        this.fileImage = fileImage;
+    }
+
 }

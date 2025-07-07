@@ -1,5 +1,6 @@
 package it.uniroma3.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class OperaService {
         return operaRepository.findById(id);
     }
 
-    public Iterable<Opera> getAllOpere() {
+    public List<Opera> getAllOpere() {
         return this.operaRepository.findAll();
     }
 
